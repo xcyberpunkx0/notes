@@ -4,8 +4,8 @@
 
 # Notes
 
-**A personal knowledge vault for Data Structures & Algorithms.**
-Capture what you learn, debrief what you solve, and let spaced repetition bring it back before you forget it.
+**A personal knowledge vault that refuses to let you forget.**
+Capture what you learn, debrief what you solve, and let spaced repetition bring it back before it fades.
 
 [![CI](https://github.com/xcyberpunkx0/notes/actions/workflows/ci.yml/badge.svg)](https://github.com/xcyberpunkx0/notes/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-8e6bf5.svg)](LICENSE)
@@ -16,7 +16,9 @@ Capture what you learn, debrief what you solve, and let spaced repetition bring 
 
 ---
 
-Most notes apps are graveyards: you write things down, feel productive, and never look at them again. Notes is built around the opposite idea — **everything you put in comes back to you** on a spaced schedule, weak topics get flagged, and the app tells you what to study today.
+This project started while studying Data Structures & Algorithms. I kept taking careful notes in Notion and solving problems on LeetCode — and then never looking at any of it again. The notes weren't the problem; the *coming back* was. Most notes apps are graveyards: you write things down, feel productive, and forget.
+
+Notes is built around the opposite idea — **everything you put in comes back to you** on a spaced schedule, weak topics get flagged, and the app tells you what to study today. The DSA origin shows in some of its sharpest tools (problem debriefs, code-first blocks, complexity templates), but the loop works for anything you're trying to actually retain.
 
 It's a native Windows desktop app: instant startup, fully offline, and your data lives in a single local SQLite file you own.
 
