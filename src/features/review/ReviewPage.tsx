@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight,
@@ -17,6 +17,7 @@ import {
   useStreak,
   type DueReview,
 } from "@/db/reviews";
+import { useTopic } from "@/db/topics";
 import { checkAchievements, type AchievementDef } from "@/db/achievements";
 import { Markdown } from "@/components/Markdown";
 import type { Rating } from "@/lib/scheduler";
@@ -30,7 +31,12 @@ const RATINGS: { key: Rating; label: string; kbd: string; style: string }[] = [
 ];
 
 export function ReviewPage() {
-  const { data: due } = useDueReviews();
+  const [searchParams] = useSearchParams();
+  const focusTopicId = searchParams.get("topic")
+    ? Number(searchParams.get("topic"))
+    : null;
+  const { data: due } = useDueReviews(focusTopicId);
+  const { data: focusTopic } = useTopic(focusTopicId ?? 0);
   const rate = useRateReview();
   const streak = useStreak();
   const navigate = useNavigate();
@@ -38,6 +44,13 @@ export function ReviewPage() {
   const [doneCount, setDoneCount] = useState(0);
   const [sessionTotal, setSessionTotal] = useState<number | null>(null);
   const [newBadges, setNewBadges] = useState<AchievementDef[]>([]);
+
+  // Fresh session counters when entering/leaving focused mode
+  useEffect(() => {
+    setSessionTotal(null);
+    setDoneCount(0);
+    setRevealed(false);
+  }, [focusTopicId]);
 
   const current: DueReview | undefined = due?.[0];
   const total = sessionTotal ?? due?.length ?? 0;
@@ -58,12 +71,26 @@ export function ReviewPage() {
 
   return (
     <div className="h-full">
-      <PageHeader eyebrow="Retention loop" title="Review">
-        {total > 0 && !sessionDone && (
-          <span className="font-mono text-[11px] text-text-faint">
-            {doneCount} / {total} today
-          </span>
-        )}
+      <PageHeader
+        eyebrow={focusTopicId ? "Focused practice" : "Retention loop"}
+        title="Review"
+      >
+        <span className="flex items-center gap-3">
+          {focusTopicId && focusTopic && (
+            <button
+              onClick={() => navigate("/review")}
+              title="Back to everything due"
+              className="flex h-8 items-center gap-1.5 rounded-full bg-accent-soft px-3 text-[12px] font-medium text-accent transition-colors hover:brightness-110"
+            >
+              {focusTopic.icon} {focusTopic.name} ✕
+            </button>
+          )}
+          {total > 0 && !sessionDone && (
+            <span className="font-mono text-[11px] text-text-faint">
+              {doneCount} / {total}
+            </span>
+          )}
+        </span>
       </PageHeader>
 
       <div className="mx-auto max-w-xl px-8">

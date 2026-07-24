@@ -28,11 +28,20 @@ export async function enrollInReview(
   );
 }
 
-export function useDueReviews() {
+/**
+ * Items to review. Without a topic: everything due now. With a topic
+ * (focused mode from the weak-spots panel): ALL items in that topic,
+ * due-first — deliberate practice doesn't wait for the schedule.
+ */
+export function useDueReviews(topicId?: number | null) {
   return useQuery({
-    queryKey: ["reviews", "due"],
+    queryKey: ["reviews", "due", topicId ?? null],
     queryFn: async () => {
       const db = await getDb();
+      const where = topicId
+        ? `WHERE (r.item_type = 'note' AND EXISTS (SELECT 1 FROM notes n WHERE n.id = r.item_id AND n.topic_id = $1))
+            OR (r.item_type = 'problem' AND EXISTS (SELECT 1 FROM problem_topics pt WHERE pt.problem_id = r.item_id AND pt.topic_id = $1))`
+        : `WHERE r.due_at <= datetime('now')`;
       return db.select<DueReview[]>(
         `SELECT r.*,
           CASE r.item_type
@@ -44,12 +53,46 @@ export function useDueReviews() {
             WHEN 'note' THEN (SELECT t.name FROM notes n LEFT JOIN topics t ON t.id = n.topic_id WHERE n.id = r.item_id)
           END AS hint
          FROM reviews r
-         WHERE r.due_at <= datetime('now')
+         ${where}
          ORDER BY r.due_at ASC
          LIMIT 30`,
+        topicId ? [topicId] : [],
       );
     },
     select: (rows: DueReview[]) => rows.filter((r) => r.title != null),
+  });
+}
+
+export interface TopicStats {
+  topic_id: number;
+  items: number;
+  mastery: number; // 0..1 — avg of min(interval/30d, 1) across enrolled items
+  lapses: number;
+  due_now: number;
+}
+
+export function useTopicStats() {
+  return useQuery({
+    queryKey: ["topic-stats"],
+    queryFn: async () => {
+      const db = await getDb();
+      return db.select<TopicStats[]>(
+        `SELECT topic_id,
+                COUNT(*) AS items,
+                AVG(MIN(iv / 30.0, 1.0)) AS mastery,
+                SUM(lapses) AS lapses,
+                SUM(CASE WHEN due_at <= datetime('now') THEN 1 ELSE 0 END) AS due_now
+         FROM (
+           SELECT n.topic_id AS topic_id, r.interval_days AS iv, r.lapses AS lapses, r.due_at AS due_at
+             FROM reviews r JOIN notes n ON r.item_type = 'note' AND r.item_id = n.id
+            WHERE n.topic_id IS NOT NULL
+           UNION ALL
+           SELECT pt.topic_id, r.interval_days, r.lapses, r.due_at
+             FROM reviews r JOIN problem_topics pt ON r.item_type = 'problem' AND r.item_id = pt.problem_id
+         )
+         GROUP BY topic_id`,
+      );
+    },
   });
 }
 
@@ -109,6 +152,7 @@ export function useRateReview() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["reviews"] });
       qc.invalidateQueries({ queryKey: ["activity"] });
+      qc.invalidateQueries({ queryKey: ["topic-stats"] });
     },
   });
 }

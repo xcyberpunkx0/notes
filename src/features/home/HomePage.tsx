@@ -11,7 +11,14 @@ import {
 } from "@phosphor-icons/react";
 import { getDb } from "@/db/client";
 import { Backdrop } from "@/components/Backdrop";
-import { useDueCount, useStreak } from "@/db/reviews";
+import { Heatmap } from "@/components/Heatmap";
+import {
+  useActivity,
+  useDueCount,
+  useStreak,
+  useTopicStats,
+} from "@/db/reviews";
+import { useTopics } from "@/db/topics";
 import { useUnlockedAchievements } from "@/db/achievements";
 import { formatRelative } from "@/lib/time";
 
@@ -59,9 +66,19 @@ export function HomePage() {
   const { data: dueCount } = useDueCount();
   const streak = useStreak();
   const { data: achievements } = useUnlockedAchievements();
+  const { data: activity } = useActivity();
+  const { data: topicStats } = useTopicStats();
+  const { data: topics } = useTopics();
 
   const empty = data && data.counts.notes === 0 && data.counts.problems === 0;
   const due = dueCount ?? 0;
+
+  const weakTopics = (topicStats ?? [])
+    .filter((s) => s.items >= 2 && (s.mastery < 0.4 || s.lapses >= 3))
+    .sort((a, b) => a.mastery - b.mastery)
+    .slice(0, 3)
+    .map((s) => ({ ...s, topic: topics?.find((t) => t.id === s.topic_id) }))
+    .filter((s) => s.topic);
 
   return (
     <div className="relative h-full overflow-y-auto">
@@ -158,6 +175,51 @@ export function HomePage() {
             </button>
           ))}
         </div>
+
+        {/* Weak spots — what to study today */}
+        {weakTopics.length > 0 && (
+          <div className="mt-10">
+            <p className="eyebrow mb-3">Needs attention</p>
+            <div className="grid grid-cols-3 gap-4">
+              {weakTopics.map((s) => (
+                <div key={s.topic_id} className="card flex flex-col gap-3 p-4">
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className="flex size-9 shrink-0 items-center justify-center rounded-xl text-base"
+                      style={{
+                        backgroundColor: `${s.topic!.color ?? "#8e6bf5"}24`,
+                      }}
+                    >
+                      {s.topic!.icon || "📚"}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-[13px] font-semibold">
+                        {s.topic!.name}
+                      </span>
+                      <span className="block font-mono text-[10px] text-text-faint">
+                        {Math.round(s.mastery * 100)}% retained
+                        {s.lapses > 0 && ` · ${s.lapses} lapses`}
+                      </span>
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/review?topic=${s.topic_id}`)}
+                    className="btn-ghost !h-8 w-full !text-[12px]"
+                  >
+                    Review now
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Activity heatmap */}
+        {activity && activity.length > 0 && (
+          <div className="mt-10">
+            <Heatmap activity={activity} />
+          </div>
+        )}
 
         {/* Continue learning + achievements */}
         {(data?.recentNotes.length ?? 0) > 0 && (

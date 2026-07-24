@@ -4,6 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { Books, Plus, Sparkle, X } from "@phosphor-icons/react";
 import { PageHeader } from "@/components/PageHeader";
 import { useCreateTopic, useTopics, type Topic } from "@/db/topics";
+import { useTopicStats, type TopicStats } from "@/db/reviews";
 import {
   STARTER_TOPICS,
   TOPIC_COLORS,
@@ -79,8 +80,46 @@ export function TopicsPage() {
   );
 }
 
+function MasteryRing({ value, color }: { value: number; color: string }) {
+  const r = 13;
+  const c = 2 * Math.PI * r;
+  return (
+    <span
+      className="relative inline-flex size-8 items-center justify-center"
+      title={`${Math.round(value * 100)}% retained`}
+    >
+      <svg viewBox="0 0 32 32" className="size-8 -rotate-90">
+        <circle
+          cx="16"
+          cy="16"
+          r={r}
+          fill="none"
+          stroke="var(--line)"
+          strokeWidth="3"
+        />
+        <circle
+          cx="16"
+          cy="16"
+          r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeDasharray={`${c * Math.max(0.02, value)} ${c}`}
+        />
+      </svg>
+      <span className="absolute font-mono text-[8px] font-semibold text-text-dim">
+        {Math.round(value * 100)}
+      </span>
+    </span>
+  );
+}
+
 function TopicGrid({ topics }: { topics: Topic[] }) {
   const navigate = useNavigate();
+  const { data: stats } = useTopicStats();
+  const statsFor = (id: number): TopicStats | undefined =>
+    stats?.find((s) => s.topic_id === id);
   const roots = topics.filter((t) => !t.parent_id);
   const childrenOf = (id: number) => topics.filter((t) => t.parent_id === id);
 
@@ -97,11 +136,19 @@ function TopicGrid({ topics }: { topics: Topic[] }) {
               background: `linear-gradient(135deg, ${topic.color ?? "#8e6bf5"}14, transparent 55%), var(--surface)`,
             }}
           >
-            <span
-              className="flex size-12 items-center justify-center rounded-2xl text-xl"
-              style={{ backgroundColor: `${topic.color ?? "#8e6bf5"}24` }}
-            >
-              {topic.icon || "📚"}
+            <span className="flex w-full items-start justify-between">
+              <span
+                className="flex size-12 items-center justify-center rounded-2xl text-xl"
+                style={{ backgroundColor: `${topic.color ?? "#8e6bf5"}24` }}
+              >
+                {topic.icon || "📚"}
+              </span>
+              {statsFor(topic.id) && (
+                <MasteryRing
+                  value={statsFor(topic.id)!.mastery}
+                  color={topic.color ?? "#8e6bf5"}
+                />
+              )}
             </span>
             <span className="min-w-0">
               <span className="block truncate font-(family-name:--font-display) text-[15px] font-bold">
