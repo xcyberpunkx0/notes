@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getDb } from "./client";
+import { enrollInReview } from "./reviews";
 
 export interface Problem {
   id: number;
@@ -195,9 +196,14 @@ export function useQuickLogProblem() {
         [today],
       );
       await syncProblemFts(id);
+      await enrollInReview("problem", id);
       return id;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["problems"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["problems"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
+      qc.invalidateQueries({ queryKey: ["reviews"] });
+    },
   });
 }
 

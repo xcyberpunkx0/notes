@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getDb } from "./client";
 import { extractLinks, extractText, type BlockNode } from "@/lib/extract-text";
 import { syncLinks } from "./links";
+import { enrollInReview } from "./reviews";
 
 export interface NoteSummary {
   id: number;
@@ -65,9 +66,14 @@ export function useCreateNote() {
          ON CONFLICT(date) DO UPDATE SET notes_created = notes_created + 1`,
         [today],
       );
+      await enrollInReview("note", id);
       return id;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["notes"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["notes"] });
+      qc.invalidateQueries({ queryKey: ["home"] });
+      qc.invalidateQueries({ queryKey: ["reviews"] });
+    },
   });
 }
 
