@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getDb } from "./client";
-import { extractText, type BlockNode } from "@/lib/extract-text";
+import { extractLinks, extractText, type BlockNode } from "@/lib/extract-text";
+import { syncLinks } from "./links";
 
 export interface NoteSummary {
   id: number;
@@ -87,6 +88,7 @@ export async function saveNoteContent(
     `INSERT INTO notes_fts (rowid, title, content_text) VALUES ($1, $2, $3)`,
     [id, title, contentText],
   );
+  await syncLinks("note", id, extractLinks(blocks));
 }
 
 export function useDeleteNote() {

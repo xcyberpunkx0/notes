@@ -21,8 +21,9 @@ function inlineText(content: unknown): string {
   if (typeof content === "string") return content;
   if (!Array.isArray(content)) return "";
   return content
-    .map((node: InlineNode) => {
+    .map((node: InlineNode & { props?: { title?: unknown } }) => {
       if (typeof node?.text === "string") return node.text;
+      if (typeof node?.props?.title === "string") return node.props.title;
       if (node?.content) return inlineText(node.content);
       return "";
     })
@@ -41,6 +42,41 @@ function tableText(content: unknown): string {
         .join(" "),
     )
     .join("\n");
+}
+
+export interface ExtractedLink {
+  target_type: "note" | "problem" | "topic";
+  target_id: number;
+}
+
+/** Collects vaultLink inline references for the links table. */
+export function extractLinks(
+  blocks: BlockNode[] | undefined | null,
+): ExtractedLink[] {
+  if (!Array.isArray(blocks)) return [];
+  const found: ExtractedLink[] = [];
+  const walkInline = (content: unknown) => {
+    if (!Array.isArray(content)) return;
+    for (const node of content as (InlineNode & {
+      props?: { itemType?: string; itemId?: number };
+    })[]) {
+      if (node?.type === "vaultLink" && node.props?.itemId) {
+        found.push({
+          target_type: (node.props.itemType ?? "note") as ExtractedLink["target_type"],
+          target_id: node.props.itemId,
+        });
+      }
+      if (node?.content) walkInline(node.content);
+    }
+  };
+  const walk = (bs: BlockNode[]) => {
+    for (const b of bs) {
+      walkInline(b.content);
+      if (b.children?.length) walk(b.children);
+    }
+  };
+  walk(blocks);
+  return found;
 }
 
 export function extractText(blocks: BlockNode[] | undefined | null): string {

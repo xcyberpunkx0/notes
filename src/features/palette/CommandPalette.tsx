@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Command } from "cmdk";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Brain,
+  FileText,
   House,
   Library,
   ListChecks,
@@ -11,6 +13,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useUiStore } from "@/app/store";
+import { useVaultSearch } from "@/db/search";
 
 interface Action {
   id: string;
@@ -24,11 +27,20 @@ export function CommandPalette() {
   const setOpen = useUiStore((s) => s.setPaletteOpen);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const { data: results } = useVaultSearch(query.trim());
+
+  useEffect(() => {
+    if (!open) setQuery("");
+  }, [open]);
 
   function runAndClose(fn: () => void) {
     setOpen(false);
     fn();
   }
+
+  const matches = (label: string) =>
+    label.toLowerCase().includes(query.trim().toLowerCase());
 
   const navigation: Action[] = [
     { id: "home", label: "Go to Home", icon: <House size={15} />, run: () => navigate("/") },
@@ -51,50 +63,103 @@ export function CommandPalette() {
           aria-describedby={undefined}
         >
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>
-          <Command label="Command palette">
+          <Command label="Command palette" shouldFilter={false}>
             <Command.Input
               autoFocus
-              placeholder="Type a command or search…"
+              value={query}
+              onValueChange={setQuery}
+              placeholder="Search notes, problems, code — or type a command…"
               className="h-12 w-full border-b border-line bg-transparent px-4 text-sm text-text outline-none placeholder:text-text-faint"
             />
             <Command.List className="max-h-80 overflow-y-auto p-1.5">
               <Command.Empty className="py-8 text-center text-[13px] text-text-faint">
-                Nothing matches — full-text search over notes and code arrives
-                soon.
+                Nothing in the vault matches "{query}" yet.
               </Command.Empty>
 
-              <Command.Group
-                heading="Navigate"
-                className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
-              >
-                {navigation.map((a) => (
-                  <PaletteItem key={a.id} action={a} onRun={runAndClose} />
-                ))}
-              </Command.Group>
+              {results && results.length > 0 && (
+                <Command.Group
+                  heading="In your vault"
+                  className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
+                >
+                  {results.map((r) => (
+                    <Command.Item
+                      key={`${r.type}-${r.id}`}
+                      value={`result-${r.type}-${r.id}`}
+                      onSelect={() =>
+                        runAndClose(() =>
+                          navigate(
+                            r.type === "note"
+                              ? `/notes/${r.id}`
+                              : `/problems/${r.id}`,
+                          ),
+                        )
+                      }
+                      className="flex cursor-default items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] text-text-dim data-[selected=true]:bg-accent-soft data-[selected=true]:text-text"
+                    >
+                      <span className="shrink-0 text-text-faint">
+                        {r.type === "note" ? (
+                          <FileText size={15} />
+                        ) : (
+                          <ListChecks size={15} />
+                        )}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate font-medium">
+                          {r.title}
+                        </span>
+                        {r.snippet && (
+                          <span className="block truncate text-[11px] text-text-faint">
+                            {r.snippet}
+                          </span>
+                        )}
+                      </span>
+                    </Command.Item>
+                  ))}
+                </Command.Group>
+              )}
 
-              <Command.Group
-                heading="Create"
-                className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
-              >
-                {create.map((a) => (
-                  <PaletteItem key={a.id} action={a} onRun={runAndClose} />
-                ))}
-              </Command.Group>
+              {navigation.some((a) => matches(a.label)) && (
+                <Command.Group
+                  heading="Navigate"
+                  className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
+                >
+                  {navigation
+                    .filter((a) => matches(a.label))
+                    .map((a) => (
+                      <PaletteItem key={a.id} action={a} onRun={runAndClose} />
+                    ))}
+                </Command.Group>
+              )}
 
-              <Command.Group
-                heading="Preferences"
-                className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
-              >
-                <PaletteItem
-                  action={{
-                    id: "theme",
-                    label: "Switch theme",
-                    icon: <MoonStar size={15} />,
-                    run: toggleTheme,
-                  }}
-                  onRun={runAndClose}
-                />
-              </Command.Group>
+              {create.some((a) => matches(a.label)) && (
+                <Command.Group
+                  heading="Create"
+                  className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
+                >
+                  {create
+                    .filter((a) => matches(a.label))
+                    .map((a) => (
+                      <PaletteItem key={a.id} action={a} onRun={runAndClose} />
+                    ))}
+                </Command.Group>
+              )}
+
+              {matches("Switch theme") && (
+                <Command.Group
+                  heading="Preferences"
+                  className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
+                >
+                  <PaletteItem
+                    action={{
+                      id: "theme",
+                      label: "Switch theme",
+                      icon: <MoonStar size={15} />,
+                      run: toggleTheme,
+                    }}
+                    onRun={runAndClose}
+                  />
+                </Command.Group>
+              )}
             </Command.List>
 
             <div className="flex items-center gap-3 border-t border-line px-3 py-2 text-[11px] text-text-faint">

@@ -1,0 +1,102 @@
+import { useQuery } from "@tanstack/react-query";
+import { getDb } from "./client";
+
+export type LinkableType = "note" | "problem" | "topic";
+
+export interface LinkTarget {
+  type: LinkableType;
+  id: number;
+  title: string;
+  subtitle: string | null;
+}
+
+/** Searches notes, problems and topics by title for the @-mention menu. */
+export async function searchLinkTargets(query: string): Promise<LinkTarget[]> {
+  const db = await getDb();
+  const like = `%${query}%`;
+  const [notes, problems, topics] = await Promise.all([
+    db.select<{ id: number; title: string }[]>(
+      `SELECT id, title FROM notes WHERE title LIKE $1 ORDER BY updated_at DESC LIMIT 6`,
+      [like],
+    ),
+    db.select<{ id: number; title: string; platform: string | null }[]>(
+      `SELECT id, title, platform FROM problems WHERE title LIKE $1 ORDER BY updated_at DESC LIMIT 6`,
+      [like],
+    ),
+    db.select<{ id: number; name: string; icon: string | null }[]>(
+      `SELECT id, name, icon FROM topics WHERE name LIKE $1 LIMIT 4`,
+      [like],
+    ),
+  ]);
+  return [
+    ...notes.map((n) => ({
+      type: "note" as const,
+      id: n.id,
+      title: n.title || "Untitled",
+      subtitle: "Note",
+    })),
+    ...problems.map((p) => ({
+      type: "problem" as const,
+      id: p.id,
+      title: p.title,
+      subtitle: p.platform ?? "Problem",
+    })),
+    ...topics.map((t) => ({
+      type: "topic" as const,
+      id: t.id,
+      title: `${t.icon ?? ""} ${t.name}`.trim(),
+      subtitle: "Topic",
+    })),
+  ];
+}
+
+export interface OutgoingLink {
+  target_type: LinkableType;
+  target_id: number;
+}
+
+/** Replaces all outgoing links for a source with the given set. */
+export async function syncLinks(
+  sourceType: LinkableType,
+  sourceId: number,
+  targets: OutgoingLink[],
+) {
+  const db = await getDb();
+  await db.execute(
+    `DELETE FROM links WHERE source_type = $1 AND source_id = $2`,
+    [sourceType, sourceId],
+  );
+  for (const t of targets) {
+    await db.execute(
+      `INSERT OR IGNORE INTO links (source_type, source_id, target_type, target_id) VALUES ($1, $2, $3, $4)`,
+      [sourceType, sourceId, t.target_type, t.target_id],
+    );
+  }
+}
+
+export interface Backlink {
+  source_type: LinkableType;
+  source_id: number;
+  title: string;
+}
+
+export function useBacklinks(targetType: LinkableType, targetId: number) {
+  return useQuery({
+    queryKey: ["backlinks", targetType, targetId],
+    queryFn: async () => {
+      const db = await getDb();
+      return db.select<Backlink[]>(
+        `SELECT l.source_type, l.source_id,
+                CASE l.source_type
+                  WHEN 'note' THEN COALESCE(NULLIF((SELECT title FROM notes WHERE id = l.source_id), ''), 'Untitled')
+                  WHEN 'problem' THEN (SELECT title FROM problems WHERE id = l.source_id)
+                  WHEN 'topic' THEN (SELECT name FROM topics WHERE id = l.source_id)
+                END AS title
+         FROM links l
+         WHERE l.target_type = $1 AND l.target_id = $2
+         ORDER BY l.id DESC`,
+        [targetType, targetId],
+      );
+    },
+  });
+}

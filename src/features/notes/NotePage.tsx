@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { NoteEditor } from "@/editor/NoteEditor";
+import { BacklinksPanel } from "@/components/BacklinksPanel";
 import { saveNoteContent, useNote } from "@/db/notes";
 import type { BlockNode } from "@/lib/extract-text";
 
@@ -52,6 +53,7 @@ function NoteView({
       );
       setSaveState("saved");
       qc.invalidateQueries({ queryKey: ["notes", "topic"] });
+      qc.invalidateQueries({ queryKey: ["backlinks"] });
     } catch (err) {
       console.error("Autosave failed:", err);
       setSaveState("idle");
@@ -89,7 +91,7 @@ function NoteView({
         </span>
       </div>
 
-      <div className="-mx-[54px] pb-24 pt-4">
+      <div className="-mx-[54px] pt-4">
         <NoteEditor
           initialContent={initialContent}
           onChange={(blocks) => {
@@ -97,6 +99,10 @@ function NoteView({
             scheduleSave();
           }}
         />
+      </div>
+
+      <div className="pb-24">
+        <BacklinksPanel targetType="note" targetId={noteId} />
       </div>
     </div>
   );

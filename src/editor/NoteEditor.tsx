@@ -9,6 +9,7 @@ import {
 import "@blocknote/mantine/style.css";
 import { schema } from "./schema";
 import { getDsaTemplateItems, getMermaidItem } from "./dsaTemplates";
+import { getVaultLinkItems } from "./VaultLink";
 import { useUiStore } from "@/app/store";
 
 interface NoteEditorProps {
@@ -53,6 +54,10 @@ export function NoteEditor({ initialContent, onChange }: NoteEditorProps) {
             query,
           )
         }
+      />
+      <SuggestionMenuController
+        triggerCharacter="@"
+        getItems={(query) => getVaultLinkItems(editor, query)}
       />
     </BlockNoteView>
   );

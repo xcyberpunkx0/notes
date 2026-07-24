@@ -6,6 +6,7 @@ import {
   useUpdateProblemField,
 } from "@/db/problems";
 import { cn } from "@/lib/utils";
+import { BacklinksPanel } from "@/components/BacklinksPanel";
 import { ConfidenceDots, DifficultyChip } from "./bits";
 import { DebriefFlow } from "./DebriefFlow";
 import { CodePanel } from "./CodePanel";
@@ -102,6 +103,8 @@ export function ProblemDetailPage() {
         <DebriefFlow problem={problem} />
         <CodePanel problemId={problemId} />
       </div>
+
+      <BacklinksPanel targetType="problem" targetId={problemId} />
     </div>
   );
 }
