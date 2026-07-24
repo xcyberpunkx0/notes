@@ -6,9 +6,11 @@ export type Theme = "dark" | "light";
 interface UiState {
   sidebarCollapsed: boolean;
   paletteOpen: boolean;
+  quickLogOpen: boolean;
   theme: Theme;
   toggleSidebar: () => void;
   setPaletteOpen: (open: boolean) => void;
+  setQuickLogOpen: (open: boolean) => void;
   toggleTheme: () => void;
 }
 
@@ -17,10 +19,12 @@ export const useUiStore = create<UiState>()(
     (set) => ({
       sidebarCollapsed: false,
       paletteOpen: false,
+      quickLogOpen: false,
       theme: "dark",
       toggleSidebar: () =>
         set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
       setPaletteOpen: (open) => set({ paletteOpen: open }),
+      setQuickLogOpen: (open) => set({ quickLogOpen: open }),
       toggleTheme: () =>
         set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
     }),

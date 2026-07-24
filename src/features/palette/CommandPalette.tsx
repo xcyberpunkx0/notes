@@ -25,6 +25,7 @@ interface Action {
 export function CommandPalette() {
   const open = useUiStore((s) => s.paletteOpen);
   const setOpen = useUiStore((s) => s.setPaletteOpen);
+  const setQuickLogOpen = useUiStore((s) => s.setQuickLogOpen);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -51,7 +52,7 @@ export function CommandPalette() {
 
   const create: Action[] = [
     { id: "new-note", label: "New note", icon: <PenLine size={15} />, run: () => navigate("/topics") },
-    { id: "log-problem", label: "Log a problem", icon: <Plus size={15} />, run: () => navigate("/problems") },
+    { id: "log-problem", label: "Log a problem", icon: <Plus size={15} />, run: () => setQuickLogOpen(true) },
   ];
 
   return (

@@ -1,16 +1,21 @@
 import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
+import { listen } from "@tauri-apps/api/event";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { CommandPalette } from "@/features/palette/CommandPalette";
+import { QuickLogDialog } from "@/features/problems/QuickLogDialog";
 import { useUiStore } from "./store";
 import { getDb } from "@/db/client";
 
 export function AppShell() {
   const theme = useUiStore((s) => s.theme);
   const setPaletteOpen = useUiStore((s) => s.setPaletteOpen);
+  const setQuickLogOpen = useUiStore((s) => s.setQuickLogOpen);
+  const quickLogOpen = useUiStore((s) => s.quickLogOpen);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -21,16 +26,31 @@ export function AppShell() {
     getDb().catch((err) => console.error("Database failed to open:", err));
   }, []);
 
+  // OS-level quick capture (tray / global shortcut) lands here
+  useEffect(() => {
+    const unlisten = listen("quick-capture", () => setQuickLogOpen(true));
+    return () => {
+      unlisten.then((f) => f());
+    };
+  }, [setQuickLogOpen]);
+
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      const mod = e.ctrlKey || e.metaKey;
+      if (mod && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setPaletteOpen(!useUiStore.getState().paletteOpen);
+      } else if (mod && e.shiftKey && e.key.toLowerCase() === "p") {
+        e.preventDefault();
+        setQuickLogOpen(true);
+      } else if (mod && e.shiftKey && e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        navigate("/review");
       }
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [setPaletteOpen]);
+  }, [setPaletteOpen, setQuickLogOpen, navigate]);
 
   return (
     <div className="flex h-full">
@@ -53,6 +73,7 @@ export function AppShell() {
         </main>
       </div>
       <CommandPalette />
+      <QuickLogDialog open={quickLogOpen} onOpenChange={setQuickLogOpen} />
     </div>
   );
 }

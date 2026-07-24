@@ -6,12 +6,12 @@ import { useProblems, useUpdateProblemField } from "@/db/problems";
 import { useTopics } from "@/db/topics";
 import { formatRelative } from "@/lib/time";
 import { cn } from "@/lib/utils";
+import { useUiStore } from "@/app/store";
 import { ConfidenceDots, DIFFICULTIES, DifficultyChip } from "./bits";
-import { QuickLogDialog } from "./QuickLogDialog";
 
 export function ProblemsPage() {
   const navigate = useNavigate();
-  const [logOpen, setLogOpen] = useState(false);
+  const setLogOpen = useUiStore((s) => s.setQuickLogOpen);
   const [topicId, setTopicId] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<string | null>(null);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
@@ -155,7 +155,6 @@ export function ProblemsPage() {
         )}
       </div>
 
-      <QuickLogDialog open={logOpen} onOpenChange={setLogOpen} />
     </div>
   );
 }

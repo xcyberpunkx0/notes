@@ -11,6 +11,7 @@ import {
   SunMedium,
 } from "lucide-react";
 import { useUiStore } from "./store";
+import { useDueCount } from "@/db/reviews";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
@@ -25,6 +26,7 @@ export function Sidebar() {
   const toggleSidebar = useUiStore((s) => s.toggleSidebar);
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
+  const { data: dueCount } = useDueCount();
 
   return (
     <motion.aside
@@ -85,6 +87,14 @@ export function Sidebar() {
                     className={cn("shrink-0", isActive && "text-accent")}
                   />
                   {!collapsed && label}
+                  {!collapsed &&
+                    to === "/review" &&
+                    dueCount != null &&
+                    dueCount > 0 && (
+                      <span className="ml-auto rounded-md bg-accent-soft px-1.5 py-0.5 font-mono text-[10px] font-semibold text-accent">
+                        {dueCount}
+                      </span>
+                    )}
                 </span>
               </>
             )}
