@@ -1,12 +1,15 @@
 import { NavLink, useLocation } from "react-router";
 import {
+  Barbell,
   Brain,
   House,
   Books,
+  Graph,
   Target,
   MoonStars,
   SidebarSimple,
   Sun,
+  TextAa,
 } from "@phosphor-icons/react";
 import { useUiStore } from "./store";
 import { useDueCount } from "@/db/reviews";
@@ -42,6 +45,8 @@ const NAV_ITEMS = [
   { to: "/review", label: "Review", icon: Brain, end: false },
   { to: "/topics", label: "Topics", icon: Books, end: false },
   { to: "/problems", label: "Problems", icon: Target, end: false },
+  { to: "/resolve", label: "Re-solve", icon: Barbell, end: false },
+  { to: "/graph", label: "Graph", icon: Graph, end: false },
 ];
 
 export function Sidebar() {
@@ -49,6 +54,7 @@ export function Sidebar() {
   const toggleSidebar = useUiStore((s) => s.toggleSidebar);
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
+  const setFontDialogOpen = useUiStore((s) => s.setFontDialogOpen);
   const { data: dueCount } = useDueCount();
   const { pathname } = useLocation();
 
@@ -61,7 +67,11 @@ export function Sidebar() {
           ? 2
           : pathname.startsWith("/problems")
             ? 3
-            : -1;
+            : pathname.startsWith("/resolve")
+              ? 4
+              : pathname.startsWith("/graph")
+                ? 5
+                : -1;
 
   return (
     <aside
@@ -164,6 +174,13 @@ export function Sidebar() {
           className="flex size-8 items-center justify-center rounded-xl text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
         >
           {theme === "dark" ? <Sun size={16} /> : <MoonStars size={16} />}
+        </button>
+        <button
+          onClick={() => setFontDialogOpen(true)}
+          title="Change font"
+          className="flex size-8 items-center justify-center rounded-xl text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+        >
+          <TextAa size={16} />
         </button>
         {!collapsed && (
           <span className="ml-auto flex items-center gap-1">

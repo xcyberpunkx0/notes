@@ -109,7 +109,7 @@ Drop images into docs/screenshots/ with these names, then delete the
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org) 20+
+- [Node.js](https://nodejs.org) 24+ (LTS)
 - [Rust](https://rustup.rs) (stable)
 - Windows: Visual Studio C++ Build Tools ([Tauri prerequisites](https://tauri.app/start/prerequisites/))
 

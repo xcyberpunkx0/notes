@@ -3,14 +3,18 @@ import { useNavigate } from "react-router";
 import { Command } from "cmdk";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
+  Barbell,
   Brain,
+  FileArrowDown,
   Note,
   House,
   Books,
+  Graph,
   Target,
   MoonStars,
   PencilSimpleLine,
   Plus,
+  TextAa,
 } from "@phosphor-icons/react";
 import { useUiStore } from "@/app/store";
 import { useVaultSearch } from "@/db/search";
@@ -26,6 +30,8 @@ export function CommandPalette() {
   const open = useUiStore((s) => s.paletteOpen);
   const setOpen = useUiStore((s) => s.setPaletteOpen);
   const setQuickLogOpen = useUiStore((s) => s.setQuickLogOpen);
+  const setMdImportOpen = useUiStore((s) => s.setMdImportOpen);
+  const setFontDialogOpen = useUiStore((s) => s.setFontDialogOpen);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -48,11 +54,14 @@ export function CommandPalette() {
     { id: "review", label: "Go to Review", icon: <Brain size={16} />, run: () => navigate("/review") },
     { id: "topics", label: "Go to Topics", icon: <Books size={16} />, run: () => navigate("/topics") },
     { id: "problems", label: "Go to Problems", icon: <Target size={16} />, run: () => navigate("/problems") },
+    { id: "resolve", label: "Re-solve a random problem", icon: <Barbell size={16} />, run: () => navigate("/resolve") },
+    { id: "graph", label: "Open the knowledge graph", icon: <Graph size={16} />, run: () => navigate("/graph") },
   ];
 
   const create: Action[] = [
     { id: "new-note", label: "New note", icon: <PencilSimpleLine size={16} />, run: () => navigate("/topics") },
     { id: "log-problem", label: "Log a problem", icon: <Plus size={16} />, run: () => setQuickLogOpen(true) },
+    { id: "import-md", label: "New note from markdown", icon: <FileArrowDown size={16} />, run: () => setMdImportOpen(true) },
   ];
 
   return (
@@ -145,20 +154,33 @@ export function CommandPalette() {
                 </Command.Group>
               )}
 
-              {matches("Switch theme") && (
+              {(matches("Switch theme") || matches("Change font")) && (
                 <Command.Group
                   heading="Preferences"
                   className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
                 >
-                  <PaletteItem
-                    action={{
-                      id: "theme",
-                      label: "Switch theme",
-                      icon: <MoonStars size={16} />,
-                      run: toggleTheme,
-                    }}
-                    onRun={runAndClose}
-                  />
+                  {matches("Switch theme") && (
+                    <PaletteItem
+                      action={{
+                        id: "theme",
+                        label: "Switch theme",
+                        icon: <MoonStars size={16} />,
+                        run: toggleTheme,
+                      }}
+                      onRun={runAndClose}
+                    />
+                  )}
+                  {matches("Change font") && (
+                    <PaletteItem
+                      action={{
+                        id: "font",
+                        label: "Change font",
+                        icon: <TextAa size={16} />,
+                        run: () => setFontDialogOpen(true),
+                      }}
+                      onRun={runAndClose}
+                    />
+                  )}
                 </Command.Group>
               )}
             </Command.List>

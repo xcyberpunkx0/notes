@@ -80,6 +80,91 @@ export interface Backlink {
   title: string;
 }
 
+export interface GraphNode {
+  key: string; // "topic-3", "note-7", "problem-2"
+  type: LinkableType;
+  id: number;
+  label: string;
+  color: string | null;
+}
+
+export interface GraphEdge {
+  source: string;
+  target: string;
+}
+
+/** Nodes and edges for the knowledge-graph view. */
+export function useGraphData() {
+  return useQuery({
+    queryKey: ["graph"],
+    queryFn: async () => {
+      const db = await getDb();
+      const [topics, notes, problems, links, problemTopics] =
+        await Promise.all([
+          db.select<{ id: number; name: string; icon: string | null; color: string | null }[]>(
+            `SELECT id, name, icon, color FROM topics`,
+          ),
+          db.select<{ id: number; title: string; topic_id: number | null }[]>(
+            `SELECT id, title, topic_id FROM notes`,
+          ),
+          db.select<{ id: number; title: string }[]>(
+            `SELECT id, title FROM problems`,
+          ),
+          db.select<{ source_type: string; source_id: number; target_type: string; target_id: number }[]>(
+            `SELECT source_type, source_id, target_type, target_id FROM links`,
+          ),
+          db.select<{ problem_id: number; topic_id: number }[]>(
+            `SELECT problem_id, topic_id FROM problem_topics`,
+          ),
+        ]);
+
+      const nodes: GraphNode[] = [
+        ...topics.map((t) => ({
+          key: `topic-${t.id}`,
+          type: "topic" as const,
+          id: t.id,
+          label: `${t.icon ?? ""} ${t.name}`.trim(),
+          color: t.color,
+        })),
+        ...notes.map((n) => ({
+          key: `note-${n.id}`,
+          type: "note" as const,
+          id: n.id,
+          label: n.title || "Untitled",
+          color: null,
+        })),
+        ...problems.map((p) => ({
+          key: `problem-${p.id}`,
+          type: "problem" as const,
+          id: p.id,
+          label: p.title,
+          color: null,
+        })),
+      ];
+      const keys = new Set(nodes.map((n) => n.key));
+
+      const edges: GraphEdge[] = [
+        ...notes
+          .filter((n) => n.topic_id)
+          .map((n) => ({
+            source: `note-${n.id}`,
+            target: `topic-${n.topic_id}`,
+          })),
+        ...problemTopics.map((pt) => ({
+          source: `problem-${pt.problem_id}`,
+          target: `topic-${pt.topic_id}`,
+        })),
+        ...links.map((l) => ({
+          source: `${l.source_type}-${l.source_id}`,
+          target: `${l.target_type}-${l.target_id}`,
+        })),
+      ].filter((e) => keys.has(e.source) && keys.has(e.target));
+
+      return { nodes, edges };
+    },
+  });
+}
+
 export function useBacklinks(targetType: LinkableType, targetId: number) {
   return useQuery({
     queryKey: ["backlinks", targetType, targetId],
