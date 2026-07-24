@@ -10,6 +10,7 @@ import {
   Plus,
 } from "@phosphor-icons/react";
 import { getDb } from "@/db/client";
+import { Backdrop } from "@/components/Backdrop";
 import { useDueCount, useStreak } from "@/db/reviews";
 import { useUnlockedAchievements } from "@/db/achievements";
 import { formatRelative } from "@/lib/time";
@@ -63,8 +64,9 @@ export function HomePage() {
   const due = dueCount ?? 0;
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-4xl px-10 pb-20 pt-16">
+    <div className="relative h-full overflow-y-auto">
+      <Backdrop />
+      <div className="relative mx-auto max-w-4xl px-10 pb-20 pt-16">
         {/* Hero */}
         <div className="flex items-end justify-between">
           <div>

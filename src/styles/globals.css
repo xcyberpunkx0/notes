@@ -54,8 +54,8 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-danger: var(--danger);
-  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Gabarito Variable", "DM Sans Variable", ui-sans-serif, sans-serif;
+  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Instrument Sans Variable", ui-sans-serif, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", monospace;
 }
 
