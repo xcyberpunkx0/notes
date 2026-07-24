@@ -132,3 +132,23 @@
     background-size: 24px 24px;
   }
 }
+
+/* BlockNote editor — blend into the vault's theme */
+.bn-container {
+  --bn-colors-editor-background: transparent;
+  font-family: var(--font-sans);
+}
+.bn-editor {
+  background: transparent !important;
+  padding-inline: 54px;
+}
+.bn-container .bn-editor,
+.bn-container .bn-editor * {
+  font-family: inherit;
+}
+.bn-container pre,
+.bn-container code {
+  font-family: var(--font-mono) !important;
+  font-size: 13px;
+}
+
