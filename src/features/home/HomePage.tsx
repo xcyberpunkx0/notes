@@ -63,7 +63,7 @@ export function HomePage() {
   const due = dueCount ?? 0;
 
   return (
-    <div className="dotgrid h-full overflow-y-auto">
+    <div className="aurora h-full overflow-y-auto">
       <div className="mx-auto max-w-4xl px-10 pb-20 pt-16">
         {/* Hero */}
         <div className="flex items-end justify-between">
