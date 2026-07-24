@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, CaretRight, Sparkle } from "@phosphor-icons/react";
+import { Check, CaretRight, PencilSimple, Sparkle } from "@phosphor-icons/react";
+import { Markdown } from "@/components/Markdown";
 import {
   DEBRIEF_FIELDS,
   useUpdateProblemField,
@@ -115,19 +116,27 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
                   }}
                 />
               ) : (
-                <button
+                <div
                   key={f}
-                  onClick={() => setEditing(f)}
-                  className="group rounded-xl border border-line bg-surface-2/50 px-3.5 py-2.5 text-left transition-colors hover:border-line-strong"
+                  className="group rounded-xl border border-line bg-surface-2/50 px-3.5 py-2.5 transition-colors hover:border-line-strong"
                 >
-                  <span className="eyebrow flex items-center gap-1.5">
-                    <Check size={10} className="text-success" />
-                    {PROMPTS[f].question}
-                  </span>
-                  <span className="mt-1 block whitespace-pre-wrap text-[13px] leading-relaxed text-text">
-                    {problem[f]}
-                  </span>
-                </button>
+                  <div className="flex items-center justify-between">
+                    <span className="eyebrow flex items-center gap-1.5">
+                      <Check size={10} className="text-success" />
+                      {PROMPTS[f].question}
+                    </span>
+                    <button
+                      onClick={() => setEditing(f)}
+                      title="Edit answer"
+                      className="flex size-6 items-center justify-center rounded-md text-text-faint opacity-0 transition-opacity hover:bg-surface-3 hover:text-text group-hover:opacity-100"
+                    >
+                      <PencilSimple size={12} />
+                    </button>
+                  </div>
+                  <div className="mt-1.5 max-h-[420px] overflow-y-auto pr-1">
+                    <Markdown>{problem[f] ?? ""}</Markdown>
+                  </div>
+                </div>
               ),
             )}
           </div>
@@ -155,7 +164,7 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
                 }}
                 rows={3}
                 autoFocus
-                placeholder="Write it while it's fresh…"
+                placeholder="Write it while it's fresh — markdown works, paste freely…"
                 className="mt-3 w-full resize-y rounded-xl border border-line bg-surface-2 p-3.5 text-[13px] leading-relaxed outline-none transition-colors focus:border-accent"
               />
               <div className="mt-2 flex items-center gap-2">

@@ -18,6 +18,7 @@ import {
   type DueReview,
 } from "@/db/reviews";
 import { checkAchievements, type AchievementDef } from "@/db/achievements";
+import { Markdown } from "@/components/Markdown";
 import type { Rating } from "@/lib/scheduler";
 import { cn } from "@/lib/utils";
 
@@ -146,12 +147,12 @@ export function ReviewPage() {
                       className="overflow-hidden"
                     >
                       {current.item_type === "problem" && current.hint ? (
-                        <p className="mx-auto mt-4 max-w-md rounded-xl bg-surface-2 p-3.5 text-[13px] leading-relaxed text-text-dim">
-                          <span className="eyebrow mb-1 block">
+                        <div className="mx-auto mt-4 max-h-72 max-w-md overflow-y-auto rounded-xl bg-surface-2 p-3.5 text-left">
+                          <span className="eyebrow mb-1.5 block">
                             your six-month note
                           </span>
-                          {current.hint}
-                        </p>
+                          <Markdown>{current.hint}</Markdown>
+                        </div>
                       ) : null}
                       <button
                         onClick={() =>
