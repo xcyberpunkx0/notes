@@ -62,7 +62,37 @@ It's a native Windows desktop app: instant startup, fully offline, and your data
 - **Dark and light themes** — dark-first, both hand-tuned
 - **Local-first** — no account, no cloud, no telemetry; one SQLite file in `%APPDATA%`
 
-<!-- Screenshots: add docs/screenshots/*.png and embed here -->
+## Screenshots
+
+> Coming soon.
+
+<!--
+Drop images into docs/screenshots/ with these names, then delete the
+"Coming soon" line above and uncomment the block below.
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/home.png" alt="Home — review queue, streak, heatmap and weak spots" />
+      <p align="center"><sub>Home — today's review, streak, heatmap, weak spots</sub></p>
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/editor.png" alt="Note editor with DSA templates and code blocks" />
+      <p align="center"><sub>Editor — slash templates, code blocks, mermaid</sub></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/screenshots/problem.png" alt="Problem debrief with markdown answers" />
+      <p align="center"><sub>Problem debrief — reflection prompts, code variants</sub></p>
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/review.png" alt="Review session with recall rating" />
+      <p align="center"><sub>Review — spaced repetition with recall ratings</sub></p>
+    </td>
+  </tr>
+</table>
+-->
 
 ## Keyboard shortcuts
 
