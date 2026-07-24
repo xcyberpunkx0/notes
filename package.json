@@ -1,13 +1,21 @@
 {
-  "name": "dsa-vault",
+  "name": "notes",
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "description": "A personal knowledge vault for Data Structures & Algorithms — block editor, problem debriefs, and spaced-repetition review in a native desktop app.",
+  "license": "MIT",
+  "author": "Aditya",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xcyberpunkx0/notes.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "tauri": "tauri"
   },
   "dependencies": {
