@@ -7,6 +7,16 @@ import { IconContext } from "@phosphor-icons/react";
 import "@fontsource-variable/bricolage-grotesque";
 import "@fontsource-variable/instrument-sans";
 import "@fontsource-variable/jetbrains-mono";
+import "@fontsource/pt-serif";
+import "@fontsource/pt-serif/700.css";
+import "@fontsource/tangerine";
+import "@fontsource/tangerine/700.css";
+import "@fontsource-variable/open-sans";
+import "@fontsource-variable/roboto";
+import "@fontsource-variable/caveat";
+import "@fontsource/gaegu";
+import "@fontsource/gaegu/700.css";
+import "@fontsource/patrick-hand";
 import "./styles/globals.css";
 import { router } from "./app/router";
 

@@ -7,6 +7,8 @@ import { TopicDetailPage } from "@/features/topics/TopicDetailPage";
 import { NotePage } from "@/features/notes/NotePage";
 import { ProblemsPage } from "@/features/problems/ProblemsPage";
 import { ProblemDetailPage } from "@/features/problems/ProblemDetailPage";
+import { ResolvePage } from "@/features/problems/ResolvePage";
+import { GraphPage } from "@/features/graph/GraphPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +22,8 @@ export const router = createBrowserRouter([
       { path: "notes/:noteId", element: <NotePage /> },
       { path: "problems", element: <ProblemsPage /> },
       { path: "problems/:problemId", element: <ProblemDetailPage /> },
+      { path: "resolve", element: <ResolvePage /> },
+      { path: "graph", element: <GraphPage /> },
     ],
   },
 ]);

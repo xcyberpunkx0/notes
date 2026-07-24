@@ -18,6 +18,8 @@ import {
   type DueReview,
 } from "@/db/reviews";
 import { useTopic } from "@/db/topics";
+import { DEBRIEF_FIELDS, useProblem } from "@/db/problems";
+import { PROMPTS } from "@/features/problems/DebriefFlow";
 import { checkAchievements, type AchievementDef } from "@/db/achievements";
 import { Markdown } from "@/components/Markdown";
 import type { Rating } from "@/lib/scheduler";
@@ -53,6 +55,18 @@ export function ReviewPage() {
   }, [focusTopicId]);
 
   const current: DueReview | undefined = due?.[0];
+  // Full problem row for flashcard mode (0 = disabled query result)
+  const { data: currentProblem } = useProblem(
+    current?.item_type === "problem" ? current.item_id : 0,
+  );
+  const flashcard = (() => {
+    if (!current || current.item_type !== "problem" || !currentProblem)
+      return null;
+    const filled = DEBRIEF_FIELDS.filter((f) => currentProblem[f]);
+    if (filled.length === 0) return null;
+    const field = filled[(current.id + current.reps) % filled.length];
+    return { question: PROMPTS[field].question, answer: currentProblem[field]! };
+  })();
   const total = sessionTotal ?? due?.length ?? 0;
   if (sessionTotal === null && due && due.length > 0) {
     setSessionTotal(due.length);
@@ -156,14 +170,27 @@ export function ReviewPage() {
               </div>
 
               <div className="px-8 py-10 text-center">
-                <p className="text-[13.5px] text-text-dim">
-                  {current.item_type === "problem"
-                    ? "Can you recall the approach to…"
-                    : "Can you recall the key ideas of…"}
-                </p>
-                <p className="mt-2 font-(family-name:--font-display) text-[22px] font-bold tracking-tight">
-                  {current.title}
-                </p>
+                {flashcard ? (
+                  <>
+                    <p className="text-[13.5px] text-text-dim">
+                      From <span className="font-medium text-text">{current.title}</span>:
+                    </p>
+                    <p className="mt-2 font-(family-name:--font-display) text-[20px] font-bold tracking-tight">
+                      {flashcard.question}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[13.5px] text-text-dim">
+                      {current.item_type === "problem"
+                        ? "Can you recall the approach to…"
+                        : "Can you recall the key ideas of…"}
+                    </p>
+                    <p className="mt-2 font-(family-name:--font-display) text-[22px] font-bold tracking-tight">
+                      {current.title}
+                    </p>
+                  </>
+                )}
 
                 <AnimatePresence>
                   {revealed && (
@@ -173,7 +200,14 @@ export function ReviewPage() {
                       exit={{ opacity: 0, height: 0 }}
                       className="overflow-hidden"
                     >
-                      {current.item_type === "problem" && current.hint ? (
+                      {flashcard ? (
+                        <div className="mx-auto mt-4 max-h-72 max-w-md overflow-y-auto rounded-xl bg-surface-2 p-3.5 text-left">
+                          <span className="eyebrow mb-1.5 block">
+                            your answer
+                          </span>
+                          <Markdown>{flashcard.answer}</Markdown>
+                        </div>
+                      ) : current.item_type === "problem" && current.hint ? (
                         <div className="mx-auto mt-4 max-h-72 max-w-md overflow-y-auto rounded-xl bg-surface-2 p-3.5 text-left">
                           <span className="eyebrow mb-1.5 block">
                             your six-month note

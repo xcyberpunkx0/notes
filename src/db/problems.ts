@@ -269,6 +269,31 @@ export async function saveProblemCode(
   await syncProblemFts(problemId);
 }
 
+/** A random problem for re-solve practice — favors older solves and lapses. */
+export function useRandomProblem(seed: number) {
+  return useQuery({
+    queryKey: ["problems", "random", seed],
+    staleTime: Infinity,
+    queryFn: async () => {
+      const db = await getDb();
+      const rows = await db.select<ProblemRow[]>(
+        `SELECT p.*,
+          (SELECT GROUP_CONCAT(t.icon || ' ' || t.name)
+             FROM problem_topics pt JOIN topics t ON t.id = pt.topic_id
+            WHERE pt.problem_id = p.id) AS topic_names,
+          (SELECT GROUP_CONCAT(pt.topic_id)
+             FROM problem_topics pt WHERE pt.problem_id = p.id) AS topic_ids
+         FROM problems p
+         ORDER BY (julianday('now') - julianday(COALESCE(p.date_solved, p.created_at)))
+                  * (1 + COALESCE((SELECT r.lapses FROM reviews r WHERE r.item_type = 'problem' AND r.item_id = p.id), 0))
+                  * (0.5 + (ABS(RANDOM()) % 1000) / 1000.0) DESC
+         LIMIT 1`,
+      );
+      return rows[0] ?? null;
+    },
+  });
+}
+
 export function useDeleteProblem() {
   const qc = useQueryClient();
   return useMutation({

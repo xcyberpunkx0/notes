@@ -5,8 +5,11 @@ import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { CommandPalette } from "@/features/palette/CommandPalette";
 import { QuickLogDialog } from "@/features/problems/QuickLogDialog";
+import { FontDialog } from "@/components/FontDialog";
+import { ImportMarkdownDialog } from "@/features/notes/ImportMarkdownDialog";
 import { useUiStore } from "./store";
 import { getDb } from "@/db/client";
+import { fontFamilyFor } from "@/lib/fonts";
 
 export function AppShell() {
   const theme = useUiStore((s) => s.theme);
@@ -16,9 +19,18 @@ export function AppShell() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const appFont = useUiStore((s) => s.appFont);
+
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--font-sans",
+      fontFamilyFor(appFont),
+    );
+  }, [appFont]);
 
   // Open the connection early so migrations run before any screen queries.
   useEffect(() => {
@@ -64,6 +76,8 @@ export function AppShell() {
       </div>
       <CommandPalette />
       <QuickLogDialog open={quickLogOpen} onOpenChange={setQuickLogOpen} />
+      <FontDialog />
+      <ImportMarkdownDialog />
     </div>
   );
 }

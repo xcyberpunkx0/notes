@@ -10,7 +10,7 @@ import {
 } from "@/db/problems";
 import { cn } from "@/lib/utils";
 
-const PROMPTS: Record<DebriefField, { question: string; hint: string }> = {
+export const PROMPTS: Record<DebriefField, { question: string; hint: string }> = {
   concept_taught: {
     question: "What concept did this problem teach you?",
     hint: "The core idea — e.g. “binary search on the answer space”.",
