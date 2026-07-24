@@ -27,19 +27,19 @@ export function TopicsPage() {
       <PageHeader eyebrow="Concept library" title="Topics">
         <button
           onClick={() => setDialogOpen(true)}
-          className="flex h-9 items-center gap-2 rounded-lg bg-accent px-3.5 text-[13px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
+          className="btn-primary"
         >
           <Plus size={15} />
           New topic
         </button>
       </PageHeader>
 
-      <div className="px-8 pb-10">
+      <div className="px-10 pb-12">
         {isLoading ? null : topics && topics.length > 0 ? (
           <TopicGrid topics={topics} />
         ) : (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed border-line py-16 text-center">
-            <span className="flex size-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
+          <div className="card flex flex-col items-center gap-4 border-dashed py-20 text-center">
+            <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
               <Library size={20} />
             </span>
             <div>
@@ -52,7 +52,7 @@ export function TopicsPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setDialogOpen(true)}
-                className="flex h-9 items-center gap-2 rounded-lg bg-accent px-3.5 text-[13px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
+                className="btn-primary"
               >
                 <Plus size={15} />
                 Create a topic
@@ -60,7 +60,7 @@ export function TopicsPage() {
               <button
                 onClick={addStarterTopics}
                 disabled={createTopic.isPending}
-                className="flex h-9 items-center gap-2 rounded-lg border border-line px-3.5 text-[13px] font-medium text-text-dim transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+                className="btn-ghost"
               >
                 <Sparkles size={14} />
                 Add 8 starter topics
@@ -85,26 +85,29 @@ function TopicGrid({ topics }: { topics: Topic[] }) {
   const childrenOf = (id: number) => topics.filter((t) => t.parent_id === id);
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-3">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
       {roots.map((topic) => {
         const children = childrenOf(topic.id);
         return (
           <button
             key={topic.id}
             onClick={() => navigate(`/topics/${topic.id}`)}
-            className="group flex flex-col items-start gap-3 rounded-xl border border-line bg-surface p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-2"
+            className="card card-hover group flex flex-col items-start gap-4 p-5 text-left"
+            style={{
+              background: `linear-gradient(135deg, ${topic.color ?? "#8e6bf5"}14, transparent 55%), var(--surface)`,
+            }}
           >
             <span
-              className="flex size-10 items-center justify-center rounded-lg text-lg"
-              style={{ backgroundColor: `${topic.color ?? "#7c8cf8"}1f` }}
+              className="flex size-12 items-center justify-center rounded-2xl text-xl"
+              style={{ backgroundColor: `${topic.color ?? "#8e6bf5"}24` }}
             >
               {topic.icon || "📚"}
             </span>
             <span className="min-w-0">
-              <span className="block truncate text-sm font-medium">
+              <span className="block truncate font-(family-name:--font-display) text-[15px] font-bold">
                 {topic.name}
               </span>
-              <span className="mt-0.5 block font-mono text-[11px] text-text-faint">
+              <span className="mt-1 block font-mono text-[11px] text-text-faint">
                 {topic.note_count} {topic.note_count === 1 ? "note" : "notes"}
                 {children.length > 0 && ` · ${children.length} sub`}
               </span>
@@ -151,7 +154,7 @@ function NewTopicDialog({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]" />
         <Dialog.Content
-          className="fixed left-1/2 top-1/2 z-50 w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-line-strong bg-surface p-5 shadow-2xl shadow-black/40"
+          className="fixed left-1/2 top-1/2 z-50 w-[440px] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-line-strong bg-surface p-6 shadow-2xl shadow-black/40"
           aria-describedby={undefined}
         >
           <div className="flex items-center justify-between">
@@ -172,7 +175,7 @@ function NewTopicDialog({
                 onChange={(e) => setName(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && submit()}
                 placeholder="e.g. Graphs"
-                className="h-9 w-full rounded-lg border border-line bg-surface-2 px-3 text-sm outline-none transition-colors focus:border-accent"
+                className="h-10 w-full rounded-xl border border-line bg-surface-2 px-3.5 text-sm outline-none transition-colors focus:border-accent"
               />
             </div>
 
@@ -226,7 +229,7 @@ function NewTopicDialog({
                   onChange={(e) =>
                     setParentId(e.target.value ? Number(e.target.value) : null)
                   }
-                  className="h-9 w-full rounded-lg border border-line bg-surface-2 px-2.5 text-sm outline-none"
+                  className="h-10 w-full rounded-xl border border-line bg-surface-2 px-3 text-sm outline-none"
                 >
                   <option value="">None — top level</option>
                   {topics
@@ -243,7 +246,7 @@ function NewTopicDialog({
             <button
               onClick={submit}
               disabled={!name.trim() || createTopic.isPending}
-              className="h-9 rounded-lg bg-accent text-[13px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.98] disabled:opacity-40"
+              className="btn-primary w-full"
             >
               Create topic
             </button>

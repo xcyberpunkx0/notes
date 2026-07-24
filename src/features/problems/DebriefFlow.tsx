@@ -73,8 +73,8 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
   const total = DEBRIEF_FIELDS.length;
 
   return (
-    <section className="rounded-xl border border-line bg-surface">
-      <header className="flex items-center justify-between border-b border-line px-4 py-2.5">
+    <section className="card">
+      <header className="flex items-center justify-between border-b border-line px-5 py-3">
         <span className="flex items-center gap-2 text-[13px] font-semibold">
           <Sparkles size={14} className="text-accent" />
           Debrief
@@ -95,7 +95,7 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
         </span>
       </header>
 
-      <div className="p-4">
+      <div className="p-5">
         {/* Answered nuggets */}
         {answered.length > 0 && (
           <div className="mb-4 flex flex-col gap-2">
@@ -118,7 +118,7 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
                 <button
                   key={f}
                   onClick={() => setEditing(f)}
-                  className="group rounded-lg border border-line bg-surface-2/50 px-3 py-2 text-left transition-colors hover:border-line-strong"
+                  className="group rounded-xl border border-line bg-surface-2/50 px-3.5 py-2.5 text-left transition-colors hover:border-line-strong"
                 >
                   <span className="eyebrow flex items-center gap-1.5">
                     <Check size={10} className="text-success" />
@@ -156,13 +156,13 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
                 rows={3}
                 autoFocus
                 placeholder="Write it while it's fresh…"
-                className="mt-2.5 w-full resize-y rounded-lg border border-line bg-surface-2 p-3 text-[13px] leading-relaxed outline-none transition-colors focus:border-accent"
+                className="mt-3 w-full resize-y rounded-xl border border-line bg-surface-2 p-3.5 text-[13px] leading-relaxed outline-none transition-colors focus:border-accent"
               />
               <div className="mt-2 flex items-center gap-2">
                 <button
                   onClick={saveActive}
                   disabled={!draft.trim() || updateField.isPending}
-                  className="flex h-8 items-center gap-1.5 rounded-lg bg-accent px-3 text-[12px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.98] disabled:opacity-40"
+                  className="btn-primary !h-9 !px-3.5 !text-[12px]"
                 >
                   Save
                   <ChevronRight size={13} />

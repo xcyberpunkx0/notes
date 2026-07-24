@@ -7,12 +7,12 @@
     <script>
       // Paint the saved theme before any bundle loads — no flash either way
       (function () {
-        var bg = "#0c0f14";
+        var bg = "#131019";
         try {
           var stored = JSON.parse(localStorage.getItem("dsa-vault-ui"));
           if (stored && stored.state && stored.state.theme === "light") {
             document.documentElement.dataset.theme = "light";
-            bg = "#f6f7f9";
+            bg = "#faf9fc";
           }
         } catch (e) {
           /* first run: dark default */

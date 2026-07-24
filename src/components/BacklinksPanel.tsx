@@ -31,7 +31,7 @@ export function BacklinksPanel({
           <button
             key={`${b.source_type}-${b.source_id}`}
             onClick={() => navigate(`${PATHS[b.source_type]}/${b.source_id}`)}
-            className="flex h-7 items-center gap-1.5 rounded-lg border border-line px-2.5 text-[12px] text-text-dim transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+            className="flex h-8 items-center gap-1.5 rounded-full border border-line px-3 text-[12px] text-text-dim transition-colors duration-150 hover:bg-surface-2 hover:text-text"
           >
             {b.title}
             <span className="font-mono text-[9px] uppercase text-text-faint">

@@ -59,185 +59,188 @@ export function HomePage() {
   const streak = useStreak();
   const { data: achievements } = useUnlockedAchievements();
 
-  const empty =
-    data && data.counts.notes === 0 && data.counts.problems === 0;
+  const empty = data && data.counts.notes === 0 && data.counts.problems === 0;
+  const due = dueCount ?? 0;
 
   return (
     <div className="dotgrid h-full overflow-y-auto">
-      <div className="mx-auto max-w-3xl px-8 pb-16 pt-14">
+      <div className="mx-auto max-w-4xl px-10 pb-20 pt-16">
+        {/* Hero */}
         <div className="flex items-end justify-between">
           <div>
-            <p className="eyebrow mb-2">Your vault</p>
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <p className="eyebrow mb-2.5">Your vault</p>
+            <h1 className="text-[32px] font-bold leading-tight tracking-tight">
               {greeting()}
-              {empty ? " — ready to make something stick?" : "."}
+              {empty ? (
+                <>
+                  {" — ready to make it "}
+                  <span className="text-gradient">stick</span>?
+                </>
+              ) : (
+                "."
+              )}
             </h1>
           </div>
           {streak > 0 && (
             <span
-              className="flex items-center gap-1.5 rounded-lg border border-warning/30 bg-warning/10 px-3 py-1.5 text-sm font-semibold text-warning"
+              className="flex items-center gap-2 rounded-2xl border border-warning/25 bg-warning/10 px-4 py-2.5 font-(family-name:--font-display) text-lg font-bold text-warning"
               title={`${streak} day streak`}
             >
-              <Flame size={15} />
+              <Flame size={19} />
               {streak}
             </span>
           )}
         </div>
 
-        {/* Today's review */}
+        {/* Today's review — the one thing to do right now */}
         <button
           onClick={() => navigate("/review")}
-          className="group mt-8 flex w-full items-center gap-4 rounded-xl border border-line bg-surface p-5 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-accent/40"
+          className="card card-hover group mt-10 flex w-full items-center gap-5 p-6 text-left"
+          style={
+            due > 0
+              ? {
+                  background:
+                    "linear-gradient(120deg, var(--accent-soft), transparent 60%), var(--surface)",
+                  borderColor:
+                    "color-mix(in srgb, var(--accent) 35%, var(--line))",
+                }
+              : undefined
+          }
         >
-          <span className="flex size-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
-            <Brain size={19} />
+          <span className="flex size-13 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+            <Brain size={23} />
           </span>
           <span className="flex-1">
-            <span className="block text-sm font-semibold">
-              {dueCount && dueCount > 0
-                ? `${dueCount} item${dueCount === 1 ? "" : "s"} due for review`
+            <span className="block font-(family-name:--font-display) text-[17px] font-bold">
+              {due > 0
+                ? `${due} item${due === 1 ? "" : "s"} ready for review`
                 : "Nothing due for review"}
             </span>
-            <span className="mt-0.5 block text-[13px] text-text-dim">
-              {dueCount && dueCount > 0
+            <span className="mt-1 block text-[13.5px] text-text-dim">
+              {due > 0
                 ? "A few minutes now beats an hour of re-learning later."
                 : "New notes and problems join the queue a day after you add them."}
             </span>
           </span>
-          {dueCount != null && dueCount > 0 && (
-            <ArrowRight
-              size={17}
-              className="text-text-faint transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-accent"
-            />
+          {due > 0 && (
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-white transition-transform duration-150 group-hover:translate-x-1">
+              <ArrowRight size={17} />
+            </span>
           )}
         </button>
 
-        {/* Quick actions + stats */}
-        <div className="mt-3 grid grid-cols-3 gap-3">
-          <button
-            onClick={() => navigate("/topics")}
-            className="flex flex-col items-start gap-2.5 rounded-xl border border-line bg-surface p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-2"
-          >
-            <Library size={16} className="text-accent" />
-            <span>
-              <span className="block font-mono text-lg font-semibold leading-none">
-                {data?.counts.topics ?? 0}
+        {/* Stats */}
+        <div className="mt-4 grid grid-cols-3 gap-4">
+          {[
+            { icon: Library, n: data?.counts.topics ?? 0, label: "topics", to: "/topics" },
+            { icon: FileText, n: data?.counts.notes ?? 0, label: "notes", to: "/topics" },
+            { icon: ListChecks, n: data?.counts.problems ?? 0, label: "problems solved", to: "/problems" },
+          ].map((s) => (
+            <button
+              key={s.label}
+              onClick={() => navigate(s.to)}
+              className="card card-hover flex flex-col items-start gap-3 p-5 text-left"
+            >
+              <s.icon size={17} className="text-accent" />
+              <span>
+                <span className="block font-(family-name:--font-display) text-2xl font-bold leading-none">
+                  {s.n}
+                </span>
+                <span className="mt-1.5 block text-[12.5px] text-text-dim">
+                  {s.label}
+                </span>
               </span>
-              <span className="mt-1 block text-[12px] text-text-dim">
-                topics
-              </span>
-            </span>
-          </button>
-          <button
-            onClick={() => navigate("/topics")}
-            className="flex flex-col items-start gap-2.5 rounded-xl border border-line bg-surface p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-2"
-          >
-            <FileText size={16} className="text-accent" />
-            <span>
-              <span className="block font-mono text-lg font-semibold leading-none">
-                {data?.counts.notes ?? 0}
-              </span>
-              <span className="mt-1 block text-[12px] text-text-dim">
-                notes
-              </span>
-            </span>
-          </button>
-          <button
-            onClick={() => navigate("/problems")}
-            className="flex flex-col items-start gap-2.5 rounded-xl border border-line bg-surface p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-2"
-          >
-            <ListChecks size={16} className="text-accent" />
-            <span>
-              <span className="block font-mono text-lg font-semibold leading-none">
-                {data?.counts.problems ?? 0}
-              </span>
-              <span className="mt-1 block text-[12px] text-text-dim">
-                problems solved
-              </span>
-            </span>
-          </button>
+            </button>
+          ))}
         </div>
 
-        {/* Recent notes */}
-        {data && data.recentNotes.length > 0 && (
-          <div className="mt-8">
-            <p className="eyebrow mb-2">Continue learning</p>
-            <div className="overflow-hidden rounded-xl border border-line">
-              {data.recentNotes.map((n, i) => (
-                <button
-                  key={n.id}
-                  onClick={() => navigate(`/notes/${n.id}`)}
-                  className={
-                    "flex w-full items-center gap-3 bg-surface px-4 py-2.5 text-left transition-colors duration-100 hover:bg-surface-2 " +
-                    (i > 0 ? "border-t border-line" : "")
-                  }
-                >
-                  <span className="text-sm">{n.topic_icon ?? "📄"}</span>
-                  <span className="min-w-0 flex-1 truncate text-[13px] font-medium">
-                    {n.title || "Untitled"}
-                  </span>
-                  {n.topic_name && (
-                    <span className="font-mono text-[10px] text-text-faint">
-                      {n.topic_name}
+        {/* Continue learning + achievements */}
+        {(data?.recentNotes.length ?? 0) > 0 && (
+          <div className="mt-10 grid grid-cols-[2fr_1fr] items-start gap-4">
+            <div>
+              <p className="eyebrow mb-3">Continue learning</p>
+              <div className="card overflow-hidden">
+                {data!.recentNotes.map((n, i) => (
+                  <button
+                    key={n.id}
+                    onClick={() => navigate(`/notes/${n.id}`)}
+                    className={
+                      "flex w-full items-center gap-3.5 px-5 py-3.5 text-left transition-colors duration-100 hover:bg-surface-2 " +
+                      (i > 0 ? "border-t border-line" : "")
+                    }
+                  >
+                    <span className="text-base">{n.topic_icon ?? "📄"}</span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                      {n.title || "Untitled"}
                     </span>
-                  )}
-                  <span className="w-14 shrink-0 text-right font-mono text-[10px] text-text-faint">
-                    {formatRelative(n.updated_at)}
-                  </span>
-                </button>
-              ))}
+                    {n.topic_name && (
+                      <span className="font-mono text-[10px] text-text-faint">
+                        {n.topic_name}
+                      </span>
+                    )}
+                    <span className="w-14 shrink-0 text-right font-mono text-[10px] text-text-faint">
+                      {formatRelative(n.updated_at)}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
 
-        {/* Achievements */}
-        {achievements && achievements.length > 0 && (
-          <div className="mt-8">
-            <p className="eyebrow mb-2">Achievements</p>
-            <div className="flex flex-wrap gap-2">
-              {achievements.map((a) => (
-                <span
-                  key={a.key}
-                  title={a.description}
-                  className="flex items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 py-1.5 text-[12px]"
-                >
-                  <span className="text-sm">{a.emoji}</span>
-                  {a.title}
-                </span>
-              ))}
+            <div>
+              <p className="eyebrow mb-3">Achievements</p>
+              {achievements && achievements.length > 0 ? (
+                <div className="flex flex-col gap-2.5">
+                  {achievements.map((a) => (
+                    <span
+                      key={a.key}
+                      title={a.description}
+                      className="card flex items-center gap-3 px-4 py-3 text-[13px] font-medium"
+                    >
+                      <span className="text-lg">{a.emoji}</span>
+                      {a.title}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <div className="card border-dashed px-4 py-6 text-center text-[12.5px] text-text-faint">
+                  Unlock badges by writing, logging and reviewing.
+                </div>
+              )}
             </div>
           </div>
         )}
 
         {/* First-run CTA */}
         {empty && (
-          <div className="mt-8 grid grid-cols-2 gap-3">
+          <div className="mt-10 grid grid-cols-2 gap-4">
             <button
               onClick={() => navigate("/topics")}
-              className="group flex flex-col items-start gap-3 rounded-xl border border-line bg-surface p-5 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-2"
+              className="card card-hover group flex flex-col items-start gap-4 p-6 text-left"
             >
-              <span className="flex size-9 items-center justify-center rounded-lg bg-accent-soft text-accent">
-                <Library size={17} />
+              <span className="flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+                <Library size={19} />
               </span>
               <span>
-                <span className="block text-sm font-medium">
+                <span className="block font-(family-name:--font-display) text-[15px] font-bold">
                   Create your first topic
                 </span>
-                <span className="mt-0.5 block text-[13px] text-text-dim">
+                <span className="mt-1 block text-[13.5px] text-text-dim">
                   Arrays, graphs, DP — give each concept a home.
                 </span>
               </span>
             </button>
             <button
               onClick={() => navigate("/problems")}
-              className="group flex flex-col items-start gap-3 rounded-xl border border-line bg-surface p-5 text-left transition-all duration-150 hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-2"
+              className="card card-hover group flex flex-col items-start gap-4 p-6 text-left"
             >
-              <span className="flex size-9 items-center justify-center rounded-lg bg-accent-soft text-accent">
-                <Plus size={17} />
+              <span className="flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+                <Plus size={19} />
               </span>
               <span>
-                <span className="block text-sm font-medium">Log a problem</span>
-                <span className="mt-0.5 block text-[13px] text-text-dim">
+                <span className="block font-(family-name:--font-display) text-[15px] font-bold">
+                  Log a problem
+                </span>
+                <span className="mt-1 block text-[13.5px] text-text-dim">
                   Capture what you just solved while the insight is hot.
                 </span>
               </span>

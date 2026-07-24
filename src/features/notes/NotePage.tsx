@@ -84,7 +84,7 @@ function NoteView({
             scheduleSave();
           }}
           placeholder="Untitled"
-          className="w-full bg-transparent text-[28px] font-semibold tracking-tight outline-none placeholder:text-text-faint"
+          className="w-full bg-transparent font-(family-name:--font-display) text-[28px] font-semibold tracking-tight outline-none placeholder:text-text-faint"
         />
         <span className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-text-faint">
           {saveState === "saving" ? "Saving…" : saveState === "saved" ? "Saved" : ""}

@@ -47,8 +47,8 @@ export function CodePanel({ problemId }: { problemId: number }) {
   const langDef = LANGUAGES.find((l) => l.key === language) ?? LANGUAGES[0];
 
   return (
-    <section className="overflow-hidden rounded-xl border border-line bg-surface">
-      <header className="flex items-center gap-1 border-b border-line px-3 py-2">
+    <section className="card overflow-hidden">
+      <header className="flex items-center gap-1 border-b border-line px-4 py-2.5">
         <span className="mr-2 flex items-center gap-2 text-[13px] font-semibold">
           <Code2 size={14} className="text-accent" />
           Code

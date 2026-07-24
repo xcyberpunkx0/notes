@@ -73,13 +73,13 @@ export function ReviewPage() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 300, damping: 24 }}
-              className="flex flex-col items-center gap-4 rounded-xl border border-line bg-surface py-14 text-center"
+              className="card flex flex-col items-center gap-4 py-16 text-center"
             >
-              <span className="flex size-12 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-                <PartyPopper size={22} />
+              <span className="flex size-14 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+                <PartyPopper size={24} />
               </span>
               <div>
-                <p className="text-base font-semibold">
+                <p className="font-(family-name:--font-display) text-lg font-bold">
                   Review done — {doneCount} item{doneCount === 1 ? "" : "s"}
                 </p>
                 <p className="mt-1 flex items-center justify-center gap-1.5 text-[13px] text-text-dim">
@@ -92,7 +92,7 @@ export function ReviewPage() {
                   {newBadges.map((b) => (
                     <span
                       key={b.key}
-                      className="rounded-lg border border-accent/30 bg-accent-soft px-3 py-1.5 text-[13px]"
+                      className="rounded-xl border border-accent/30 bg-accent-soft px-3.5 py-2 text-[13px]"
                     >
                       {b.emoji} <span className="font-medium">{b.title}</span>{" "}
                       <span className="text-text-dim">— {b.description}</span>
@@ -108,9 +108,9 @@ export function ReviewPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -24 }}
               transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
-              className="rounded-xl border border-line bg-surface"
+              className="card"
             >
-              <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
+              <div className="flex items-center justify-between border-b border-line px-5 py-3">
                 <span className="eyebrow flex items-center gap-1.5">
                   {current.item_type === "note" ? (
                     <FileText size={11} />
@@ -127,13 +127,13 @@ export function ReviewPage() {
                 </span>
               </div>
 
-              <div className="px-6 py-8 text-center">
-                <p className="text-[13px] text-text-dim">
+              <div className="px-8 py-10 text-center">
+                <p className="text-[13.5px] text-text-dim">
                   {current.item_type === "problem"
                     ? "Can you recall the approach to…"
                     : "Can you recall the key ideas of…"}
                 </p>
-                <p className="mt-1.5 text-lg font-semibold tracking-tight">
+                <p className="mt-2 font-(family-name:--font-display) text-[22px] font-bold tracking-tight">
                   {current.title}
                 </p>
 
@@ -146,7 +146,7 @@ export function ReviewPage() {
                       className="overflow-hidden"
                     >
                       {current.item_type === "problem" && current.hint ? (
-                        <p className="mx-auto mt-4 max-w-md rounded-lg bg-surface-2 p-3 text-[13px] leading-relaxed text-text-dim">
+                        <p className="mx-auto mt-4 max-w-md rounded-xl bg-surface-2 p-3.5 text-[13px] leading-relaxed text-text-dim">
                           <span className="eyebrow mb-1 block">
                             your six-month note
                           </span>
@@ -171,24 +171,24 @@ export function ReviewPage() {
                 </AnimatePresence>
               </div>
 
-              <div className="border-t border-line p-3">
+              <div className="border-t border-line p-4">
                 {!revealed ? (
                   <button
                     onClick={() => setRevealed(true)}
-                    className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-accent text-[13px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.99]"
+                    className="btn-primary w-full"
                   >
                     <Eye size={15} />
                     Reveal
                   </button>
                 ) : (
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-4 gap-2.5">
                     {RATINGS.map((r) => (
                       <button
                         key={r.key}
                         onClick={() => onRate(r.key)}
                         disabled={rate.isPending}
                         className={cn(
-                          "flex h-10 flex-col items-center justify-center rounded-lg border border-line text-[12px] font-medium text-text-dim transition-all duration-100 active:scale-[0.97]",
+                          "flex h-11 flex-col items-center justify-center rounded-xl border border-line text-[12.5px] font-semibold text-text-dim transition-all duration-100 active:scale-[0.97]",
                           r.style,
                         )}
                       >
@@ -204,10 +204,10 @@ export function ReviewPage() {
               key="empty"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-line py-16 text-center"
+              className="card flex flex-col items-center gap-3 border-dashed py-20 text-center"
             >
-              <span className="flex size-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
-                <Brain size={20} />
+              <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+                <Brain size={22} />
               </span>
               <p className="text-sm font-medium">All caught up</p>
               <p className="max-w-xs text-[13px] text-text-dim">

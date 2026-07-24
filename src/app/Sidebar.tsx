@@ -40,13 +40,13 @@ export function Sidebar() {
           collapsed && "justify-center px-0",
         )}
       >
-        <div className="flex size-6 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-accent to-accent-2">
-          <span className="text-[13px] font-bold leading-none text-white">
+        <div className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-2 shadow-md shadow-accent/30">
+          <span className="text-[14px] font-bold leading-none text-white">
             ◇
           </span>
         </div>
         {!collapsed && (
-          <span className="truncate text-sm font-semibold tracking-tight">
+          <span className="truncate font-(family-name:--font-display) text-sm font-semibold tracking-tight">
             DSA Vault
           </span>
         )}
@@ -60,20 +60,20 @@ export function Sidebar() {
             to={to}
             end={end}
             title={collapsed ? label : undefined}
-            className="relative rounded-lg outline-offset-0"
+            className="relative rounded-xl outline-offset-0"
           >
             {({ isActive }) => (
               <>
                 {isActive && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg bg-accent-soft"
+                    className="absolute inset-0 rounded-xl bg-accent-soft"
                     transition={{ type: "spring", stiffness: 500, damping: 42 }}
                   />
                 )}
                 <span
                   className={cn(
-                    "relative flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-[13px] font-medium transition-colors duration-150",
+                    "relative flex h-9 items-center gap-2.5 rounded-xl px-2.5 text-[13px] font-medium transition-colors duration-150",
                     collapsed && "justify-center px-0",
                     isActive
                       ? "text-text"
@@ -113,14 +113,14 @@ export function Sidebar() {
         <button
           onClick={toggleSidebar}
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className="flex size-8 items-center justify-center rounded-lg text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+          className="flex size-8 items-center justify-center rounded-xl text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
         >
           {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
         </button>
         <button
           onClick={toggleTheme}
           title="Switch theme"
-          className="flex size-8 items-center justify-center rounded-lg text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+          className="flex size-8 items-center justify-center rounded-xl text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
         >
           {theme === "dark" ? <SunMedium size={15} /> : <Moon size={15} />}
         </button>

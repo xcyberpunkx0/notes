@@ -16,7 +16,7 @@ function MermaidPreview({ code }: { code: string }) {
       startOnLoad: false,
       theme: theme === "dark" ? "dark" : "neutral",
       securityLevel: "strict",
-      fontFamily: "Inter Variable, sans-serif",
+      fontFamily: "DM Sans Variable, sans-serif",
     });
     mermaid
       .render(`mmd-${id}`, code)

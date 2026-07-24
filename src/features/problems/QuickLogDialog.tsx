@@ -68,7 +68,7 @@ export function QuickLogDialog({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]" />
         <Dialog.Content
-          className="fixed left-1/2 top-[12%] z-50 w-[500px] -translate-x-1/2 rounded-xl border border-line-strong bg-surface p-5 shadow-2xl shadow-black/40"
+          className="fixed left-1/2 top-[12%] z-50 w-[520px] -translate-x-1/2 rounded-3xl border border-line-strong bg-surface p-6 shadow-2xl shadow-black/40"
           aria-describedby={undefined}
         >
           <div className="flex items-center justify-between">
@@ -96,7 +96,7 @@ export function QuickLogDialog({
                 value={url}
                 onChange={(e) => onUrlChange(e.target.value)}
                 placeholder="Paste the link — platform and title auto-fill"
-                className="h-9 w-full rounded-lg border border-line bg-surface-2 px-3 text-sm outline-none transition-colors focus:border-accent"
+                className="h-10 w-full rounded-xl border border-line bg-surface-2 px-3.5 text-sm outline-none transition-colors focus:border-accent"
               />
             </div>
 
@@ -106,7 +106,7 @@ export function QuickLogDialog({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Koko Eating Bananas"
-                className="h-9 w-full rounded-lg border border-line bg-surface-2 px-3 text-sm outline-none transition-colors focus:border-accent"
+                className="h-10 w-full rounded-xl border border-line bg-surface-2 px-3.5 text-sm outline-none transition-colors focus:border-accent"
               />
             </div>
 
@@ -119,7 +119,7 @@ export function QuickLogDialog({
                       key={d}
                       onClick={() => setDifficulty(d)}
                       className={cn(
-                        "h-8 rounded-lg px-3 text-[12px] font-medium transition-colors",
+                        "h-9 rounded-full px-3.5 text-[12px] font-medium transition-colors",
                         difficulty === d
                           ? "bg-accent-soft text-accent ring-1 ring-accent"
                           : "border border-line text-text-dim hover:bg-surface-2",
@@ -145,7 +145,7 @@ export function QuickLogDialog({
                       key={t.id}
                       onClick={() => toggleTopic(t.id)}
                       className={cn(
-                        "flex h-7 items-center gap-1 rounded-lg px-2 text-[12px] transition-colors",
+                        "flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] transition-colors",
                         topicIds.includes(t.id)
                           ? "bg-accent-soft text-accent ring-1 ring-accent"
                           : "border border-line text-text-dim hover:bg-surface-2",
@@ -184,14 +184,14 @@ export function QuickLogDialog({
               <button
                 onClick={() => submit(true)}
                 disabled={!title.trim() || quickLog.isPending}
-                className="h-9 flex-1 rounded-lg bg-accent text-[13px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.98] disabled:opacity-40"
+                className="btn-primary flex-1"
               >
                 Log & debrief →
               </button>
               <button
                 onClick={() => submit(false)}
                 disabled={!title.trim() || quickLog.isPending}
-                className="h-9 rounded-lg border border-line px-3.5 text-[13px] font-medium text-text-dim transition-colors duration-150 hover:bg-surface-2 hover:text-text disabled:opacity-40"
+                className="btn-ghost disabled:opacity-40"
               >
                 Just log it
               </button>

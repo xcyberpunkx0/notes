@@ -26,24 +26,21 @@ export function ProblemsPage() {
   return (
     <div className="h-full">
       <PageHeader eyebrow="Problem tracker" title="Problems">
-        <button
-          onClick={() => setLogOpen(true)}
-          className="flex h-9 items-center gap-2 rounded-lg bg-accent px-3.5 text-[13px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
-        >
+        <button onClick={() => setLogOpen(true)} className="btn-primary">
           <Plus size={15} />
           Log problem
         </button>
       </PageHeader>
 
-      <div className="px-8 pb-10">
+      <div className="px-10 pb-12">
         {/* Filters */}
-        <div className="mb-4 flex flex-wrap items-center gap-2">
+        <div className="mb-5 flex flex-wrap items-center gap-2">
           <select
             value={topicId ?? ""}
             onChange={(e) =>
               setTopicId(e.target.value ? Number(e.target.value) : null)
             }
-            className="h-8 rounded-lg border border-line bg-surface px-2 text-[12px] text-text-dim outline-none"
+            className="h-9 rounded-full border border-line bg-surface px-3 text-[12px] text-text-dim outline-none"
           >
             <option value="">All topics</option>
             {topics?.map((t) => (
@@ -57,7 +54,7 @@ export function ProblemsPage() {
               key={d}
               onClick={() => setDifficulty(difficulty === d ? null : d)}
               className={cn(
-                "h-8 rounded-lg px-2.5 text-[12px] font-medium transition-colors",
+                "h-9 rounded-full px-3.5 text-[12px] font-medium transition-colors",
                 difficulty === d
                   ? "bg-accent-soft text-accent ring-1 ring-accent"
                   : "border border-line text-text-dim hover:bg-surface-2",
@@ -69,7 +66,7 @@ export function ProblemsPage() {
           <button
             onClick={() => setFavoritesOnly(!favoritesOnly)}
             className={cn(
-              "flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-[12px] font-medium transition-colors",
+              "flex h-9 items-center gap-1.5 rounded-full px-3.5 text-[12px] font-medium transition-colors",
               favoritesOnly
                 ? "bg-accent-soft text-accent ring-1 ring-accent"
                 : "border border-line text-text-dim hover:bg-surface-2",
@@ -86,7 +83,7 @@ export function ProblemsPage() {
         </div>
 
         {problems && problems.length > 0 ? (
-          <div className="overflow-hidden rounded-xl border border-line">
+          <div className="card overflow-hidden">
             {problems.map((p, i) => (
               <div
                 key={p.id}
@@ -95,7 +92,7 @@ export function ProblemsPage() {
                 onClick={() => navigate(`/problems/${p.id}`)}
                 onKeyDown={(e) => e.key === "Enter" && navigate(`/problems/${p.id}`)}
                 className={cn(
-                  "flex w-full cursor-pointer items-center gap-3 bg-surface px-4 py-3 text-left transition-colors duration-100 hover:bg-surface-2",
+                  "flex w-full cursor-pointer items-center gap-3.5 px-5 py-3.5 text-left transition-colors duration-100 hover:bg-surface-2",
                   i > 0 && "border-t border-line",
                 )}
               >
@@ -137,9 +134,9 @@ export function ProblemsPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-line py-16 text-center">
-            <span className="flex size-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
-              <ListChecks size={20} />
+          <div className="card flex flex-col items-center gap-3 border-dashed py-20 text-center">
+            <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+              <ListChecks size={22} />
             </span>
             <p className="text-sm font-medium">
               {favoritesOnly || difficulty || topicId

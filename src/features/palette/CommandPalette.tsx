@@ -60,7 +60,7 @@ export function CommandPalette() {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]" />
         <Dialog.Content
-          className="fixed left-1/2 top-[16%] z-50 w-[580px] -translate-x-1/2 overflow-hidden rounded-xl border border-line-strong bg-surface/90 shadow-2xl shadow-black/40 backdrop-blur-xl"
+          className="fixed left-1/2 top-[16%] z-50 w-[600px] -translate-x-1/2 overflow-hidden rounded-3xl border border-line-strong bg-surface/90 shadow-2xl shadow-black/40 backdrop-blur-xl"
           aria-describedby={undefined}
         >
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>
@@ -95,7 +95,7 @@ export function CommandPalette() {
                           ),
                         )
                       }
-                      className="flex cursor-default items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] text-text-dim data-[selected=true]:bg-accent-soft data-[selected=true]:text-text"
+                      className="flex cursor-default items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] text-text-dim data-[selected=true]:bg-accent-soft data-[selected=true]:text-text"
                     >
                       <span className="shrink-0 text-text-faint">
                         {r.type === "note" ? (
@@ -193,7 +193,7 @@ function PaletteItem({
     <Command.Item
       value={action.label}
       onSelect={() => onRun(action.run)}
-      className="flex h-9 cursor-default items-center gap-2.5 rounded-lg px-2.5 text-[13px] text-text-dim data-[selected=true]:bg-accent-soft data-[selected=true]:text-text"
+      className="flex h-10 cursor-default items-center gap-3 rounded-xl px-3 text-[13px] text-text-dim data-[selected=true]:bg-accent-soft data-[selected=true]:text-text"
     >
       <span className="text-text-faint">{action.icon}</span>
       {action.label}

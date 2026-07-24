@@ -35,7 +35,7 @@ export function ProblemDetailPage() {
             {problem.platform ?? "Problem"}
             {problem.date_solved && <span>· solved {problem.date_solved}</span>}
           </p>
-          <h1 className="flex items-center gap-2.5 text-[22px] font-semibold tracking-tight">
+          <h1 className="flex items-center gap-2.5 text-2xl font-bold tracking-tight">
             <span className="truncate">{problem.title}</span>
             {problem.url && (
               <a
@@ -81,7 +81,7 @@ export function ProblemDetailPage() {
             }
             title="Favorite"
             className={cn(
-              "flex size-9 items-center justify-center rounded-lg border border-line transition-colors",
+              "flex size-10 items-center justify-center rounded-xl border border-line transition-colors",
               problem.is_favorite
                 ? "text-warning"
                 : "text-text-faint hover:text-text-dim",
@@ -92,7 +92,7 @@ export function ProblemDetailPage() {
           <button
             onClick={remove}
             title="Delete problem"
-            className="flex size-9 items-center justify-center rounded-lg border border-line text-text-faint transition-colors hover:border-danger/40 hover:text-danger"
+            className="flex size-10 items-center justify-center rounded-xl border border-line text-text-faint transition-colors hover:border-danger/40 hover:text-danger"
           >
             <Trash2 size={15} />
           </button>

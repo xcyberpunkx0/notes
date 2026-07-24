@@ -37,33 +37,31 @@ export function TopicDetailPage() {
 
   return (
     <div className="h-full">
-      <div className="flex items-end justify-between px-8 pb-5 pt-8">
-        <div className="flex items-center gap-3.5">
+      <div className="flex items-end justify-between px-10 pb-7 pt-10">
+        <div className="flex items-center gap-4">
           <span
-            className="flex size-12 items-center justify-center rounded-xl text-2xl"
-            style={{ backgroundColor: `${topic.color ?? "#7c8cf8"}1f` }}
+            className="flex size-14 items-center justify-center rounded-2xl text-[26px]"
+            style={{ backgroundColor: `${topic.color ?? "#8e6bf5"}24` }}
           >
             {topic.icon || "📚"}
           </span>
           <div>
-            <p className="eyebrow mb-1">Topic</p>
-            <h1 className="text-xl font-semibold tracking-tight">
-              {topic.name}
-            </h1>
+            <p className="eyebrow mb-1.5">Topic</p>
+            <h1 className="text-2xl font-bold tracking-tight">{topic.name}</h1>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={removeTopic}
             title="Delete topic"
-            className="flex size-9 items-center justify-center rounded-lg border border-line text-text-faint transition-colors duration-150 hover:border-danger/40 hover:text-danger"
+            className="flex size-10 items-center justify-center rounded-xl border border-line text-text-faint transition-colors duration-150 hover:border-danger/40 hover:text-danger"
           >
             <Trash2 size={15} />
           </button>
           <button
             onClick={newNote}
             disabled={createNote.isPending}
-            className="flex h-9 items-center gap-2 rounded-lg bg-accent px-3.5 text-[13px] font-medium text-white transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
+            className="btn-primary"
           >
             <Plus size={15} />
             New note
@@ -71,7 +69,7 @@ export function TopicDetailPage() {
         </div>
       </div>
 
-      <div className="px-8 pb-10">
+      <div className="px-10 pb-12">
         {subtopics.length > 0 && (
           <div className="mb-5">
             <p className="eyebrow mb-2">Subtopics</p>
@@ -80,7 +78,7 @@ export function TopicDetailPage() {
                 <button
                   key={s.id}
                   onClick={() => navigate(`/topics/${s.id}`)}
-                  className="flex h-8 items-center gap-1.5 rounded-lg border border-line px-2.5 text-[13px] text-text-dim transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+                  className="flex h-9 items-center gap-1.5 rounded-full border border-line px-3.5 text-[13px] text-text-dim transition-colors duration-150 hover:bg-surface-2 hover:text-text"
                 >
                   <span className="text-sm">{s.icon}</span>
                   {s.name}
@@ -94,18 +92,18 @@ export function TopicDetailPage() {
         )}
 
         {notes && notes.length > 0 ? (
-          <div className="overflow-hidden rounded-xl border border-line">
+          <div className="card overflow-hidden">
             {notes.map((note, i) => (
               <button
                 key={note.id}
                 onClick={() => navigate(`/notes/${note.id}`)}
                 className={
-                  "flex w-full items-center gap-3 bg-surface px-4 py-3 text-left transition-colors duration-100 hover:bg-surface-2 " +
+                  "flex w-full items-center gap-3.5 px-5 py-3.5 text-left transition-colors duration-100 hover:bg-surface-2 " +
                   (i > 0 ? "border-t border-line" : "")
                 }
               >
                 <FileText size={15} className="shrink-0 text-text-faint" />
-                <span className="min-w-0 flex-1 truncate text-[13px] font-medium">
+                <span className="min-w-0 flex-1 truncate text-sm font-medium">
                   {note.title || "Untitled"}
                 </span>
                 <span className="shrink-0 font-mono text-[11px] text-text-faint">
@@ -115,9 +113,9 @@ export function TopicDetailPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-line py-14 text-center">
-            <span className="flex size-10 items-center justify-center rounded-lg bg-accent-soft text-accent">
-              <FileText size={17} />
+          <div className="card flex flex-col items-center gap-3 border-dashed py-16 text-center">
+            <span className="flex size-12 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+              <FileText size={19} />
             </span>
             <p className="text-sm font-medium">No notes here yet</p>
             <p className="max-w-xs text-[13px] text-text-dim">
