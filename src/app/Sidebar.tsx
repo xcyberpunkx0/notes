@@ -29,10 +29,9 @@ export function Sidebar() {
   const { data: dueCount } = useDueCount();
 
   return (
-    <motion.aside
-      animate={{ width: collapsed ? 60 : 224 }}
-      transition={{ type: "spring", stiffness: 420, damping: 40 }}
-      className="flex shrink-0 flex-col border-r border-line bg-surface"
+    <aside
+      style={{ width: collapsed ? 60 : 224 }}
+      className="flex shrink-0 flex-col overflow-hidden border-r border-line bg-surface transition-[width] duration-200 ease-out"
     >
       {/* Brand */}
       <div
@@ -132,6 +131,6 @@ export function Sidebar() {
           </span>
         )}
       </div>
-    </motion.aside>
+    </aside>
   );
 }

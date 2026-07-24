@@ -4,12 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DSA Vault</title>
-    <style>
-      /* Painted before any bundle loads so the window never flashes white */
-      html {
-        background: #0c0f14;
-      }
-    </style>
+    <script>
+      // Paint the saved theme before any bundle loads — no flash either way
+      (function () {
+        var bg = "#0c0f14";
+        try {
+          var stored = JSON.parse(localStorage.getItem("dsa-vault-ui"));
+          if (stored && stored.state && stored.state.theme === "light") {
+            document.documentElement.dataset.theme = "light";
+            bg = "#f6f7f9";
+          }
+        } catch (e) {
+          /* first run: dark default */
+        }
+        document.documentElement.style.background = bg;
+      })();
+    </script>
   </head>
 
   <body>
