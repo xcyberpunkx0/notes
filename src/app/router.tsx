@@ -6,6 +6,7 @@ import { TopicsPage } from "@/features/topics/TopicsPage";
 import { TopicDetailPage } from "@/features/topics/TopicDetailPage";
 import { NotePage } from "@/features/notes/NotePage";
 import { ProblemsPage } from "@/features/problems/ProblemsPage";
+import { ProblemDetailPage } from "@/features/problems/ProblemDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: "topics/:topicId", element: <TopicDetailPage /> },
       { path: "notes/:noteId", element: <NotePage /> },
       { path: "problems", element: <ProblemsPage /> },
+      { path: "problems/:problemId", element: <ProblemDetailPage /> },
     ],
   },
 ]);
