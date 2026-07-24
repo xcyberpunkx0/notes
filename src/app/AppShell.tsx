@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { listen } from "@tauri-apps/api/event";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
@@ -58,18 +58,15 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar />
         <main className="relative flex-1 overflow-y-auto">
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div
-              key={location.pathname}
-              className="h-full"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
-            >
-              <Outlet />
-            </motion.div>
-          </AnimatePresence>
+          <motion.div
+            key={location.pathname}
+            className="h-full"
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.14, ease: "easeOut" }}
+          >
+            <Outlet />
+          </motion.div>
         </main>
       </div>
       <CommandPalette />
