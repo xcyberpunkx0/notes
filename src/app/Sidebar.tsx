@@ -4,6 +4,7 @@ import {
   Brain,
   House,
   Books,
+  DownloadSimple,
   Graph,
   Target,
   MoonStars,
@@ -13,6 +14,7 @@ import {
 } from "@phosphor-icons/react";
 import { useUiStore } from "./store";
 import { useDueCount } from "@/db/reviews";
+import { installPendingUpdate } from "@/lib/updater";
 import { cn } from "@/lib/utils";
 
 /** The letter N drawn as a graph — nodes and edges spelling the app's name. */
@@ -55,6 +57,7 @@ export function Sidebar() {
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
   const setFontDialogOpen = useUiStore((s) => s.setFontDialogOpen);
+  const updateVersion = useUiStore((s) => s.updateVersion);
   const { data: dueCount } = useDueCount();
   const { pathname } = useLocation();
 
@@ -153,6 +156,21 @@ export function Sidebar() {
       </nav>
 
       <div className="flex-1" />
+
+      {/* Update banner */}
+      {updateVersion && (
+        <button
+          onClick={() => installPendingUpdate()}
+          title={`Update to v${updateVersion} and restart`}
+          className={cn(
+            "mx-2.5 mb-2 flex items-center gap-2 rounded-xl bg-accent-soft px-3 py-2 text-[12px] font-medium text-accent transition-all hover:brightness-110",
+            collapsed && "mx-2 justify-center px-0",
+          )}
+        >
+          <DownloadSimple size={15} className="shrink-0" />
+          {!collapsed && `Update to v${updateVersion}`}
+        </button>
+      )}
 
       {/* Footer controls */}
       <div
