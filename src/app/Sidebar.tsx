@@ -46,7 +46,7 @@ export function Sidebar() {
         </div>
         {!collapsed && (
           <span className="truncate font-(family-name:--font-display) text-sm font-semibold tracking-tight">
-            DSA Vault
+            Notes
           </span>
         )}
       </div>
