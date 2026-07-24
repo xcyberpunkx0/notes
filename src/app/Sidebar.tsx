@@ -13,6 +13,31 @@ import { useUiStore } from "./store";
 import { useDueCount } from "@/db/reviews";
 import { cn } from "@/lib/utils";
 
+/** The letter N drawn as a graph — nodes and edges spelling the app's name. */
+function LogoMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <g
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.9"
+      >
+        <path d="M7 17.5 V6.5" />
+        <path d="M7 6.5 L17 17.5" />
+        <path d="M17 17.5 V6.5" />
+      </g>
+      <g fill="white">
+        <circle cx="7" cy="6.5" r="2.4" />
+        <circle cx="7" cy="17.5" r="2.4" />
+        <circle cx="17" cy="6.5" r="2.4" />
+        <circle cx="17" cy="17.5" r="2.4" />
+      </g>
+    </svg>
+  );
+}
+
 const NAV_ITEMS = [
   { to: "/", label: "Home", icon: House, end: true },
   { to: "/review", label: "Review", icon: Brain, end: false },
@@ -40,9 +65,7 @@ export function Sidebar() {
         )}
       >
         <div className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-2 shadow-md shadow-accent/30">
-          <span className="text-[14px] font-bold leading-none text-white">
-            ◇
-          </span>
+          <LogoMark className="size-4" />
         </div>
         {!collapsed && (
           <span className="truncate font-(family-name:--font-display) text-sm font-semibold tracking-tight">

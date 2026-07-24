@@ -28,7 +28,7 @@ export function Topbar() {
         className="ml-2 flex h-9 w-72 items-center gap-2.5 rounded-xl border border-line bg-surface px-3 text-[13px] text-text-faint transition-colors duration-150 hover:border-line-strong hover:text-text-dim"
       >
         <MagnifyingGlass size={14} />
-        <span>Search the vault…</span>
+        <span>Search notes…</span>
         <span className="ml-auto flex items-center gap-1">
           <span className="kbd">Ctrl</span>
           <span className="kbd">K</span>

@@ -74,12 +74,12 @@ export function CommandPalette() {
             />
             <Command.List className="max-h-80 overflow-y-auto p-1.5">
               <Command.Empty className="py-8 text-center text-[13px] text-text-faint">
-                Nothing in the vault matches "{query}" yet.
+                No notes match "{query}" yet.
               </Command.Empty>
 
               {results && results.length > 0 && (
                 <Command.Group
-                  heading="In your vault"
+                  heading="In your notes"
                   className="[&_[cmdk-group-heading]]:eyebrow [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-2"
                 >
                   {results.map((r) => (

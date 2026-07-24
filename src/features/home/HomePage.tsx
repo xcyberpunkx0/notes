@@ -70,7 +70,6 @@ export function HomePage() {
         {/* Hero */}
         <div className="flex items-end justify-between">
           <div>
-            <p className="eyebrow mb-2.5">Your vault</p>
             <h1 className="text-[32px] font-bold leading-tight tracking-tight">
               {greeting()}
               {empty ? (
@@ -85,7 +84,11 @@ export function HomePage() {
           </div>
           {streak > 0 && (
             <span
-              className="flex items-center gap-2 rounded-2xl border border-warning/25 bg-warning/10 px-4 py-2.5 font-(family-name:--font-display) text-lg font-bold text-warning"
+              className="flex items-center gap-2 rounded-2xl border border-warning/25 px-4 py-2.5 font-(family-name:--font-display) text-lg font-bold text-warning"
+              style={{
+                background:
+                  "color-mix(in srgb, var(--warning) 10%, var(--surface))",
+              }}
               title={`${streak} day streak`}
             >
               <Fire size={19} />
