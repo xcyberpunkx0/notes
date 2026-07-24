@@ -146,21 +146,6 @@
     color: var(--text-faint);
   }
 
-  /* Ambient aurora — a soft purple wash from the top, no repeating texture */
-  .aurora {
-    background:
-      radial-gradient(
-        900px 420px at 68% -12%,
-        color-mix(in srgb, var(--accent) 13%, transparent),
-        transparent 70%
-      ),
-      radial-gradient(
-        700px 360px at 18% -8%,
-        color-mix(in srgb, var(--accent-2) 9%, transparent),
-        transparent 70%
-      );
-  }
-
   /* Soft rounded card — the app's basic surface */
   .card {
     border-radius: 1.25rem;
