@@ -19,6 +19,7 @@ export interface Problem {
   concept_taught: string | null;
   wrong_approach: string | null;
   stuck_where: string | null;
+  concepts_recalled: string | null;
   mistake_made: string | null;
   unlock_pattern: string | null;
   remember_next: string | null;
@@ -44,6 +45,7 @@ export const DEBRIEF_FIELDS = [
   "concept_taught",
   "wrong_approach",
   "stuck_where",
+  "concepts_recalled",
   "mistake_made",
   "unlock_pattern",
   "remember_next",

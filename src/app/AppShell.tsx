@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import { motion } from "motion/react";
 import { listen } from "@tauri-apps/api/event";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
@@ -58,15 +57,9 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar />
         <main className="relative flex-1 overflow-y-auto">
-          <motion.div
-            key={location.pathname}
-            className="h-full"
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.14, ease: "easeOut" }}
-          >
+          <div key={location.pathname} className="page-enter h-full">
             <Outlet />
-          </motion.div>
+          </div>
         </main>
       </div>
       <CommandPalette />

@@ -23,6 +23,10 @@ const PROMPTS: Record<DebriefField, { question: string; hint: string }> = {
     question: "Where exactly did you get stuck?",
     hint: "The specific step where progress stopped.",
   },
+  concepts_recalled: {
+    question: "Which older concepts did you forget — or reuse — to solve this?",
+    hint: "e.g. prefix sums came back; forgot how lower_bound treats duplicates.",
+  },
   mistake_made: {
     question: "What mistake did you make?",
     hint: "Off-by-one? Wrong data structure? Missed constraint?",
