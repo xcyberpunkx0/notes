@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, ChevronRight, Sparkles } from "lucide-react";
+import { Check, CaretRight, Sparkle } from "@phosphor-icons/react";
 import {
   DEBRIEF_FIELDS,
   useUpdateProblemField,
@@ -76,7 +76,7 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
     <section className="card">
       <header className="flex items-center justify-between border-b border-line px-5 py-3">
         <span className="flex items-center gap-2 text-[13px] font-semibold">
-          <Sparkles size={14} className="text-accent" />
+          <Sparkle size={14} className="text-accent" />
           Debrief
         </span>
         <span className="flex items-center gap-1.5">
@@ -165,7 +165,7 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
                   className="btn-primary !h-9 !px-3.5 !text-[12px]"
                 >
                   Save
-                  <ChevronRight size={13} />
+                  <CaretRight size={13} />
                 </button>
                 <button
                   onClick={() => advance(active)}

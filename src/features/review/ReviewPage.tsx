@@ -5,11 +5,11 @@ import {
   ArrowUpRight,
   Brain,
   Eye,
-  FileText,
-  Flame,
-  ListChecks,
-  PartyPopper,
-} from "lucide-react";
+  Note,
+  Fire,
+  Target,
+  Confetti,
+} from "@phosphor-icons/react";
 import { PageHeader } from "@/components/PageHeader";
 import {
   useDueReviews,
@@ -76,14 +76,14 @@ export function ReviewPage() {
               className="card flex flex-col items-center gap-4 py-16 text-center"
             >
               <span className="flex size-14 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-                <PartyPopper size={24} />
+                <Confetti size={24} />
               </span>
               <div>
                 <p className="font-(family-name:--font-display) text-lg font-bold">
                   Review done — {doneCount} item{doneCount === 1 ? "" : "s"}
                 </p>
                 <p className="mt-1 flex items-center justify-center gap-1.5 text-[13px] text-text-dim">
-                  <Flame size={14} className="text-warning" />
+                  <Fire size={14} className="text-warning" />
                   {streak} day streak. Tomorrow keeps it alive.
                 </p>
               </div>
@@ -113,9 +113,9 @@ export function ReviewPage() {
               <div className="flex items-center justify-between border-b border-line px-5 py-3">
                 <span className="eyebrow flex items-center gap-1.5">
                   {current.item_type === "note" ? (
-                    <FileText size={11} />
+                    <Note size={11} />
                   ) : (
-                    <ListChecks size={11} />
+                    <Target size={11} />
                   )}
                   {current.item_type}
                   {current.item_type === "note" && current.hint

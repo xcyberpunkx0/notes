@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { ExternalLink, Star, Trash2 } from "lucide-react";
+import { ArrowSquareOut, Star, Trash } from "@phosphor-icons/react";
 import {
   useDeleteProblem,
   useProblem,
@@ -45,7 +45,7 @@ export function ProblemDetailPage() {
                 title="Open on platform"
                 className="shrink-0 text-text-faint transition-colors hover:text-accent"
               >
-                <ExternalLink size={16} />
+                <ArrowSquareOut size={16} />
               </a>
             )}
           </h1>
@@ -87,14 +87,14 @@ export function ProblemDetailPage() {
                 : "text-text-faint hover:text-text-dim",
             )}
           >
-            <Star size={15} fill={problem.is_favorite ? "currentColor" : "none"} />
+            <Star size={16} weight={problem.is_favorite ? "fill" : "duotone"} />
           </button>
           <button
             onClick={remove}
             title="Delete problem"
             className="flex size-10 items-center justify-center rounded-xl border border-line text-text-faint transition-colors hover:border-danger/40 hover:text-danger"
           >
-            <Trash2 size={15} />
+            <Trash size={15} />
           </button>
         </div>
       </div>

@@ -3,13 +3,12 @@ import { motion } from "motion/react";
 import {
   Brain,
   House,
-  Library,
-  ListChecks,
-  Moon,
-  PanelLeftClose,
-  PanelLeftOpen,
-  SunMedium,
-} from "lucide-react";
+  Books,
+  Target,
+  MoonStars,
+  SidebarSimple,
+  Sun,
+} from "@phosphor-icons/react";
 import { useUiStore } from "./store";
 import { useDueCount } from "@/db/reviews";
 import { cn } from "@/lib/utils";
@@ -17,8 +16,8 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { to: "/", label: "Home", icon: House, end: true },
   { to: "/review", label: "Review", icon: Brain, end: false },
-  { to: "/topics", label: "Topics", icon: Library, end: false },
-  { to: "/problems", label: "Problems", icon: ListChecks, end: false },
+  { to: "/topics", label: "Topics", icon: Books, end: false },
+  { to: "/problems", label: "Problems", icon: Target, end: false },
 ];
 
 export function Sidebar() {
@@ -81,8 +80,8 @@ export function Sidebar() {
                   )}
                 >
                   <Icon
-                    size={16}
-                    strokeWidth={2}
+                    size={17}
+                    weight={isActive ? "fill" : "duotone"}
                     className={cn("shrink-0", isActive && "text-accent")}
                   />
                   {!collapsed && label}
@@ -115,14 +114,14 @@ export function Sidebar() {
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className="flex size-8 items-center justify-center rounded-xl text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
         >
-          {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
+          <SidebarSimple size={16} />
         </button>
         <button
           onClick={toggleTheme}
           title="Switch theme"
           className="flex size-8 items-center justify-center rounded-xl text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
         >
-          {theme === "dark" ? <SunMedium size={15} /> : <Moon size={15} />}
+          {theme === "dark" ? <Sun size={16} /> : <MoonStars size={16} />}
         </button>
         {!collapsed && (
           <span className="ml-auto flex items-center gap-1">

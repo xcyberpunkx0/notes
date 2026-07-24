@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as Dialog from "@radix-ui/react-dialog";
-import { X, Zap } from "lucide-react";
+import { X, Lightning } from "@phosphor-icons/react";
 import { useQuickLogProblem } from "@/db/problems";
 import { useTopics } from "@/db/topics";
 import { detectPlatform, titleFromUrl } from "@/lib/platform-detect";
@@ -73,7 +73,7 @@ export function QuickLogDialog({
         >
           <div className="flex items-center justify-between">
             <Dialog.Title className="flex items-center gap-2 text-sm font-semibold">
-              <Zap size={15} className="text-accent" />
+              <Lightning size={15} className="text-accent" />
               Log a problem
             </Dialog.Title>
             <Dialog.Close className="flex size-7 items-center justify-center rounded-md text-text-faint hover:bg-surface-2 hover:text-text">

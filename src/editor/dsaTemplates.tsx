@@ -4,10 +4,10 @@ import {
   Clock,
   GitBranch,
   Lightbulb,
-  ListTree,
-  Puzzle,
-  Workflow,
-} from "lucide-react";
+  TreeStructure,
+  PuzzlePiece,
+  FlowArrow,
+} from "@phosphor-icons/react";
 import type { DefaultReactSuggestionItem } from "@blocknote/react";
 import type { PartialBlock } from "@blocknote/core";
 import type { schema } from "./schema";
@@ -60,7 +60,7 @@ const TEMPLATES: TemplateDef[] = [
     title: "Dry run",
     aliases: ["dryrun", "trace", "walkthrough"],
     subtext: "Walk an example through the algorithm",
-    icon: <Workflow size={18} />,
+    icon: <FlowArrow size={18} />,
     blocks: [heading("Dry run"), para("Input: "), para()],
   },
   {
@@ -78,7 +78,7 @@ const TEMPLATES: TemplateDef[] = [
     title: "Edge cases",
     aliases: ["edgecases", "edge", "corner"],
     subtext: "Inputs that break naive solutions",
-    icon: <Puzzle size={18} />,
+    icon: <PuzzlePiece size={18} />,
     blocks: [
       heading("Edge cases"),
       { type: "bulletListItem", content: "Empty input" },
@@ -106,7 +106,7 @@ const TEMPLATES: TemplateDef[] = [
     title: "Code template",
     aliases: ["codetemplate", "template", "snippet"],
     subtext: "Reusable implementation, C++ by default",
-    icon: <ListTree size={18} />,
+    icon: <TreeStructure size={18} />,
     blocks: [
       heading("Code template"),
       { type: "codeBlock", props: { language: "cpp" } },
@@ -140,7 +140,7 @@ export function getMermaidItem(editor: Editor): DefaultReactSuggestionItem {
     subtext: "Flowcharts, trees and graphs from text",
     aliases: ["mermaid", "diagram", "flowchart", "graph"],
     group: "DSA sections",
-    icon: <Workflow size={18} />,
+    icon: <FlowArrow size={18} />,
     onItemClick: () => insertSection(editor, [{ type: "mermaid" }]),
   };
 }

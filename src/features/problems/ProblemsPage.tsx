@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { ListChecks, Plus, Star } from "lucide-react";
+import { Target, Plus, Star } from "@phosphor-icons/react";
 import { PageHeader } from "@/components/PageHeader";
 import { useProblems, useUpdateProblemField } from "@/db/problems";
 import { useTopics } from "@/db/topics";
@@ -112,7 +112,7 @@ export function ProblemsPage() {
                       : "text-line-strong hover:text-text-dim",
                   )}
                 >
-                  <Star size={14} fill={p.is_favorite ? "currentColor" : "none"} />
+                  <Star size={15} weight={p.is_favorite ? "fill" : "duotone"} />
                 </button>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[13px] font-medium">
@@ -136,7 +136,7 @@ export function ProblemsPage() {
         ) : (
           <div className="card flex flex-col items-center gap-3 border-dashed py-20 text-center">
             <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-              <ListChecks size={22} />
+              <Target size={22} />
             </span>
             <p className="text-sm font-medium">
               {favoritesOnly || difficulty || topicId

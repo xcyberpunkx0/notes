@@ -4,14 +4,14 @@ import { Command } from "cmdk";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   Brain,
-  FileText,
+  Note,
   House,
-  Library,
-  ListChecks,
-  MoonStar,
-  PenLine,
+  Books,
+  Target,
+  MoonStars,
+  PencilSimpleLine,
   Plus,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { useUiStore } from "@/app/store";
 import { useVaultSearch } from "@/db/search";
 
@@ -44,15 +44,15 @@ export function CommandPalette() {
     label.toLowerCase().includes(query.trim().toLowerCase());
 
   const navigation: Action[] = [
-    { id: "home", label: "Go to Home", icon: <House size={15} />, run: () => navigate("/") },
-    { id: "review", label: "Go to Review", icon: <Brain size={15} />, run: () => navigate("/review") },
-    { id: "topics", label: "Go to Topics", icon: <Library size={15} />, run: () => navigate("/topics") },
-    { id: "problems", label: "Go to Problems", icon: <ListChecks size={15} />, run: () => navigate("/problems") },
+    { id: "home", label: "Go to Home", icon: <House size={16} />, run: () => navigate("/") },
+    { id: "review", label: "Go to Review", icon: <Brain size={16} />, run: () => navigate("/review") },
+    { id: "topics", label: "Go to Topics", icon: <Books size={16} />, run: () => navigate("/topics") },
+    { id: "problems", label: "Go to Problems", icon: <Target size={16} />, run: () => navigate("/problems") },
   ];
 
   const create: Action[] = [
-    { id: "new-note", label: "New note", icon: <PenLine size={15} />, run: () => navigate("/topics") },
-    { id: "log-problem", label: "Log a problem", icon: <Plus size={15} />, run: () => setQuickLogOpen(true) },
+    { id: "new-note", label: "New note", icon: <PencilSimpleLine size={16} />, run: () => navigate("/topics") },
+    { id: "log-problem", label: "Log a problem", icon: <Plus size={16} />, run: () => setQuickLogOpen(true) },
   ];
 
   return (
@@ -99,9 +99,9 @@ export function CommandPalette() {
                     >
                       <span className="shrink-0 text-text-faint">
                         {r.type === "note" ? (
-                          <FileText size={15} />
+                          <Note size={16} />
                         ) : (
-                          <ListChecks size={15} />
+                          <Target size={16} />
                         )}
                       </span>
                       <span className="min-w-0">
@@ -154,7 +154,7 @@ export function CommandPalette() {
                     action={{
                       id: "theme",
                       label: "Switch theme",
-                      icon: <MoonStar size={15} />,
+                      icon: <MoonStars size={16} />,
                       run: toggleTheme,
                     }}
                     onRun={runAndClose}

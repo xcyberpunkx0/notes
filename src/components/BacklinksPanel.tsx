@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { Link2 } from "lucide-react";
+import { LinkSimple } from "@phosphor-icons/react";
 import { useBacklinks, type LinkableType } from "@/db/links";
 
 const PATHS: Record<LinkableType, string> = {
@@ -23,7 +23,7 @@ export function BacklinksPanel({
   return (
     <section className="mt-8 border-t border-line pt-4">
       <p className="eyebrow mb-2 flex items-center gap-1.5">
-        <Link2 size={11} />
+        <LinkSimple size={11} />
         Linked from
       </p>
       <div className="flex flex-wrap gap-1.5">

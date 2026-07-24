@@ -1,7 +1,7 @@
 import { createReactInlineContentSpec } from "@blocknote/react";
 import type { DefaultReactSuggestionItem } from "@blocknote/react";
 import { useNavigate } from "react-router";
-import { FileText, Hash, ListChecks } from "lucide-react";
+import { Note, Hash, Target } from "@phosphor-icons/react";
 import { searchLinkTargets } from "@/db/links";
 
 export const VaultLink = createReactInlineContentSpec(
@@ -38,8 +38,8 @@ export const VaultLink = createReactInlineContentSpec(
 );
 
 const TYPE_ICON: Record<string, React.JSX.Element> = {
-  note: <FileText size={16} />,
-  problem: <ListChecks size={16} />,
+  note: <Note size={16} />,
+  problem: <Target size={16} />,
   topic: <Hash size={16} />,
 };
 

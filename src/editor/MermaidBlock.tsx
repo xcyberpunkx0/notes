@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from "react";
 import { createReactBlockSpec } from "@blocknote/react";
-import { Pencil, Eye } from "lucide-react";
+import { PencilSimple, Eye } from "@phosphor-icons/react";
 import mermaid from "mermaid";
 import { useUiStore } from "@/app/store";
 
@@ -78,7 +78,7 @@ export const MermaidBlock = createReactBlockSpec(
               onClick={() => (editing ? commit() : setEditing(true))}
               className="flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] text-text-dim transition-colors hover:bg-surface-2 hover:text-text"
             >
-              {editing ? <Eye size={12} /> : <Pencil size={12} />}
+              {editing ? <Eye size={12} /> : <PencilSimple size={12} />}
               {editing ? "Preview" : "Edit"}
             </button>
           </div>

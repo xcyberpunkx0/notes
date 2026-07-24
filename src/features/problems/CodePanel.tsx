@@ -3,7 +3,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { cpp } from "@codemirror/lang-cpp";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
-import { Code2 } from "lucide-react";
+import { Code } from "@phosphor-icons/react";
 import { saveProblemCode, useProblemCode } from "@/db/problems";
 import { useUiStore } from "@/app/store";
 import { cn } from "@/lib/utils";
@@ -50,7 +50,7 @@ export function CodePanel({ problemId }: { problemId: number }) {
     <section className="card overflow-hidden">
       <header className="flex items-center gap-1 border-b border-line px-4 py-2.5">
         <span className="mr-2 flex items-center gap-2 text-[13px] font-semibold">
-          <Code2 size={14} className="text-accent" />
+          <Code size={14} className="text-accent" />
           Code
         </span>
         {VARIANTS.map((v) => (

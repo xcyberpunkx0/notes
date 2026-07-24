@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Library, Plus, Sparkles, X } from "lucide-react";
+import { Books, Plus, Sparkle, X } from "@phosphor-icons/react";
 import { PageHeader } from "@/components/PageHeader";
 import { useCreateTopic, useTopics, type Topic } from "@/db/topics";
 import {
@@ -24,7 +24,7 @@ export function TopicsPage() {
 
   return (
     <div className="h-full">
-      <PageHeader eyebrow="Concept library" title="Topics">
+      <PageHeader eyebrow="Concept Books" title="Topics">
         <button
           onClick={() => setDialogOpen(true)}
           className="btn-primary"
@@ -40,7 +40,7 @@ export function TopicsPage() {
         ) : (
           <div className="card flex flex-col items-center gap-4 border-dashed py-20 text-center">
             <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-              <Library size={20} />
+              <Books size={20} />
             </span>
             <div>
               <p className="text-sm font-medium">Give every concept a home</p>
@@ -62,7 +62,7 @@ export function TopicsPage() {
                 disabled={createTopic.isPending}
                 className="btn-ghost"
               >
-                <Sparkles size={14} />
+                <Sparkle size={14} />
                 Add 8 starter topics
               </button>
             </div>

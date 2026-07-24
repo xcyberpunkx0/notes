@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { FileText, Plus, Trash2 } from "lucide-react";
+import { Note, Plus, Trash } from "@phosphor-icons/react";
 import { useNotesByTopic, useCreateNote } from "@/db/notes";
 import { useDeleteTopic, useTopic, useTopics } from "@/db/topics";
 import { formatRelative } from "@/lib/time";
@@ -56,7 +56,7 @@ export function TopicDetailPage() {
             title="Delete topic"
             className="flex size-10 items-center justify-center rounded-xl border border-line text-text-faint transition-colors duration-150 hover:border-danger/40 hover:text-danger"
           >
-            <Trash2 size={15} />
+            <Trash size={15} />
           </button>
           <button
             onClick={newNote}
@@ -102,7 +102,7 @@ export function TopicDetailPage() {
                   (i > 0 ? "border-t border-line" : "")
                 }
               >
-                <FileText size={15} className="shrink-0 text-text-faint" />
+                <Note size={15} className="shrink-0 text-text-faint" />
                 <span className="min-w-0 flex-1 truncate text-sm font-medium">
                   {note.title || "Untitled"}
                 </span>
@@ -115,7 +115,7 @@ export function TopicDetailPage() {
         ) : (
           <div className="card flex flex-col items-center gap-3 border-dashed py-16 text-center">
             <span className="flex size-12 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-              <FileText size={19} />
+              <Note size={19} />
             </span>
             <p className="text-sm font-medium">No notes here yet</p>
             <p className="max-w-xs text-[13px] text-text-dim">

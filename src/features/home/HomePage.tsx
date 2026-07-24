@@ -3,12 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
   Brain,
-  FileText,
-  Flame,
-  Library,
-  ListChecks,
+  Note,
+  Fire,
+  Books,
+  Target,
   Plus,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { getDb } from "@/db/client";
 import { useDueCount, useStreak } from "@/db/reviews";
 import { useUnlockedAchievements } from "@/db/achievements";
@@ -86,7 +86,7 @@ export function HomePage() {
               className="flex items-center gap-2 rounded-2xl border border-warning/25 bg-warning/10 px-4 py-2.5 font-(family-name:--font-display) text-lg font-bold text-warning"
               title={`${streak} day streak`}
             >
-              <Flame size={19} />
+              <Fire size={19} />
               {streak}
             </span>
           )}
@@ -132,9 +132,9 @@ export function HomePage() {
         {/* Stats */}
         <div className="mt-4 grid grid-cols-3 gap-4">
           {[
-            { icon: Library, n: data?.counts.topics ?? 0, label: "topics", to: "/topics" },
-            { icon: FileText, n: data?.counts.notes ?? 0, label: "notes", to: "/topics" },
-            { icon: ListChecks, n: data?.counts.problems ?? 0, label: "problems solved", to: "/problems" },
+            { icon: Books, n: data?.counts.topics ?? 0, label: "topics", to: "/topics" },
+            { icon: Note, n: data?.counts.notes ?? 0, label: "notes", to: "/topics" },
+            { icon: Target, n: data?.counts.problems ?? 0, label: "problems solved", to: "/problems" },
           ].map((s) => (
             <button
               key={s.label}
@@ -218,7 +218,7 @@ export function HomePage() {
               className="card card-hover group flex flex-col items-start gap-4 p-6 text-left"
             >
               <span className="flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-                <Library size={19} />
+                <Books size={19} />
               </span>
               <span>
                 <span className="block font-(family-name:--font-display) text-[15px] font-bold">
