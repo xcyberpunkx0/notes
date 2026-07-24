@@ -8,7 +8,11 @@ import {
 } from "@blocknote/react";
 import "@blocknote/mantine/style.css";
 import { schema } from "./schema";
-import { getDsaTemplateItems, getMermaidItem } from "./dsaTemplates";
+import {
+  getDrawingItem,
+  getDsaTemplateItems,
+  getMermaidItem,
+} from "./dsaTemplates";
 import { getVaultLinkItems } from "./VaultLink";
 import { useUiStore } from "@/app/store";
 
@@ -49,6 +53,7 @@ export function NoteEditor({ initialContent, onChange }: NoteEditorProps) {
             [
               ...getDsaTemplateItems(editor),
               getMermaidItem(editor),
+              getDrawingItem(editor),
               ...getDefaultReactSlashMenuItems(editor),
             ],
             query,

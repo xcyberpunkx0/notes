@@ -4,6 +4,7 @@ import {
   Clock,
   GitBranch,
   Lightbulb,
+  PencilSimple,
   TreeStructure,
   PuzzlePiece,
   FlowArrow,
@@ -142,5 +143,16 @@ export function getMermaidItem(editor: Editor): DefaultReactSuggestionItem {
     group: "DSA sections",
     icon: <FlowArrow size={18} />,
     onItemClick: () => insertSection(editor, [{ type: "mermaid" }]),
+  };
+}
+
+export function getDrawingItem(editor: Editor): DefaultReactSuggestionItem {
+  return {
+    title: "Drawing",
+    subtext: "Freehand sketch — trees, pointers, anything",
+    aliases: ["drawing", "sketch", "draw", "canvas", "excalidraw"],
+    group: "DSA sections",
+    icon: <PencilSimple size={18} />,
+    onItemClick: () => insertSection(editor, [{ type: "drawing" }]),
   };
 }

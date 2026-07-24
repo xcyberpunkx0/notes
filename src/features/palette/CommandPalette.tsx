@@ -5,7 +5,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import {
   Barbell,
   Brain,
+  DownloadSimple,
   FileArrowDown,
+  FolderOpen,
   Note,
   House,
   Books,
@@ -16,8 +18,10 @@ import {
   Plus,
   TextAa,
 } from "@phosphor-icons/react";
+import { message } from "@tauri-apps/plugin-dialog";
 import { useUiStore } from "@/app/store";
 import { useVaultSearch } from "@/db/search";
+import { backupNow, exportMarkdown } from "@/lib/data-io";
 
 interface Action {
   id: string;
@@ -62,6 +66,25 @@ export function CommandPalette() {
     { id: "new-note", label: "New note", icon: <PencilSimpleLine size={16} />, run: () => navigate("/topics") },
     { id: "log-problem", label: "Log a problem", icon: <Plus size={16} />, run: () => setQuickLogOpen(true) },
     { id: "import-md", label: "New note from markdown", icon: <FileArrowDown size={16} />, run: () => setMdImportOpen(true) },
+    {
+      id: "backup",
+      label: "Back up data (offline file)",
+      icon: <DownloadSimple size={16} />,
+      run: async () => {
+        const dest = await backupNow();
+        if (dest) await message(`Backup saved to:\n${dest}`, { title: "Backup complete" });
+      },
+    },
+    {
+      id: "export-md",
+      label: "Export everything as markdown",
+      icon: <FolderOpen size={16} />,
+      run: async () => {
+        const result = await exportMarkdown();
+        if (result)
+          await message(`Exported ${result.count} files to:\n${result.dir}`, { title: "Export complete" });
+      },
+    },
   ];
 
   return (

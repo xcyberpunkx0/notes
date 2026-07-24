@@ -9,6 +9,11 @@
     "sql:default",
     "sql:allow-load",
     "sql:allow-select",
-    "sql:allow-execute"
+    "sql:allow-execute",
+    "dialog:allow-save",
+    "dialog:allow-open",
+    "dialog:allow-message",
+    "updater:default",
+    "process:allow-restart"
   ]
 }

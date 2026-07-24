@@ -10,20 +10,23 @@ import { ProblemDetailPage } from "@/features/problems/ProblemDetailPage";
 import { ResolvePage } from "@/features/problems/ResolvePage";
 import { GraphPage } from "@/features/graph/GraphPage";
 
+/** Shared by the main window and split-view panes. */
+export const childRoutes = [
+  { index: true, element: <HomePage /> },
+  { path: "review", element: <ReviewPage /> },
+  { path: "topics", element: <TopicsPage /> },
+  { path: "topics/:topicId", element: <TopicDetailPage /> },
+  { path: "notes/:noteId", element: <NotePage /> },
+  { path: "problems", element: <ProblemsPage /> },
+  { path: "problems/:problemId", element: <ProblemDetailPage /> },
+  { path: "resolve", element: <ResolvePage /> },
+  { path: "graph", element: <GraphPage /> },
+];
+
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <AppShell />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: "review", element: <ReviewPage /> },
-      { path: "topics", element: <TopicsPage /> },
-      { path: "topics/:topicId", element: <TopicDetailPage /> },
-      { path: "notes/:noteId", element: <NotePage /> },
-      { path: "problems", element: <ProblemsPage /> },
-      { path: "problems/:problemId", element: <ProblemDetailPage /> },
-      { path: "resolve", element: <ResolvePage /> },
-      { path: "graph", element: <GraphPage /> },
-    ],
+    children: childRoutes,
   },
 ]);
