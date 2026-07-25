@@ -8,6 +8,9 @@ export function Splash() {
   return (
     <div
       className="splash"
+      onAnimationStart={(e) => {
+        if (e.animationName === "splash-out") e.currentTarget.style.pointerEvents = "none";
+      }}
       onAnimationEnd={(e) => {
         if (e.animationName === "splash-out") setGone(true);
       }}
