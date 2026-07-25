@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { NoteEditor } from "@/editor/NoteEditor";
 import { BacklinksPanel } from "@/components/BacklinksPanel";
+import { PageShell } from "@/components/page/PageShell";
 import { saveNoteContent, useNote } from "@/db/notes";
 import type { BlockNode } from "@/lib/extract-text";
 
@@ -74,36 +75,40 @@ function NoteView({
   }, []);
 
   return (
-    <div className="mx-auto h-full max-w-[708px] px-8">
-      <div className="flex items-center justify-between pt-12">
-        <input
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-            latest.current.title = e.target.value;
-            scheduleSave();
-          }}
-          placeholder="Untitled"
-          className="w-full bg-transparent font-(family-name:--font-display) text-[28px] font-semibold tracking-tight outline-none placeholder:text-text-faint"
-        />
-        <span className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-text-faint">
-          {saveState === "saving" ? "Saving…" : saveState === "saved" ? "Saved" : ""}
-        </span>
-      </div>
+    <div className="h-full overflow-y-auto">
+      <PageShell
+        title={
+          <div className="flex items-center justify-between gap-3">
+            <input
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                latest.current.title = e.target.value;
+                scheduleSave();
+              }}
+              placeholder="Untitled"
+              className="w-full bg-transparent font-(family-name:--font-display) text-[28px] font-semibold tracking-tight outline-none placeholder:text-text-faint"
+            />
+            <span className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-text-faint">
+              {saveState === "saving" ? "Saving…" : saveState === "saved" ? "Saved" : ""}
+            </span>
+          </div>
+        }
+      >
+        <div className="-mx-[54px] pt-4">
+          <NoteEditor
+            initialContent={initialContent}
+            onChange={(blocks) => {
+              latest.current.blocks = blocks as BlockNode[];
+              scheduleSave();
+            }}
+          />
+        </div>
 
-      <div className="-mx-[54px] pt-4">
-        <NoteEditor
-          initialContent={initialContent}
-          onChange={(blocks) => {
-            latest.current.blocks = blocks as BlockNode[];
-            scheduleSave();
-          }}
-        />
-      </div>
-
-      <div className="pb-24">
-        <BacklinksPanel targetType="note" targetId={noteId} />
-      </div>
+        <div className="pb-24">
+          <BacklinksPanel targetType="note" targetId={noteId} />
+        </div>
+      </PageShell>
     </div>
   );
 }

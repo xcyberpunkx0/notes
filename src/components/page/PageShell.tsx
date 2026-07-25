@@ -7,7 +7,7 @@ export function PageShell({
   children,
 }: {
   icon?: ReactNode;
-  title: string;
+  title: ReactNode;
   subtitle?: string;
   children: ReactNode;
 }) {
