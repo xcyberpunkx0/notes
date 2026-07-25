@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { DownloadSimple, SidebarSimple } from "@phosphor-icons/react";
+import {
+  DownloadSimple,
+  MoonStars,
+  SidebarSimple,
+  Sun,
+  TextAa,
+} from "@phosphor-icons/react";
 import { useUiStore } from "./store";
 import { useDueCount, useStreak } from "@/db/reviews";
 import { useTopics } from "@/db/topics";
@@ -113,6 +119,9 @@ export function Sidebar() {
   const workspaceName = useUiStore((s) => s.workspaceName);
   const setPaletteOpen = useUiStore((s) => s.setPaletteOpen);
   const updateVersion = useUiStore((s) => s.updateVersion);
+  const theme = useUiStore((s) => s.theme);
+  const toggleTheme = useUiStore((s) => s.toggleTheme);
+  const setFontDialogOpen = useUiStore((s) => s.setFontDialogOpen);
   const { data: dueCount } = useDueCount();
   const { data: topics } = useTopics();
   const streak = useStreak();
@@ -266,6 +275,22 @@ export function Sidebar() {
           <IconStreak className={rowIconClass} />
           {!collapsed && <span className="truncate">{streak}-day streak</span>}
         </div>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          title="Switch theme"
+          className="flex size-7 shrink-0 items-center justify-center rounded-md text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+        >
+          {theme === "dark" ? <Sun size={15} /> : <MoonStars size={15} />}
+        </button>
+        <button
+          type="button"
+          onClick={() => setFontDialogOpen(true)}
+          title="Change font"
+          className="flex size-7 shrink-0 items-center justify-center rounded-md text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
+        >
+          <TextAa size={15} />
+        </button>
         <button
           type="button"
           onClick={toggleSidebar}
