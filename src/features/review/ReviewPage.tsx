@@ -10,17 +10,25 @@ import {
   Target,
   Confetti,
 } from "@phosphor-icons/react";
-import { PageHeader } from "@/components/PageHeader";
+import { PageShell } from "@/components/page/PageShell";
+import { ListRow } from "@/components/page/ListRow";
+import { Heatmap } from "@/components/Heatmap";
 import {
+  useActivity,
   useDueReviews,
   useRateReview,
   useStreak,
+  useTopicStats,
   type DueReview,
 } from "@/db/reviews";
-import { useTopic } from "@/db/topics";
+import { useTopic, useTopics } from "@/db/topics";
 import { DEBRIEF_FIELDS, useProblem } from "@/db/problems";
 import { PROMPTS } from "@/features/problems/DebriefFlow";
-import { checkAchievements, type AchievementDef } from "@/db/achievements";
+import {
+  checkAchievements,
+  useUnlockedAchievements,
+  type AchievementDef,
+} from "@/db/achievements";
 import { Markdown } from "@/components/Markdown";
 import type { Rating } from "@/lib/scheduler";
 import { cn } from "@/lib/utils";
@@ -46,6 +54,21 @@ export function ReviewPage() {
   const [doneCount, setDoneCount] = useState(0);
   const [sessionTotal, setSessionTotal] = useState<number | null>(null);
   const [newBadges, setNewBadges] = useState<AchievementDef[]>([]);
+
+  // Re-homed motivation panels (moved off Home): weak spots, activity, milestones
+  const { data: allTopics } = useTopics();
+  const { data: topicStats } = useTopicStats();
+  const { data: activity } = useActivity();
+  const { data: achievements } = useUnlockedAchievements();
+  const weakTopics = (topicStats ?? [])
+    .filter((s) => s.items >= 2 && (s.mastery < 0.4 || s.lapses >= 3))
+    .sort((a, b) => a.mastery - b.mastery)
+    .slice(0, 3)
+    .map((s) => ({ ...s, topic: allTopics?.find((t) => t.id === s.topic_id) }))
+    .filter(
+      (s): s is typeof s & { topic: NonNullable<typeof s.topic> } =>
+        !!s.topic,
+    );
 
   // Fresh session counters when entering/leaving focused mode
   useEffect(() => {
@@ -84,30 +107,31 @@ export function ReviewPage() {
   const sessionDone = sessionTotal !== null && due !== undefined && due.length === 0;
 
   return (
-    <div className="h-full">
-      <PageHeader
-        eyebrow={focusTopicId ? "Focused practice" : "Retention loop"}
+    <div className="h-full overflow-y-auto">
+      <PageShell
         title="Review"
+        subtitle={focusTopicId ? "Focused practice" : "Retention loop"}
       >
-        <span className="flex items-center gap-3">
-          {focusTopicId && focusTopic && (
-            <button
-              onClick={() => navigate("/review")}
-              title="Back to everything due"
-              className="flex h-8 items-center gap-1.5 rounded-full bg-accent-soft px-3 text-[12px] font-medium text-accent transition-colors hover:brightness-110"
-            >
-              {focusTopic.icon} {focusTopic.name} ✕
-            </button>
-          )}
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            {focusTopicId && focusTopic && (
+              <button
+                onClick={() => navigate("/review")}
+                title="Back to everything due"
+                className="flex h-8 items-center gap-1.5 rounded-full bg-accent-soft px-3 text-[12px] font-medium text-accent transition-colors hover:brightness-110"
+              >
+                {focusTopic.icon} {focusTopic.name} ✕
+              </button>
+            )}
+          </div>
           {total > 0 && !sessionDone && (
             <span className="font-mono text-[11px] text-text-faint">
               {doneCount} / {total}
             </span>
           )}
-        </span>
-      </PageHeader>
+        </div>
 
-      <div className="mx-auto max-w-xl px-8">
+      <div className="mx-auto max-w-xl">
         <AnimatePresence mode="wait">
           {sessionDone ? (
             <motion.div
@@ -278,6 +302,58 @@ export function ReviewPage() {
           ) : null}
         </AnimatePresence>
       </div>
+
+        {/* Needs attention — weak spots re-homed from the old Home page */}
+        {weakTopics.length > 0 && (
+          <div className="mt-10">
+            <h2 className="m-0 mb-2 text-[15px] font-semibold">
+              Needs attention
+            </h2>
+            <div>
+              {weakTopics.map((s) => (
+                <ListRow
+                  key={s.topic_id}
+                  glyph={s.topic.icon || "◆"}
+                  tag={`${Math.round(s.mastery * 100)}% retained`}
+                  onClick={() => navigate(`/review?topic=${s.topic_id}`)}
+                >
+                  {s.topic.name}
+                </ListRow>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Activity — heatmap re-homed from the old Home page */}
+        {activity && activity.length > 0 && (
+          <div className="mt-10">
+            <Heatmap activity={activity} />
+          </div>
+        )}
+
+        {/* Milestones — achievements re-homed from the old Home page */}
+        <div className="mt-10">
+          <h2 className="m-0 mb-2 text-[15px] font-semibold">Milestones</h2>
+          {achievements && achievements.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2">
+              {achievements.map((a) => (
+                <div
+                  key={a.key}
+                  title={a.description}
+                  className="flex items-center gap-2.5 rounded-lg border border-line bg-surface px-3.5 py-2.5 text-[13px] font-medium"
+                >
+                  <span className="text-base">{a.emoji}</span>
+                  {a.title}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg border border-line border-dashed bg-surface px-4 py-6 text-center text-[12.5px] text-text-faint">
+              Unlock badges by writing, logging and reviewing.
+            </div>
+          )}
+        </div>
+      </PageShell>
     </div>
   );
 }

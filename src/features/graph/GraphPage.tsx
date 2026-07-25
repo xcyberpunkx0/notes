@@ -10,7 +10,6 @@ import {
   type SimulationNodeDatum,
 } from "d3-force";
 import { Graph } from "@phosphor-icons/react";
-import { PageHeader } from "@/components/PageHeader";
 import { useGraphData, type GraphNode } from "@/db/links";
 
 const W = 960;
@@ -65,13 +64,19 @@ export function GraphPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <PageHeader eyebrow="Connections" title="Graph">
+      <div className="flex items-end justify-between px-10 pb-6 pt-10">
+        <div>
+          <h1 className="m-0 mb-1 text-[28px] font-bold tracking-[-0.015em]">
+            Graph
+          </h1>
+          <div className="text-[13.5px] text-text-faint">Connections</div>
+        </div>
         {layout && (
           <span className="font-mono text-[11px] text-text-faint">
             {layout.nodes.length} nodes · {layout.links.length} edges
           </span>
         )}
-      </PageHeader>
+      </div>
 
       <div className="min-h-0 flex-1 px-10 pb-10">
         {!layout ? (

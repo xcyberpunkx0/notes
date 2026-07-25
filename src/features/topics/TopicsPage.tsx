@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Books, Plus, Sparkle, X } from "@phosphor-icons/react";
-import { PageHeader } from "@/components/PageHeader";
+import { PageShell } from "@/components/page/PageShell";
 import { FacetMotif } from "@/assets/brand/FacetMotif";
 import { useCreateTopic, useTopics, type Topic } from "@/db/topics";
 import { useTopicStats, type TopicStats } from "@/db/reviews";
@@ -25,18 +25,18 @@ export function TopicsPage() {
   }
 
   return (
-    <div className="h-full">
-      <PageHeader eyebrow="Concept Books" title="Topics">
-        <button
-          onClick={() => setDialogOpen(true)}
-          className="btn-primary"
-        >
-          <Plus size={15} />
-          New topic
-        </button>
-      </PageHeader>
+    <div className="h-full overflow-y-auto">
+      <PageShell title="Topics" subtitle="Concept Books">
+        <div className="mb-6 flex justify-end">
+          <button
+            onClick={() => setDialogOpen(true)}
+            className="btn-primary"
+          >
+            <Plus size={15} />
+            New topic
+          </button>
+        </div>
 
-      <div className="px-10 pb-12">
         {isLoading ? null : topics && topics.length > 0 ? (
           <TopicGrid topics={topics} />
         ) : (
@@ -70,7 +70,7 @@ export function TopicsPage() {
             </div>
           </div>
         )}
-      </div>
+      </PageShell>
 
       <NewTopicDialog
         open={dialogOpen}
@@ -125,17 +125,14 @@ function TopicGrid({ topics }: { topics: Topic[] }) {
   const childrenOf = (id: number) => topics.filter((t) => t.parent_id === id);
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-4">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-3">
       {roots.map((topic) => {
         const children = childrenOf(topic.id);
         return (
           <button
             key={topic.id}
             onClick={() => navigate(`/topics/${topic.id}`)}
-            className="card card-hover group flex flex-col items-start gap-4 p-5 text-left"
-            style={{
-              background: `linear-gradient(135deg, ${topic.color ?? "#8e6bf5"}14, transparent 55%), var(--surface)`,
-            }}
+            className="card group flex flex-col items-start gap-4 p-5 text-left transition-colors duration-150 hover:bg-surface-2 hover:border-line-strong"
           >
             <span className="flex w-full items-start justify-between">
               <span

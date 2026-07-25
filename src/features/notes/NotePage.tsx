@@ -74,8 +74,8 @@ function NoteView({
   }, []);
 
   return (
-    <div className="mx-auto h-full max-w-3xl px-8">
-      <div className="flex items-center justify-between pt-10">
+    <div className="mx-auto h-full max-w-[708px] px-8">
+      <div className="flex items-center justify-between pt-12">
         <input
           value={title}
           onChange={(e) => {
