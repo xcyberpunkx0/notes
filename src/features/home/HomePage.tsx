@@ -21,14 +21,7 @@ import {
 import { useTopics } from "@/db/topics";
 import { useUnlockedAchievements } from "@/db/achievements";
 import { formatRelative } from "@/lib/time";
-
-function greeting(): string {
-  const h = new Date().getHours();
-  if (h < 5) return "Burning the midnight oil";
-  if (h < 12) return "Good morning";
-  if (h < 17) return "Good afternoon";
-  return "Good evening";
-}
+import { greeting } from "@/lib/greeting";
 
 interface RecentNote {
   id: number;
