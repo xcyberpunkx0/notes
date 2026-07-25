@@ -29,7 +29,7 @@
   "plugins": {
     "updater": {
       "endpoints": [
-        "https://github.com/xcyberpunkx0/notes/releases/latest/download/latest.json"
+        "https://github.com/xcyberpunkx0/trove/releases/latest/download/latest.json"
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI1Njk0MjA1MjQ3QTNCREUKUldUZU8zb2tCVUpwSmRDNkQ5aUNaYmh6SUorUmF4a1pzVk5ZNEtoc0lIWWh3UG10QU9jeFQzaisK"
     }

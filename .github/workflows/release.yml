@@ -49,7 +49,7 @@ jobs:
               found { print }
             ' CHANGELOG.md
           } > release-notes.md
-          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "Notes $TAG" --notes-file release-notes.md --draft
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "Trove $TAG" --notes-file release-notes.md --draft
 
       - name: Build installers and attach to release
         uses: tauri-apps/tauri-action@v0
@@ -59,7 +59,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ""
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "Notes ${{ github.ref_name }}"
+          releaseName: "Trove ${{ github.ref_name }}"
           releaseDraft: true
           prerelease: false
 
