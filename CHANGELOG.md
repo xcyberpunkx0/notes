@@ -3,6 +3,21 @@
 Release notes are written per version below. The release workflow extracts the
 section matching the pushed tag and uses it as the GitHub release description.
 
+## v0.3.0
+
+### 💎 Meet Trove
+- **The app has a name: Trove** — your vault of hard-won knowledge. New gem
+  icon, new wordmark, same data: everything you've saved carries over
+  untouched, and auto-updates continue working.
+- A proper launch moment — the vault opens instead of a cold flash
+- The whole app now speaks in one voice: new greetings, empty states, and
+  achievement names
+- Rotating daily greetings so mornings don't repeat themselves
+
+> Heads-up: because the installer is now `Trove_…-setup.exe`, the old
+> `Notes` folder in Local AppData and its Start Menu shortcut stick around
+> after updating — delete them once and you're clean.
+
 ## v0.2.1
 
 ### 🔧 Fixes

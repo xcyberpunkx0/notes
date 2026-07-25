@@ -106,7 +106,7 @@ export function CommandPalette() {
             />
             <Command.List className="max-h-80 overflow-y-auto p-1.5">
               <Command.Empty className="py-8 text-center text-[13px] text-text-faint">
-                No notes match "{query}" yet.
+                Nothing in the Trove matches — yet.
               </Command.Empty>
 
               {results && results.length > 0 && (

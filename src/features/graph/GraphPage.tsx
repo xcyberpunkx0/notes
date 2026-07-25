@@ -79,10 +79,9 @@ export function GraphPage() {
             <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
               <Graph size={22} />
             </span>
-            <p className="text-sm font-medium">Nothing to map yet</p>
             <p className="max-w-sm text-[13px] text-text-dim">
-              Create topics, notes and problems — and link them with @ in the
-              editor — to watch your knowledge web grow here.
+              The graph grows as you link notes and problems — every
+              @-mention becomes an edge.
             </p>
           </div>
         ) : (

@@ -19,6 +19,7 @@ import "@fontsource/gaegu/700.css";
 import "@fontsource/patrick-hand";
 import "./styles/globals.css";
 import { router } from "./app/router";
+import { Splash } from "./app/Splash";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <MotionConfig reducedMotion="user">
         <IconContext.Provider value={{ weight: "duotone" }}>
           <RouterProvider router={router} />
+          <Splash />
         </IconContext.Provider>
       </MotionConfig>
     </QueryClientProvider>

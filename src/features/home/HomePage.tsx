@@ -21,14 +21,8 @@ import {
 import { useTopics } from "@/db/topics";
 import { useUnlockedAchievements } from "@/db/achievements";
 import { formatRelative } from "@/lib/time";
-
-function greeting(): string {
-  const h = new Date().getHours();
-  if (h < 5) return "Burning the midnight oil";
-  if (h < 12) return "Good morning";
-  if (h < 17) return "Good afternoon";
-  return "Good evening";
-}
+import { greeting } from "@/lib/greeting";
+import { FacetMotif } from "@/assets/brand/FacetMotif";
 
 interface RecentNote {
   id: number;
@@ -89,14 +83,6 @@ export function HomePage() {
           <div>
             <h1 className="text-[32px] font-bold leading-tight tracking-tight">
               {greeting()}
-              {empty ? (
-                <>
-                  {" — ready to make it "}
-                  <span className="text-gradient">stick</span>?
-                </>
-              ) : (
-                "."
-              )}
             </h1>
           </div>
           {streak > 0 && (
@@ -117,7 +103,7 @@ export function HomePage() {
         {/* Today's review — the one thing to do right now */}
         <button
           onClick={() => navigate("/review")}
-          className="card card-hover group mt-10 flex w-full items-center gap-5 p-6 text-left"
+          className="card card-hover group relative mt-10 flex w-full items-center gap-5 overflow-hidden p-6 text-left"
           style={
             due > 0
               ? {
@@ -129,6 +115,9 @@ export function HomePage() {
               : undefined
           }
         >
+          {due === 0 && (
+            <FacetMotif className="pointer-events-none absolute inset-0 text-text opacity-[0.05]" />
+          )}
           <span className="flex size-13 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
             <Brain size={23} />
           </span>
@@ -136,7 +125,7 @@ export function HomePage() {
             <span className="block font-(family-name:--font-display) text-[17px] font-bold">
               {due > 0
                 ? `${due} item${due === 1 ? "" : "s"} ready for review`
-                : "Nothing due for review"}
+                : "Nothing due. You're clear."}
             </span>
             <span className="mt-1 block text-[13.5px] text-text-dim">
               {due > 0

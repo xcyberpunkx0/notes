@@ -1,7 +1,7 @@
 {
-  "name": "notes",
+  "name": "trove",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.3.0",
   "type": "module",
   "description": "A personal knowledge vault that refuses to let you forget — block editor, problem debriefs, and spaced-repetition review in a native desktop app. Born from studying DSA.",
   "license": "MIT",
@@ -73,6 +73,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
+    "sharp": "^0.35.3",
     "typescript": "~5.8.3",
     "vite": "^7.0.4",
     "vitest": "^4.1.10"

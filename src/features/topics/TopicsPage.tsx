@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Books, Plus, Sparkle, X } from "@phosphor-icons/react";
 import { PageHeader } from "@/components/PageHeader";
+import { FacetMotif } from "@/assets/brand/FacetMotif";
 import { useCreateTopic, useTopics, type Topic } from "@/db/topics";
 import { useTopicStats, type TopicStats } from "@/db/reviews";
 import {
@@ -39,15 +40,15 @@ export function TopicsPage() {
         {isLoading ? null : topics && topics.length > 0 ? (
           <TopicGrid topics={topics} />
         ) : (
-          <div className="card flex flex-col items-center gap-4 border-dashed py-20 text-center">
+          <div className="card relative flex flex-col items-center gap-4 overflow-hidden border-dashed py-20 text-center">
+            <FacetMotif className="pointer-events-none absolute inset-0 text-text opacity-[0.05]" />
             <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
               <Books size={20} />
             </span>
             <div>
-              <p className="text-sm font-medium">Give every concept a home</p>
+              <p className="text-sm font-medium">Your Trove starts here</p>
               <p className="mx-auto mt-1 max-w-sm text-[13px] text-text-dim">
-                Topics hold your notes — Arrays, Graphs, DP, anything you're
-                learning.
+                Create a topic for the first thing you want to truly know.
               </p>
             </div>
             <div className="flex gap-2">

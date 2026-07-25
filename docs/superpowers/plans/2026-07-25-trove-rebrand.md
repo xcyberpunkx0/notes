@@ -322,25 +322,18 @@ git commit -m "feat(brand): rename app to Trove"
 ```xml
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="g" x1="256" y1="256" x2="768" y2="800" gradientUnits="userSpaceOnUse">
+    <linearGradient id="g" x1="256" y1="240" x2="800" y2="816" gradientUnits="userSpaceOnUse">
       <stop stop-color="#8e6bf5"/><stop offset="1" stop-color="#c084fc"/>
     </linearGradient>
   </defs>
   <rect width="1024" height="1024" rx="232" fill="#131019"/>
-  <g stroke="url(#g)" stroke-width="40" stroke-linecap="round">
-    <line x1="352" y1="256" x2="672" y2="256"/><line x1="672" y1="256" x2="768" y2="448"/>
-    <line x1="768" y1="448" x2="512" y2="800"/><line x1="512" y1="800" x2="256" y2="448"/>
-    <line x1="256" y1="448" x2="352" y2="256"/><line x1="256" y1="448" x2="768" y2="448"/>
-    <line x1="352" y1="256" x2="512" y2="448"/><line x1="672" y1="256" x2="512" y2="448"/>
-    <line x1="512" y1="448" x2="512" y2="800"/>
-  </g>
-  <g fill="url(#g)">
-    <circle cx="352" cy="256" r="44"/><circle cx="672" cy="256" r="44"/>
-    <circle cx="768" cy="448" r="44"/><circle cx="512" cy="800" r="44"/>
-    <circle cx="256" cy="448" r="44"/><circle cx="512" cy="448" r="44"/>
-  </g>
+  <path d="M352 240 L672 240 L800 448 L512 816 L224 448 Z" fill="url(#g)"/>
+  <path d="M224 448 L800 448 M352 240 L512 448 L672 240 M512 448 L512 816"
+        stroke="#131019" stroke-width="42" stroke-linejoin="round" fill="none" opacity="0.9"/>
 </svg>
 ```
+
+(Amended 2026-07-25: solid-facet design B chosen by Aditya over the original wireframe — matches Task 1b's GemMark.)
 
 - [ ] **Step 2: Render script**
 

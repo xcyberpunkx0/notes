@@ -39,10 +39,9 @@ export function ResolvePage() {
             <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
               <Barbell size={22} />
             </span>
-            <p className="text-sm font-medium">Nothing to practice yet</p>
             <p className="max-w-sm text-[13px] text-text-dim">
-              Log a few problems first — then this page will challenge you to
-              solve them again from scratch.
+              Log a few problems first — then come back and re-solve them
+              cold.
             </p>
           </div>
         ) : problem ? (
