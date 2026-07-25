@@ -26,6 +26,25 @@ jobs:
 
       - run: npm ci
 
+      - name: Create release with description
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $TAG already exists, skipping creation"
+            exit 0
+          fi
+          {
+            echo "## Installation"
+            echo
+            echo "Download the **\`.exe\`** (NSIS) or **\`.msi\`** installer below and run it. Installed copies update automatically when a new release is published here."
+            echo
+            gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" -f tag_name="$TAG" --jq .body
+          } > release-notes.md
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "Notes $TAG" --notes-file release-notes.md
+
       - name: Build and publish release
         uses: tauri-apps/tauri-action@v0
         env:

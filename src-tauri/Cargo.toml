@@ -1,6 +1,6 @@
 [package]
 name = "dsa-vault"
-version = "0.1.0"
+version = "0.2.0"
 description = "A personal knowledge vault for Data Structures & Algorithms"
 authors = ["Aditya"]
 edition = "2021"
