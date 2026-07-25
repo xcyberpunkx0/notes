@@ -5,6 +5,7 @@ import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { TabBar } from "./TabBar";
 import { SplitPane } from "./SplitPane";
+import { SplitPaneBoundary } from "./SplitPaneBoundary";
 import { CommandPalette } from "@/features/palette/CommandPalette";
 import { QuickLogDialog } from "@/features/problems/QuickLogDialog";
 import { FontDialog } from "@/components/FontDialog";
@@ -118,7 +119,9 @@ export function AppShell() {
             <>
               <div className="w-px shrink-0 bg-line" />
               <div className="min-w-0 flex-1">
-                <SplitPane />
+                <SplitPaneBoundary>
+                  <SplitPane />
+                </SplitPaneBoundary>
               </div>
             </>
           )}
