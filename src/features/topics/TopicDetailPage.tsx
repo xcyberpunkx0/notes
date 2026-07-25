@@ -63,7 +63,7 @@ export function TopicDetailPage() {
             disabled={createNote.isPending}
             className="btn-primary"
           >
-            <Plus size={15} />
+            <Plus size={15} weight="bold" />
             New note
           </button>
         </div>

@@ -28,7 +28,7 @@ export function ProblemsPage() {
       <PageShell title="Problems" subtitle="Problem tracker">
         <div className="mb-6 flex justify-end">
           <button onClick={() => setLogOpen(true)} className="btn-primary">
-            <Plus size={15} />
+            <Plus size={15} weight="bold" />
             Log problem
           </button>
         </div>

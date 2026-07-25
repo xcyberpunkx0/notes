@@ -1,7 +1,16 @@
 import type { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router";
 import {
+  Barbell,
+  Books,
+  Brain,
   DownloadSimple,
+  Flame,
+  Graph,
+  House,
+  MagnifyingGlass,
+  Plus,
+  Target,
   MoonStars,
   SidebarSimple,
   Sun,
@@ -14,93 +23,6 @@ import { installPendingUpdate } from "@/lib/updater";
 import { cn } from "@/lib/utils";
 import { GemMark } from "@/assets/brand/GemMark";
 
-/**
- * Gem-family line icons — copied verbatim (path data + stroke props) from
- * the calm-shell mockup's `.row svg` set so the sidebar matches the design
- * authority pixel-for-pixel. Kept local: nothing outside Sidebar uses them.
- */
-type IconProps = { className?: string };
-
-function IconSearch({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" className={className}>
-      <circle cx="11" cy="11" r="6.5" />
-      <path d="M20 20 L16 16" />
-    </svg>
-  );
-}
-
-function IconHome({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M4 11 L12 4 L20 11 M6 9.5 L6 20 L18 20 L18 9.5" />
-    </svg>
-  );
-}
-
-function IconReview({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" className={className}>
-      <path d="M18.5 9 A7 7 0 1 0 19 13.5 M19 5.5 L19 9 L15.5 9" />
-    </svg>
-  );
-}
-
-function IconTopics({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinejoin="round" className={className}>
-      <path d="M6 5 L12 5 L14.5 8.5 L9 14 L3.5 8.5 Z M12.5 12 L17 12 L19.5 15 L15 20 L10.5 15.5" />
-    </svg>
-  );
-}
-
-function IconProblems({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className={className}>
-      <circle cx="12" cy="12" r="8" />
-      <path d="M8.5 10 L15.5 10 L12 16 Z" />
-    </svg>
-  );
-}
-
-function IconResolve({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" className={className}>
-      <path d="M12 4 C15 7.5 17.5 9.5 17.5 13 A5.5 5.5 0 0 1 6.5 13 C6.5 9.5 9 7.5 12 4 Z" />
-    </svg>
-  );
-}
-
-function IconGraph({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className={className}>
-      <circle cx="6" cy="6" r="2" />
-      <circle cx="18" cy="8" r="2" />
-      <circle cx="9" cy="18" r="2" />
-      <path d="M8 6.5 L16 7.8 M7.8 16.2 L16.5 9.5" />
-    </svg>
-  );
-}
-
-function IconPlus({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" className={className}>
-      <path d="M12 5 L12 19 M5 12 L19 12" />
-    </svg>
-  );
-}
-
-function IconStreak({ className }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" className={className}>
-      <path d="M12 8 L12 12 L15 15" />
-      <circle cx="12" cy="12" r="8.5" />
-    </svg>
-  );
-}
-
-/** `.row svg` from the mockup: 15px, 75% opacity, never shrinks. */
-const rowIconClass = "size-[15px] shrink-0 opacity-75";
 /** `.row` from the mockup, minus the state-dependent color. */
 const rowBase =
   "flex items-center gap-[9px] rounded-md px-2.5 py-[5px] text-[13.5px] transition-colors duration-150 w-full text-left";
@@ -167,7 +89,7 @@ export function Sidebar() {
             collapsed && "justify-center px-0",
           )}
         >
-          <IconSearch className={rowIconClass} />
+          <MagnifyingGlass size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">Search</span>}
           {!collapsed && (
             <span className="ml-auto font-mono text-[10px] text-text-faint">
@@ -177,12 +99,12 @@ export function Sidebar() {
         </button>
 
         <NavLink to="/" end title={collapsed ? "Home" : undefined} className={navRowClass}>
-          <IconHome className={rowIconClass} />
+          <House size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">Home</span>}
         </NavLink>
 
         <NavLink to="/review" title={collapsed ? "Review" : undefined} className={navRowClass}>
-          <IconReview className={rowIconClass} />
+          <Brain size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">Review</span>}
           {!collapsed && dueCount != null && (
             <span className="ml-auto rounded-[10px] bg-accent-soft px-[7px] py-px text-[11px] font-semibold text-accent">
@@ -194,19 +116,19 @@ export function Sidebar() {
         {!collapsed && <SectionLabel>STUDY</SectionLabel>}
 
         <NavLink to="/topics" end title={collapsed ? "Topics" : undefined} className={navRowClass}>
-          <IconTopics className={rowIconClass} />
+          <Books size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">Topics</span>}
         </NavLink>
         <NavLink to="/problems" title={collapsed ? "Problems" : undefined} className={navRowClass}>
-          <IconProblems className={rowIconClass} />
+          <Target size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">Problems</span>}
         </NavLink>
         <NavLink to="/resolve" title={collapsed ? "Re-solve" : undefined} className={navRowClass}>
-          <IconResolve className={rowIconClass} />
+          <Barbell size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">Re-solve</span>}
         </NavLink>
         <NavLink to="/graph" title={collapsed ? "Graph" : undefined} className={navRowClass}>
-          <IconGraph className={rowIconClass} />
+          <Graph size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">Graph</span>}
         </NavLink>
 
@@ -234,7 +156,7 @@ export function Sidebar() {
             collapsed && "justify-center px-0",
           )}
         >
-          <IconPlus className={rowIconClass} />
+          <Plus size={15} weight="regular" className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">New topic</span>}
         </button>
       </div>
@@ -272,7 +194,7 @@ export function Sidebar() {
         )}
       >
         <div className={cn(rowBase, "flex-1 cursor-default text-text-dim", collapsed && "justify-center px-0")}>
-          <IconStreak className={rowIconClass} />
+          <Flame size={15} className="shrink-0 opacity-75" />
           {!collapsed && <span className="truncate">{streak}-day streak</span>}
         </div>
         <button

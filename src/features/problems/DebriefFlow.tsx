@@ -81,7 +81,7 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
     <section className="card">
       <header className="flex items-center justify-between border-b border-line px-5 py-3">
         <span className="flex items-center gap-2 text-[13px] font-semibold">
-          <Sparkle size={14} className="text-accent" />
+          <Sparkle size={14} weight="regular" className="text-accent" />
           Debrief
         </span>
         <span className="flex items-center gap-1.5">

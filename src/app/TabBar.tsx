@@ -42,7 +42,7 @@ function Tab({ tab, active }: { tab: TabInfo; active: boolean }) {
             !active && "opacity-0 group-hover:opacity-100",
           )}
         >
-          <X size={10} />
+          <X size={10} weight="regular" />
         </button>
       )}
     </div>
@@ -70,7 +70,7 @@ export function TabBar() {
         title="New tab (Ctrl+T)"
         className="flex size-7 shrink-0 items-center justify-center rounded-lg text-text-faint transition-colors hover:bg-surface-2 hover:text-text"
       >
-        <Plus size={14} />
+        <Plus size={14} weight="regular" />
       </button>
     </div>
   );

@@ -113,7 +113,7 @@ export function AppShell() {
           {tabs.length > 1 && <TabBar />}
           <div className="flex min-h-0 flex-1">
             <main className="relative min-w-0 flex-1 overflow-y-auto">
-              <div key={location.pathname} className="page-enter h-full">
+              <div className="h-full">
                 <Outlet />
               </div>
             </main>

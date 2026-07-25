@@ -34,7 +34,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <MotionConfig reducedMotion="user">
-        <IconContext.Provider value={{ weight: "duotone" }}>
+        <IconContext.Provider value={{ weight: "regular" }}>
           <RouterProvider router={router} />
           <Splash />
         </IconContext.Provider>

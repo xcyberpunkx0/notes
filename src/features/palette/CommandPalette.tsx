@@ -64,7 +64,7 @@ export function CommandPalette() {
 
   const create: Action[] = [
     { id: "new-note", label: "New note", icon: <PencilSimpleLine size={16} />, run: () => navigate("/topics") },
-    { id: "log-problem", label: "Log a problem", icon: <Plus size={16} />, run: () => setQuickLogOpen(true) },
+    { id: "log-problem", label: "Log a problem", icon: <Plus size={16} weight="bold" />, run: () => setQuickLogOpen(true) },
     { id: "import-md", label: "New note from markdown", icon: <FileArrowDown size={16} />, run: () => setMdImportOpen(true) },
     {
       id: "backup",
