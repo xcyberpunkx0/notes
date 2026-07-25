@@ -227,28 +227,25 @@
     pointer-events: none;
   }
 
-  /* Quiet secondary action */
+  /* Quiet secondary action — borderless text button, surface on hover */
   .btn-ghost {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     height: 2.5rem;
-    border-radius: 0.875rem;
+    border-radius: 8px;
     padding-inline: 1rem;
     font-size: 13px;
     font-weight: 500;
     color: var(--text-dim);
-    border: 1px solid var(--line);
     transition:
       background-color 0.15s ease-out,
-      color 0.15s ease-out,
-      border-color 0.15s ease-out;
+      color 0.15s ease-out;
   }
   .btn-ghost:hover {
     background: var(--surface-2);
     color: var(--text);
-    border-color: var(--line-strong);
   }
 
   /* Gradient headline text — reserved for the GemMark/wordmark/splash brand moments.

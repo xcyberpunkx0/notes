@@ -48,11 +48,11 @@ export function ImportMarkdownDialog() {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]" />
         <Dialog.Content
-          className="fixed left-1/2 top-[8%] z-50 w-[620px] -translate-x-1/2 rounded-3xl border border-line-strong bg-surface p-6 shadow-2xl shadow-black/40"
+          className="fixed left-1/2 top-[8%] z-50 w-[620px] -translate-x-1/2 rounded-lg border border-line bg-surface p-6 shadow-xl shadow-black/20"
           aria-describedby={undefined}
         >
           <div className="flex items-center justify-between">
-            <Dialog.Title className="flex items-center gap-2 text-sm font-semibold">
+            <Dialog.Title className="flex items-center gap-2 text-[13.5px] font-semibold">
               <FileArrowDown size={15} className="text-accent" />
               New note from markdown
             </Dialog.Title>
