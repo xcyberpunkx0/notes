@@ -3,6 +3,17 @@
 Release notes are written per version below. The release workflow extracts the
 section matching the pushed tag and uses it as the GitHub release description.
 
+## v0.4.0
+
+### 🪶 The Calm Shell
+- **A completely redesigned, Notion-calm interface** — quiet neutral
+  surfaces, a workspace sidebar with your topics as pages, and content
+  that sits on a clean centered page
+- **Custom window frame** — Trove now draws its own title bar, breadcrumbs
+  and window controls; the generic OS chrome is gone
+- Purple now lives where it belongs: small accents and the gem itself
+- Same features, same data, same shortcuts — nothing to relearn
+
 ## v0.3.0
 
 ### 💎 Meet Trove
