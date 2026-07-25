@@ -132,19 +132,27 @@ export function Sidebar() {
       <div className="flex-1" />
 
       {/* Update banner */}
-      {updateVersion && (
-        <button
-          onClick={() => installPendingUpdate()}
-          title={`Update to v${updateVersion} and restart`}
-          className={cn(
-            "mx-2.5 mb-2 flex items-center gap-2 rounded-xl bg-accent-soft px-3 py-2 text-[12px] font-medium text-accent transition-all hover:brightness-110",
-            collapsed && "mx-2 justify-center px-0",
-          )}
-        >
-          <DownloadSimple size={15} className="shrink-0" />
-          {!collapsed && `Update to v${updateVersion}`}
-        </button>
-      )}
+      {updateVersion &&
+        (collapsed ? (
+          <button
+            onClick={() => installPendingUpdate()}
+            title="Update now"
+            className="mx-2 mb-2 flex items-center justify-center rounded-xl bg-accent-soft px-0 py-2 text-accent transition-all hover:brightness-110"
+          >
+            <DownloadSimple size={15} className="shrink-0" />
+          </button>
+        ) : (
+          <div className="mx-2.5 mb-2 flex items-center gap-2 rounded-xl bg-accent-soft px-3 py-2 text-[12px] font-medium text-accent">
+            <DownloadSimple size={15} className="shrink-0" />
+            <span className="flex-1 truncate">A new Trove is ready</span>
+            <button
+              onClick={() => installPendingUpdate()}
+              className="shrink-0 rounded-lg bg-accent px-2.5 py-1 text-[11px] font-semibold text-white transition-all hover:brightness-110"
+            >
+              Update now
+            </button>
+          </div>
+        ))}
 
       {/* Footer controls */}
       <div

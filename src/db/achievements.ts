@@ -12,20 +12,20 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   {
     key: "first_note",
     emoji: "📝",
-    title: "First page",
+    title: "Opening lines",
     description: "Wrote your first note",
   },
   {
     key: "first_problem",
     emoji: "🎯",
-    title: "First blood",
-    description: "Logged your first solved problem",
+    title: "First gem",
+    description: "Added your first solved problem to the Trove",
   },
   {
     key: "first_debrief",
     emoji: "💡",
-    title: "Lesson locked in",
-    description: "Completed a full problem debrief",
+    title: "First Facet",
+    description: "Cut a solve into a full debrief",
   },
   {
     key: "first_review",
@@ -36,14 +36,14 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   {
     key: "problems_10",
     emoji: "⚔️",
-    title: "Double digits",
-    description: "Logged 10 solved problems",
+    title: "Ten gems deep",
+    description: "Ten solved problems in the Trove",
   },
   {
     key: "streak_7",
     emoji: "🔥",
     title: "One week strong",
-    description: "7-day activity streak",
+    description: "Showed up seven days straight",
   },
 ];
 

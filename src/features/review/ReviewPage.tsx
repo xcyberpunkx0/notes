@@ -271,10 +271,8 @@ export function ReviewPage() {
               <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
                 <Brain size={22} />
               </span>
-              <p className="text-sm font-medium">All caught up</p>
               <p className="max-w-xs text-[13px] text-text-dim">
-                Nothing is due right now. New notes and problems join the queue
-                a day after you create them.
+                Queue is clear. Anything you add today comes back tomorrow.
               </p>
             </motion.div>
           ) : null}
