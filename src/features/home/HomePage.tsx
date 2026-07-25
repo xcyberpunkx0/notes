@@ -1,33 +1,20 @@
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import {
-  ArrowRight,
-  Brain,
-  Note,
-  Fire,
-  Books,
-  Target,
-  Plus,
-} from "@phosphor-icons/react";
 import { getDb } from "@/db/client";
-import { Backdrop } from "@/components/Backdrop";
-import { Heatmap } from "@/components/Heatmap";
-import {
-  useActivity,
-  useDueCount,
-  useStreak,
-  useTopicStats,
-} from "@/db/reviews";
-import { useTopics } from "@/db/topics";
-import { useUnlockedAchievements } from "@/db/achievements";
-import { formatRelative } from "@/lib/time";
+import { useDueCount, useStreak } from "@/db/reviews";
+import { useRecentProblems } from "@/db/problems";
 import { greeting } from "@/lib/greeting";
-import { FacetMotif } from "@/assets/brand/FacetMotif";
+import { GemMark } from "@/assets/brand/GemMark";
+import { PageShell } from "@/components/page/PageShell";
+import { Callout } from "@/components/page/Callout";
+import { PropertyChips } from "@/components/page/PropertyChips";
+import { ListRow } from "@/components/page/ListRow";
 
 interface RecentNote {
   id: number;
   title: string;
   updated_at: string;
+  topic_id: number | null;
   topic_name: string | null;
   topic_icon: string | null;
 }
@@ -39,7 +26,7 @@ function useHomeData() {
       const db = await getDb();
       const [recentNotes, counts] = await Promise.all([
         db.select<RecentNote[]>(
-          `SELECT n.id, n.title, n.updated_at, t.name AS topic_name, t.icon AS topic_icon
+          `SELECT n.id, n.title, n.updated_at, t.id AS topic_id, t.name AS topic_name, t.icon AS topic_icon
            FROM notes n LEFT JOIN topics t ON t.id = n.topic_id
            ORDER BY n.updated_at DESC LIMIT 5`,
         ),
@@ -54,256 +41,160 @@ function useHomeData() {
   });
 }
 
+/**
+ * Gem-family line icons — copied verbatim (path data + stroke props) from
+ * the calm-shell mockup's `.callout svg` / `.prop .k svg` sets so the home
+ * page matches the design authority pixel-for-pixel. Kept local: nothing
+ * outside this page uses them.
+ */
+type IconProps = { className?: string };
+
+function IconReview({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" className={className}>
+      <path d="M18.5 9 A7 7 0 1 0 19 13.5 M19 5.5 L19 9 L15.5 9" />
+    </svg>
+  );
+}
+
+function IconTopics({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" className={className}>
+      <path d="M6 5 L12 5 L14.5 8.5 L9 14 L3.5 8.5 Z" />
+    </svg>
+  );
+}
+
+function IconNotes({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
+      <path d="M5 4 L15 4 L19 8 L19 20 L5 20 Z" />
+    </svg>
+  );
+}
+
+function IconSolved({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
+      <circle cx="12" cy="12" r="8" />
+    </svg>
+  );
+}
+
+function IconStreak({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className={className}>
+      <path d="M12 4 C15 7.5 17.5 9.5 17.5 13 A5.5 5.5 0 0 1 6.5 13 C6.5 9.5 9 7.5 12 4 Z" />
+    </svg>
+  );
+}
+
+function longDate(now: Date = new Date()): string {
+  return now.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export function HomePage() {
   const navigate = useNavigate();
   const { data } = useHomeData();
   const { data: dueCount } = useDueCount();
+  const { data: recentProblems } = useRecentProblems(5);
   const streak = useStreak();
-  const { data: achievements } = useUnlockedAchievements();
-  const { data: activity } = useActivity();
-  const { data: topicStats } = useTopicStats();
-  const { data: topics } = useTopics();
 
-  const empty = data && data.counts.notes === 0 && data.counts.problems === 0;
   const due = dueCount ?? 0;
 
-  const weakTopics = (topicStats ?? [])
-    .filter((s) => s.items >= 2 && (s.mastery < 0.4 || s.lapses >= 3))
-    .sort((a, b) => a.mastery - b.mastery)
-    .slice(0, 3)
-    .map((s) => ({ ...s, topic: topics?.find((t) => t.id === s.topic_id) }))
-    .filter((s) => s.topic);
+  const recentTopics = (data?.recentNotes ?? [])
+    .filter((n): n is RecentNote & { topic_id: number } => n.topic_id != null)
+    .filter((n, i, arr) => arr.findIndex((x) => x.topic_id === n.topic_id) === i)
+    .slice(0, 3);
 
   return (
-    <div className="relative h-full overflow-y-auto">
-      <Backdrop />
-      <div className="relative mx-auto max-w-4xl px-10 pb-20 pt-16">
-        {/* Hero */}
-        <div className="flex items-end justify-between">
-          <div>
-            <h1 className="text-[32px] font-bold leading-tight tracking-tight">
-              {greeting()}
-            </h1>
-          </div>
-          {streak > 0 && (
-            <span
-              className="flex items-center gap-2 rounded-2xl border border-warning/25 px-4 py-2.5 font-(family-name:--font-display) text-lg font-bold text-warning"
-              style={{
-                background:
-                  "color-mix(in srgb, var(--warning) 10%, var(--surface))",
-              }}
-              title={`${streak} day streak`}
-            >
-              <Fire size={19} />
-              {streak}
-            </span>
-          )}
-        </div>
-
-        {/* Today's review — the one thing to do right now */}
-        <button
-          onClick={() => navigate("/review")}
-          className="card card-hover group relative mt-10 flex w-full items-center gap-5 overflow-hidden p-6 text-left"
-          style={
-            due > 0
-              ? {
-                  background:
-                    "linear-gradient(120deg, var(--accent-soft), transparent 60%), var(--surface)",
-                  borderColor:
-                    "color-mix(in srgb, var(--accent) 35%, var(--line))",
-                }
-              : undefined
-          }
+    <div className="h-full overflow-y-auto">
+      <PageShell
+        icon={<GemMark className="size-[60px]" />}
+        title={greeting()}
+        subtitle={longDate()}
+      >
+        <div
+          onClick={due > 0 ? () => navigate("/review") : undefined}
+          className={due > 0 ? "cursor-pointer" : undefined}
         >
-          {due === 0 && (
-            <FacetMotif className="pointer-events-none absolute inset-0 text-text opacity-[0.05]" />
-          )}
-          <span className="flex size-13 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-            <Brain size={23} />
-          </span>
-          <span className="flex-1">
-            <span className="block font-(family-name:--font-display) text-[17px] font-bold">
-              {due > 0
-                ? `${due} item${due === 1 ? "" : "s"} ready for review`
-                : "Nothing due. You're clear."}
-            </span>
-            <span className="mt-1 block text-[13.5px] text-text-dim">
-              {due > 0
+          <Callout
+            icon={<IconReview className="size-full text-accent" />}
+            title={due > 0 ? `${due} to review — keep them warm` : "Nothing due. You're clear."}
+            body={
+              due > 0
                 ? "A few minutes now beats an hour of re-learning later."
-                : "New notes and problems join the queue a day after you add them."}
-            </span>
-          </span>
-          {due > 0 && (
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent text-white transition-transform duration-150 group-hover:translate-x-1">
-              <ArrowRight size={17} />
-            </span>
-          )}
-        </button>
-
-        {/* Stats */}
-        <div className="mt-4 grid grid-cols-3 gap-4">
-          {[
-            { icon: Books, n: data?.counts.topics ?? 0, label: "topics", to: "/topics" },
-            { icon: Note, n: data?.counts.notes ?? 0, label: "notes", to: "/topics" },
-            { icon: Target, n: data?.counts.problems ?? 0, label: "problems solved", to: "/problems" },
-          ].map((s) => (
-            <button
-              key={s.label}
-              onClick={() => navigate(s.to)}
-              className="card card-hover flex flex-col items-start gap-3 p-5 text-left"
-            >
-              <s.icon size={17} className="text-accent" />
-              <span>
-                <span className="block font-(family-name:--font-display) text-2xl font-bold leading-none">
-                  {s.n}
-                </span>
-                <span className="mt-1.5 block text-[12.5px] text-text-dim">
-                  {s.label}
-                </span>
-              </span>
-            </button>
-          ))}
+                : "New notes and problems join the queue a day after you add them."
+            }
+          />
         </div>
 
-        {/* Weak spots — what to study today */}
-        {weakTopics.length > 0 && (
-          <div className="mt-10">
-            <p className="eyebrow mb-3">Needs attention</p>
-            <div className="grid grid-cols-3 gap-4">
-              {weakTopics.map((s) => (
-                <div key={s.topic_id} className="card flex flex-col gap-3 p-4">
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className="flex size-9 shrink-0 items-center justify-center rounded-xl text-base"
-                      style={{
-                        backgroundColor: `${s.topic!.color ?? "#8e6bf5"}24`,
-                      }}
-                    >
-                      {s.topic!.icon || "📚"}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block truncate text-[13px] font-semibold">
-                        {s.topic!.name}
-                      </span>
-                      <span className="block font-mono text-[10px] text-text-faint">
-                        {Math.round(s.mastery * 100)}% retained
-                        {s.lapses > 0 && ` · ${s.lapses} lapses`}
-                      </span>
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => navigate(`/review?topic=${s.topic_id}`)}
-                    className="btn-ghost !h-8 w-full !text-[12px]"
-                  >
-                    Review now
-                  </button>
-                </div>
+        <PropertyChips
+          items={[
+            { icon: <IconTopics className="size-full" />, label: "Topics", value: data?.counts.topics ?? 0 },
+            { icon: <IconNotes className="size-full" />, label: "Notes", value: data?.counts.notes ?? 0 },
+            { icon: <IconSolved className="size-full" />, label: "Solved", value: data?.counts.problems ?? 0 },
+            { icon: <IconStreak className="size-full" />, label: "Streak", value: streak },
+          ]}
+        />
+
+        <div className="flex items-center justify-between mt-6.5 mb-1.5">
+          <h2 className="text-[15px] font-semibold m-0">Recently solved</h2>
+          <button
+            onClick={() => navigate("/problems")}
+            className="text-text-faint text-[12.5px] hover:text-text-dim transition-colors"
+          >
+            See all →
+          </button>
+        </div>
+        <div>
+          {recentProblems && recentProblems.length > 0 ? (
+            recentProblems.map((p) => (
+              <ListRow
+                key={p.id}
+                tag={p.difficulty ?? undefined}
+                onClick={() => navigate(`/problems/${p.id}`)}
+              >
+                {p.title}
+              </ListRow>
+            ))
+          ) : (
+            <div className="text-text-faint text-[13.5px] py-2 px-1.5">
+              Every solve, remembered. Log one right after you solve it —{" "}
+              <kbd className="font-mono text-[11px] bg-surface-2 text-text-dim rounded px-1.5 py-0.5">
+                Ctrl Shift P
+              </kbd>{" "}
+              from anywhere.
+            </div>
+          )}
+        </div>
+
+        {recentTopics.length > 0 && (
+          <>
+            <div className="flex items-center justify-between mt-6.5 mb-1.5">
+              <h2 className="text-[15px] font-semibold m-0">
+                Pick up where you left off
+              </h2>
+            </div>
+            <div>
+              {recentTopics.map((n) => (
+                <ListRow
+                  key={n.topic_id}
+                  glyph="◆"
+                  tag="topic"
+                  onClick={() => navigate(`/topics/${n.topic_id}`)}
+                >
+                  {n.topic_name}
+                </ListRow>
               ))}
             </div>
-          </div>
+          </>
         )}
-
-        {/* Activity heatmap */}
-        {activity && activity.length > 0 && (
-          <div className="mt-10">
-            <Heatmap activity={activity} />
-          </div>
-        )}
-
-        {/* Continue learning + achievements */}
-        {(data?.recentNotes.length ?? 0) > 0 && (
-          <div className="mt-10 grid grid-cols-[2fr_1fr] items-start gap-4">
-            <div>
-              <p className="eyebrow mb-3">Continue learning</p>
-              <div className="card overflow-hidden">
-                {data!.recentNotes.map((n, i) => (
-                  <button
-                    key={n.id}
-                    onClick={() => navigate(`/notes/${n.id}`)}
-                    className={
-                      "flex w-full items-center gap-3.5 px-5 py-3.5 text-left transition-colors duration-100 hover:bg-surface-2 " +
-                      (i > 0 ? "border-t border-line" : "")
-                    }
-                  >
-                    <span className="text-base">{n.topic_icon ?? "📄"}</span>
-                    <span className="min-w-0 flex-1 truncate text-sm font-medium">
-                      {n.title || "Untitled"}
-                    </span>
-                    {n.topic_name && (
-                      <span className="font-mono text-[10px] text-text-faint">
-                        {n.topic_name}
-                      </span>
-                    )}
-                    <span className="w-14 shrink-0 text-right font-mono text-[10px] text-text-faint">
-                      {formatRelative(n.updated_at)}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <p className="eyebrow mb-3">Achievements</p>
-              {achievements && achievements.length > 0 ? (
-                <div className="flex flex-col gap-2.5">
-                  {achievements.map((a) => (
-                    <span
-                      key={a.key}
-                      title={a.description}
-                      className="card flex items-center gap-3 px-4 py-3 text-[13px] font-medium"
-                    >
-                      <span className="text-lg">{a.emoji}</span>
-                      {a.title}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <div className="card border-dashed px-4 py-6 text-center text-[12.5px] text-text-faint">
-                  Unlock badges by writing, logging and reviewing.
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* First-run CTA */}
-        {empty && (
-          <div className="mt-10 grid grid-cols-2 gap-4">
-            <button
-              onClick={() => navigate("/topics")}
-              className="card card-hover group flex flex-col items-start gap-4 p-6 text-left"
-            >
-              <span className="flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-                <Books size={19} />
-              </span>
-              <span>
-                <span className="block font-(family-name:--font-display) text-[15px] font-bold">
-                  Create your first topic
-                </span>
-                <span className="mt-1 block text-[13.5px] text-text-dim">
-                  Arrays, graphs, DP — give each concept a home.
-                </span>
-              </span>
-            </button>
-            <button
-              onClick={() => navigate("/problems")}
-              className="card card-hover group flex flex-col items-start gap-4 p-6 text-left"
-            >
-              <span className="flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-                <Plus size={19} />
-              </span>
-              <span>
-                <span className="block font-(family-name:--font-display) text-[15px] font-bold">
-                  Log a problem
-                </span>
-                <span className="mt-1 block text-[13.5px] text-text-dim">
-                  Capture what you just solved while the insight is hot.
-                </span>
-              </span>
-            </button>
-          </div>
-        )}
-      </div>
+      </PageShell>
     </div>
   );
 }
