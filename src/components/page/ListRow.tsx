@@ -19,7 +19,7 @@ export function ListRow({
       onClick={onClick}
     >
       {icon && <div className="w-3.75 h-3.75 opacity-70 flex-none">{icon}</div>}
-      {glyph && <div className="w-4 flex-none">{glyph}</div>}
+      {glyph && <div className="w-4 flex-none text-center text-[13px]">{glyph}</div>}
       <div>{children}</div>
       {tag && (
         <div className="ml-auto text-[11px] py-0.25 px-2 rounded-full bg-accent-soft text-accent">

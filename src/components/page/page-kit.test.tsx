@@ -16,7 +16,7 @@ describe("page kit components", () => {
     expect(html).toContain("mx-auto");
     expect(html).toContain("px-6");
     expect(html).toContain("pt-12");
-    expect(html).toContain("pb-32");
+    expect(html).toContain("pb-30");
     expect(html).toContain("Test Title");
     expect(html).toContain("Test content");
   });
@@ -99,6 +99,7 @@ describe("page kit components", () => {
     );
     expect(html).toContain("42");
     expect(html).toContain("font-semibold");
+    expect(html).not.toContain("text-text-dim");
   });
 
   it("ListRow renders with children and optional icon", () => {
