@@ -41,7 +41,11 @@ jobs:
             echo
             echo "Download the **\`.exe\`** (NSIS) or **\`.msi\`** installer below and run it. Installed copies update automatically when a new release is published here."
             echo
-            gh api "repos/$GITHUB_REPOSITORY/releases/generate-notes" -f tag_name="$TAG" --jq .body
+            awk -v tag="$TAG" '
+              $0 ~ "^## " tag "$" { found=1; next }
+              found && /^## / { exit }
+              found { print }
+            ' CHANGELOG.md
           } > release-notes.md
           gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "Notes $TAG" --notes-file release-notes.md
 
