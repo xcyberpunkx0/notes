@@ -32,7 +32,7 @@ export function TopicsPage() {
             onClick={() => setDialogOpen(true)}
             className="btn-primary"
           >
-            <Plus size={15} />
+            <Plus size={15} weight="bold" />
             New topic
           </button>
         </div>
@@ -56,7 +56,7 @@ export function TopicsPage() {
                 onClick={() => setDialogOpen(true)}
                 className="btn-primary"
               >
-                <Plus size={15} />
+                <Plus size={15} weight="bold" />
                 Create a topic
               </button>
               <button
@@ -64,7 +64,7 @@ export function TopicsPage() {
                 disabled={createTopic.isPending}
                 className="btn-ghost"
               >
-                <Sparkle size={14} />
+                <Sparkle size={14} weight="regular" />
                 Add 8 starter topics
               </button>
             </div>

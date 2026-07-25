@@ -46,14 +46,14 @@ export function TitleBar() {
         title="Go back"
         className="flex size-7 shrink-0 items-center justify-center rounded-lg text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
       >
-        <CaretLeft size={14} />
+        <CaretLeft size={14} weight="regular" />
       </button>
       <button
         onClick={() => navigate(1)}
         title="Go forward"
         className="flex size-7 shrink-0 items-center justify-center rounded-lg text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
       >
-        <CaretRight size={14} />
+        <CaretRight size={14} weight="regular" />
       </button>
 
       <div
@@ -81,7 +81,7 @@ export function TitleBar() {
             : "text-text-faint hover:bg-surface-2 hover:text-text",
         )}
       >
-        <SquareSplitHorizontal size={15} />
+        <SquareSplitHorizontal size={15} weight="regular" />
       </button>
 
       <div className="ml-1 flex h-full shrink-0 items-center">
@@ -90,21 +90,21 @@ export function TitleBar() {
           title="Minimize"
           className="flex size-9 items-center justify-center text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
         >
-          <Minus size={14} />
+          <Minus size={14} weight="bold" />
         </button>
         <button
           onClick={() => winAction(() => getCurrentWindow().toggleMaximize())}
           title="Maximize"
           className="flex size-9 items-center justify-center text-text-faint transition-colors duration-150 hover:bg-surface-2 hover:text-text"
         >
-          <Square size={12} />
+          <Square size={12} weight="regular" />
         </button>
         <button
           onClick={() => winAction(() => getCurrentWindow().close())}
           title="Close"
           className="flex size-9 items-center justify-center text-text-faint transition-colors duration-150 hover:bg-[#e5484d] hover:text-white"
         >
-          <X size={14} />
+          <X size={14} weight="regular" />
         </button>
       </div>
     </div>

@@ -3,6 +3,13 @@
 Release notes are written per version below. The release workflow extracts the
 section matching the pushed tag and uses it as the GitHub release description.
 
+## v0.4.1
+
+### 🔧 Fixes
+- Tab switching is smooth again — pages no longer tear down and rebuild on every switch
+- Icons are crisp everywhere: removed the translucent fill that read as a gray box behind window controls, buttons, and page icons
+- Buttons render truly transparent in the Windows WebView — no more phantom gray squares
+
 ## v0.4.0
 
 ### 🪶 The Calm Shell

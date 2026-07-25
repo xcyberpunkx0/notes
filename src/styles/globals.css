@@ -113,9 +113,13 @@
 
   button {
     cursor: pointer;
-    /* WebView2 paints a native button face for `appearance: button` that
-       Chrome doesn't — kill it so transparent buttons are transparent. */
+    /* WebView2 (the shipped webview) paints the UA button face and border
+       even where Chrome doesn't — reset ALL of it explicitly so buttons
+       without an authored background are actually transparent. */
     appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 0;
   }
 
   /* Display face for headings — warm, bold, full of personality */
@@ -141,27 +145,6 @@
     font-family: var(--font-mono);
     font-size: 10px;
     color: var(--text-dim);
-  }
-
-  /* Route transition — CSS-only so it runs on the compositor, immune to
-     main-thread work while the incoming page mounts */
-  .page-enter {
-    animation: page-in 130ms ease-out;
-  }
-  @keyframes page-in {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .page-enter {
-      animation: none;
-    }
   }
 
   /* Small section label above titles and card headers — sentence case, human */
