@@ -1,13 +1,13 @@
 <div align="center">
 
-<img src="src-tauri/icons/128x128.png" width="80" alt="Notes icon" />
+<img src="src-tauri/icons/128x128.png" width="80" alt="Trove icon" />
 
-# Notes
+# Trove
 
 **A personal knowledge vault that refuses to let you forget.**
 Capture what you learn, debrief what you solve, and let spaced repetition bring it back before it fades.
 
-[![CI](https://github.com/xcyberpunkx0/notes/actions/workflows/ci.yml/badge.svg)](https://github.com/xcyberpunkx0/notes/actions/workflows/ci.yml)
+[![CI](https://github.com/xcyberpunkx0/trove/actions/workflows/ci.yml/badge.svg)](https://github.com/xcyberpunkx0/trove/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-8e6bf5.svg)](LICENSE)
 [![Tauri 2](https://img.shields.io/badge/Tauri-2-24C8DB?logo=tauri&logoColor=white)](https://tauri.app)
 [![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev)
@@ -18,7 +18,7 @@ Capture what you learn, debrief what you solve, and let spaced repetition bring 
 
 This project started while studying Data Structures & Algorithms. I kept taking careful notes in Notion and solving problems on LeetCode — and then never looking at any of it again. The notes weren't the problem; the *coming back* was. Most notes apps are graveyards: you write things down, feel productive, and forget.
 
-Notes is built around the opposite idea — **everything you put in comes back to you** on a spaced schedule, weak topics get flagged, and the app tells you what to study today. The DSA origin shows in some of its sharpest tools (problem debriefs, code-first blocks, complexity templates), but the loop works for anything you're trying to actually retain.
+Trove is built around the opposite idea — **everything you put in comes back to you** on a spaced schedule, weak topics get flagged, and the app tells you what to study today. The DSA origin shows in some of its sharpest tools (problem debriefs, code-first blocks, complexity templates), but the loop works for anything you're trying to actually retain.
 
 It's a native Windows desktop app: instant startup, fully offline, and your data lives in a single local SQLite file you own.
 
