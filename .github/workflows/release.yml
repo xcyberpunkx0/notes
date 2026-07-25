@@ -26,7 +26,9 @@ jobs:
 
       - run: npm ci
 
-      - name: Create release with description
+      # Draft first: the release only becomes publicly visible in the final
+      # step, once the installers are attached — never as a source-only page.
+      - name: Create draft release with description
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,9 +49,9 @@ jobs:
               found { print }
             ' CHANGELOG.md
           } > release-notes.md
-          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "Notes $TAG" --notes-file release-notes.md
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "Notes $TAG" --notes-file release-notes.md --draft
 
-      - name: Build and publish release
+      - name: Build installers and attach to release
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,5 +60,11 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "Notes ${{ github.ref_name }}"
-          releaseDraft: false
+          releaseDraft: true
           prerelease: false
+
+      - name: Publish release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false
