@@ -62,8 +62,10 @@ plus regenerated icon files in `src-tauri/icons/`.
   class). Replaces "Notes" + N logo in the sidebar header.
 - **Facet motif:** a faint, large-scale pattern of facet lines/nodes as a
   reusable theme-aware React component (`<FacetMotif />`, opacity via CSS
-  vars). Used in: empty states, splash, and later the weekly recap. Replaces
-  the current concentric-circles background decoration.
+  vars). Used in: empty states, splash, and later the weekly recap.
+  *(Amended at final review, 2026-07-25: the concentric-circles Backdrop is
+  retained in v0.3.0 — it reads well alongside the motif; replacing it is
+  deferred to v0.3.1.)*
 
 The mark is designed in code (SVG), iterated with Aditya visually via
 screenshots in both themes before the icon files are regenerated.
