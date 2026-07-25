@@ -193,7 +193,7 @@ export function Sidebar() {
 
         {!collapsed && <SectionLabel>STUDY</SectionLabel>}
 
-        <NavLink to="/topics" title={collapsed ? "Topics" : undefined} className={navRowClass}>
+        <NavLink to="/topics" end title={collapsed ? "Topics" : undefined} className={navRowClass}>
           <IconTopics className={rowIconClass} />
           {!collapsed && <span className="truncate">Topics</span>}
         </NavLink>
