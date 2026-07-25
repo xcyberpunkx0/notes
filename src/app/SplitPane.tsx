@@ -7,6 +7,7 @@ import {
 } from "react-router";
 import { CaretLeft, X } from "@phosphor-icons/react";
 import { childRoutes } from "./router";
+import { RouterIsolation } from "./router-isolation";
 import { useUiStore } from "./store";
 
 function PaneFrame() {
@@ -60,5 +61,9 @@ export function SplitPane() {
   );
 
   if (!splitPath) return null;
-  return <RouterProvider router={paneRouter} />;
+  return (
+    <RouterIsolation>
+      <RouterProvider router={paneRouter} />
+    </RouterIsolation>
+  );
 }

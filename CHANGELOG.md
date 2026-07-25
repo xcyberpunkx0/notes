@@ -3,6 +3,14 @@
 Release notes are written per version below. The release workflow extracts the
 section matching the pushed tag and uses it as the GitHub release description.
 
+## v0.2.1
+
+### 🔧 Fixes
+- **Fixed the app crashing on launch** with "You cannot render a `<Router>` inside another `<Router>`" — opening split view (`Ctrl+\`) once made the app unlaunchable, because the split pane's independent router couldn't mount inside the main one and the split state is remembered between launches
+- Split view now recovers gracefully: if the pane ever fails, it closes itself instead of taking the whole app down
+
+> If v0.2.0 crashes on launch for you, install this version over it — no need to uninstall first.
+
 ## v0.2.0
 
 First public release — everything from Phases 1–4.
