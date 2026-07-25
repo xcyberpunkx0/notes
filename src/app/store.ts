@@ -10,6 +10,7 @@ export interface TabInfo {
 
 interface UiState {
   sidebarCollapsed: boolean;
+  workspaceName: string;
   paletteOpen: boolean;
   quickLogOpen: boolean;
   mdImportOpen: boolean;
@@ -22,6 +23,7 @@ interface UiState {
   splitEpoch: number;
   theme: Theme;
   toggleSidebar: () => void;
+  setWorkspaceName: (name: string) => void;
   setPaletteOpen: (open: boolean) => void;
   setQuickLogOpen: (open: boolean) => void;
   setMdImportOpen: (open: boolean) => void;
@@ -41,6 +43,7 @@ export const useUiStore = create<UiState>()(
   persist(
     (set) => ({
       sidebarCollapsed: false,
+      workspaceName: "Trove",
       paletteOpen: false,
       quickLogOpen: false,
       mdImportOpen: false,
@@ -54,6 +57,7 @@ export const useUiStore = create<UiState>()(
       theme: "dark",
       toggleSidebar: () =>
         set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+      setWorkspaceName: (name) => set({ workspaceName: name }),
       setPaletteOpen: (open) => set({ paletteOpen: open }),
       setQuickLogOpen: (open) => set({ quickLogOpen: open }),
       setMdImportOpen: (open) => set({ mdImportOpen: open }),
@@ -92,6 +96,7 @@ export const useUiStore = create<UiState>()(
       name: "dsa-vault-ui",
       partialize: (s) => ({
         sidebarCollapsed: s.sidebarCollapsed,
+        workspaceName: s.workspaceName,
         theme: s.theme,
         appFont: s.appFont,
         tabs: s.tabs,

@@ -113,6 +113,9 @@
 
   button {
     cursor: pointer;
+    /* WebView2 paints a native button face for `appearance: button` that
+       Chrome doesn't — kill it so transparent buttons are transparent. */
+    appearance: none;
   }
 
   /* Display face for headings — warm, bold, full of personality */

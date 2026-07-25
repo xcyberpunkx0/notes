@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { listen } from "@tauri-apps/api/event";
 import { Sidebar } from "./Sidebar";
-import { Topbar } from "./Topbar";
+import { TitleBar } from "./TitleBar";
 import { TabBar } from "./TabBar";
 import { SplitPane } from "./SplitPane";
 import { SplitPaneBoundary } from "./SplitPaneBoundary";
@@ -57,6 +57,7 @@ export function AppShell() {
 
   // Tabs: keep the active tab in sync with navigation, restore on boot
   const setActiveTabPath = useUiStore((s) => s.setActiveTabPath);
+  const tabs = useUiStore((s) => s.tabs);
   const splitPath = useUiStore((s) => s.splitPath);
   useEffect(() => {
     setActiveTabPath(location.pathname + location.search);
@@ -104,27 +105,29 @@ export function AppShell() {
   }, [setPaletteOpen, setQuickLogOpen, navigate]);
 
   return (
-    <div className="flex h-full">
-      <Sidebar />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <TabBar />
-        <Topbar />
-        <div className="flex min-h-0 flex-1">
-          <main className="relative min-w-0 flex-1 overflow-y-auto">
-            <div key={location.pathname} className="page-enter h-full">
-              <Outlet />
-            </div>
-          </main>
-          {splitPath && (
-            <>
-              <div className="w-px shrink-0 bg-line" />
-              <div className="min-w-0 flex-1">
-                <SplitPaneBoundary>
-                  <SplitPane />
-                </SplitPaneBoundary>
+    <div className="flex h-full flex-col">
+      <TitleBar />
+      <div className="flex min-h-0 flex-1">
+        <Sidebar />
+        <div className="flex min-w-0 flex-1 flex-col">
+          {tabs.length > 1 && <TabBar />}
+          <div className="flex min-h-0 flex-1">
+            <main className="relative min-w-0 flex-1 overflow-y-auto">
+              <div key={location.pathname} className="page-enter h-full">
+                <Outlet />
               </div>
-            </>
-          )}
+            </main>
+            {splitPath && (
+              <>
+                <div className="w-px shrink-0 bg-line" />
+                <div className="min-w-0 flex-1">
+                  <SplitPaneBoundary>
+                    <SplitPane />
+                  </SplitPaneBoundary>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <CommandPalette />

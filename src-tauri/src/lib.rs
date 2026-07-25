@@ -57,6 +57,7 @@ fn export_files(dir: String, files: Vec<ExportFile>) -> Result<u32, String> {
 
 fn show_main_window(app: &tauri::AppHandle) {
     if let Some(window) = app.get_webview_window("main") {
+        let _ = window.set_decorations(false);
         let _ = window.show();
         let _ = window.unminimize();
         let _ = window.set_focus();
@@ -93,6 +94,12 @@ pub fn run() {
                 .build(),
         )
         .setup(|app| {
+            // Force frameless decorations at runtime — guards against a stale
+            // native titlebar reappearing regardless of build/config caching.
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.set_decorations(false);
+            }
+
             // Ctrl+Shift+Space from anywhere: focus the vault and open quick-log
             #[cfg(desktop)]
             {
