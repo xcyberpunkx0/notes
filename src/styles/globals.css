@@ -393,3 +393,27 @@
   font-family: var(--font-mono) !important;
   font-size: 13px;
 }
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: var(--color-bg);
+  animation: splash-out 0.3s ease 0.85s forwards;
+}
+.splash-gem {
+  width: 72px;
+  animation: splash-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes splash-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes splash-out {
+  to { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash { display: none; }
+}
