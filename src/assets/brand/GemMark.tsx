@@ -1,21 +1,17 @@
-const NODES: [number, number][] = [
-  [7, 4], [17, 4], [20, 10], [12, 21], [4, 10], [12, 10],
-];
-const EDGES: [number, number][][] = [
-  [[7, 4], [17, 4]], [[17, 4], [20, 10]], [[20, 10], [12, 21]],
-  [[12, 21], [4, 10]], [[4, 10], [7, 4]],
-  [[4, 10], [20, 10]], [[7, 4], [12, 10]], [[17, 4], [12, 10]],
-  [[12, 10], [12, 21]],
-];
+const OUTLINE = "M7 3.5 L17 3.5 L21 10 L12 21.5 L3 10 Z";
+const FACETS = "M3 10 L21 10 M7 3.5 L12 10 L17 3.5 M12 10 L12 21.5";
 
 export function GemMark({
   className,
   variant = "gradient",
+  knockout = "var(--color-bg)",
 }: {
   className?: string;
   variant?: "gradient" | "mono";
+  /** Facet-line color; defaults to the app background so lines read as cuts. */
+  knockout?: string;
 }) {
-  const stroke = variant === "gradient" ? "url(#gem-grad)" : "currentColor";
+  const paint = variant === "gradient" ? "url(#gem-grad)" : "currentColor";
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
       {variant === "gradient" && (
@@ -26,12 +22,15 @@ export function GemMark({
           </linearGradient>
         </defs>
       )}
-      {EDGES.map(([[x1, y1], [x2, y2]], i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth="1.5" strokeLinecap="round" />
-      ))}
-      {NODES.map(([cx, cy], i) => (
-        <circle key={i} cx={cx} cy={cy} r="1.4" fill={stroke} />
-      ))}
+      <path d={OUTLINE} fill={paint} />
+      <path
+        d={FACETS}
+        stroke={knockout}
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+        fill="none"
+        opacity="0.9"
+      />
     </svg>
   );
 }
