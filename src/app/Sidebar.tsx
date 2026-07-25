@@ -16,31 +16,7 @@ import { useUiStore } from "./store";
 import { useDueCount } from "@/db/reviews";
 import { installPendingUpdate } from "@/lib/updater";
 import { cn } from "@/lib/utils";
-
-/** The letter N drawn as a graph — nodes and edges spelling the app's name. */
-function LogoMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <g
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.9"
-      >
-        <path d="M7 17.5 V6.5" />
-        <path d="M7 6.5 L17 17.5" />
-        <path d="M17 17.5 V6.5" />
-      </g>
-      <g fill="white">
-        <circle cx="7" cy="6.5" r="2.4" />
-        <circle cx="7" cy="17.5" r="2.4" />
-        <circle cx="17" cy="6.5" r="2.4" />
-        <circle cx="17" cy="17.5" r="2.4" />
-      </g>
-    </svg>
-  );
-}
+import { GemMark } from "@/assets/brand/GemMark";
 
 const NAV_ITEMS = [
   { to: "/", label: "Home", icon: House, end: true },
@@ -88,12 +64,10 @@ export function Sidebar() {
           collapsed && "justify-center px-0",
         )}
       >
-        <div className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent-2 shadow-md shadow-accent/30">
-          <LogoMark className="size-4" />
-        </div>
+        <GemMark className="size-4 shrink-0" />
         {!collapsed && (
-          <span className="truncate font-(family-name:--font-display) text-sm font-semibold tracking-tight">
-            Notes
+          <span className="truncate text-gradient font-(family-name:--font-display) text-[15px] font-bold lowercase tracking-tight">
+            trove
           </span>
         )}
       </div>

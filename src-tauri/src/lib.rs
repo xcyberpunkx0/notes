@@ -113,7 +113,7 @@ pub fn run() {
             // Tray icon: click to bring the vault back
             TrayIconBuilder::with_id("main")
                 .icon(app.default_window_icon().unwrap().clone())
-                .tooltip("Notes — Ctrl+Shift+Space to quick-log")
+                .tooltip("Trove — Ctrl+Shift+Space to quick-log")
                 .on_tray_icon_event(|tray, event| {
                     if let TrayIconEvent::Click { .. } = event {
                         show_main_window(tray.app_handle());

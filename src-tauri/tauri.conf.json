@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Notes",
-  "mainBinaryName": "Notes",
+  "productName": "Trove",
+  "mainBinaryName": "Trove",
   "version": "0.2.1",
   "identifier": "com.aditya.dsavault",
   "build": {
@@ -13,7 +13,7 @@
   "app": {
     "windows": [
       {
-        "title": "Notes",
+        "title": "Trove",
         "width": 1280,
         "height": 820,
         "minWidth": 960,
