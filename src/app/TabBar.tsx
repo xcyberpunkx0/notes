@@ -50,7 +50,7 @@ function useTabTitle(path: string): string {
   });
 
   if (dynamic) return data ?? "…";
-  return STATIC_TITLES[clean] ?? "Notes";
+  return STATIC_TITLES[clean] ?? "Trove";
 }
 
 function Tab({ tab, active }: { tab: TabInfo; active: boolean }) {
