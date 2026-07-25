@@ -82,13 +82,11 @@ export function HomePage() {
           <div>
             <h1 className="text-[32px] font-bold leading-tight tracking-tight">
               {greeting()}
-              {empty ? (
+              {empty && (
                 <>
                   {" — ready to make it "}
                   <span className="text-gradient">stick</span>?
                 </>
-              ) : (
-                "."
               )}
             </h1>
           </div>
