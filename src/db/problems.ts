@@ -112,6 +112,28 @@ export function useProblems(filters: ProblemFilters) {
   });
 }
 
+export interface RecentProblem {
+  id: number;
+  title: string;
+  difficulty: string | null;
+  date_solved: string | null;
+}
+
+/** Most recently solved problems, for the home page's "Recently solved" list. */
+export function useRecentProblems(limit = 5) {
+  return useQuery({
+    queryKey: ["problems", "recent", limit],
+    queryFn: async () => {
+      const db = await getDb();
+      return db.select<RecentProblem[]>(
+        `SELECT id, title, difficulty, date_solved FROM problems
+         ORDER BY date_solved DESC, id DESC LIMIT $1`,
+        [limit],
+      );
+    },
+  });
+}
+
 export function useProblem(id: number) {
   return useQuery({
     queryKey: ["problems", "detail", id],

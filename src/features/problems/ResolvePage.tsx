@@ -6,7 +6,7 @@ import {
   Barbell,
   Eye,
 } from "@phosphor-icons/react";
-import { PageHeader } from "@/components/PageHeader";
+import { PageShell } from "@/components/page/PageShell";
 import { useRandomProblem, useUpdateProblemField } from "@/db/problems";
 import { formatRelative } from "@/lib/time";
 import { CodePanel } from "./CodePanel";
@@ -26,14 +26,14 @@ export function ResolvePage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <PageHeader eyebrow="Deliberate practice" title="Re-solve">
-        <button onClick={nextProblem} className="btn-ghost">
-          <ArrowsClockwise size={15} />
-          Another one
-        </button>
-      </PageHeader>
+      <PageShell title="Re-solve" subtitle="Deliberate practice">
+        <div className="mb-6 flex justify-end">
+          <button onClick={nextProblem} className="btn-ghost">
+            <ArrowsClockwise size={15} />
+            Another one
+          </button>
+        </div>
 
-      <div className="mx-auto max-w-3xl px-10 pb-16">
         {problem === null ? (
           <div className="card flex flex-col items-center gap-3 border-dashed py-20 text-center">
             <span className="flex size-13 items-center justify-center rounded-2xl bg-accent-soft text-accent">
@@ -128,7 +128,7 @@ export function ResolvePage() {
             </div>
           </div>
         ) : null}
-      </div>
+      </PageShell>
     </div>
   );
 }

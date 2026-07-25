@@ -92,7 +92,7 @@ export function CommandPalette() {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]" />
         <Dialog.Content
-          className="fixed left-1/2 top-[16%] z-50 w-[600px] -translate-x-1/2 overflow-hidden rounded-3xl border border-line-strong bg-surface/90 shadow-2xl shadow-black/40 backdrop-blur-xl"
+          className="fixed left-1/2 top-[16%] z-50 w-[600px] -translate-x-1/2 overflow-hidden rounded-lg border border-line bg-surface/90 shadow-xl shadow-black/20 backdrop-blur-xl"
           aria-describedby={undefined}
         >
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>

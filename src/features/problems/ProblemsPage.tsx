@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Target, Plus, Star } from "@phosphor-icons/react";
-import { PageHeader } from "@/components/PageHeader";
+import { PageShell } from "@/components/page/PageShell";
 import { useProblems, useUpdateProblemField } from "@/db/problems";
 import { useTopics } from "@/db/topics";
 import { formatRelative } from "@/lib/time";
@@ -24,15 +24,15 @@ export function ProblemsPage() {
   const updateField = useUpdateProblemField();
 
   return (
-    <div className="h-full">
-      <PageHeader eyebrow="Problem tracker" title="Problems">
-        <button onClick={() => setLogOpen(true)} className="btn-primary">
-          <Plus size={15} />
-          Log problem
-        </button>
-      </PageHeader>
+    <div className="h-full overflow-y-auto">
+      <PageShell title="Problems" subtitle="Problem tracker">
+        <div className="mb-6 flex justify-end">
+          <button onClick={() => setLogOpen(true)} className="btn-primary">
+            <Plus size={15} />
+            Log problem
+          </button>
+        </div>
 
-      <div className="px-10 pb-12">
         {/* Filters */}
         <div className="mb-5 flex flex-wrap items-center gap-2">
           <select
@@ -150,8 +150,7 @@ export function ProblemsPage() {
             </p>
           </div>
         )}
-      </div>
-
+      </PageShell>
     </div>
   );
 }

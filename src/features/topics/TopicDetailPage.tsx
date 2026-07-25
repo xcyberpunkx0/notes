@@ -3,6 +3,7 @@ import { Note, Plus, Trash } from "@phosphor-icons/react";
 import { useNotesByTopic, useCreateNote } from "@/db/notes";
 import { useDeleteTopic, useTopic, useTopics } from "@/db/topics";
 import { formatRelative } from "@/lib/time";
+import { PageShell } from "@/components/page/PageShell";
 
 export function TopicDetailPage() {
   const params = useParams();
@@ -36,21 +37,20 @@ export function TopicDetailPage() {
   if (!topic) return null;
 
   return (
-    <div className="h-full">
-      <div className="flex items-end justify-between px-10 pb-7 pt-10">
-        <div className="flex items-center gap-4">
+    <div className="h-full overflow-y-auto">
+      <PageShell
+        icon={
           <span
-            className="flex size-14 items-center justify-center rounded-2xl text-[26px]"
+            className="flex size-full items-center justify-center rounded-2xl text-[26px]"
             style={{ backgroundColor: `${topic.color ?? "#8e6bf5"}24` }}
           >
             {topic.icon || "📚"}
           </span>
-          <div>
-            <p className="eyebrow mb-1.5">Topic</p>
-            <h1 className="text-2xl font-bold tracking-tight">{topic.name}</h1>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
+        }
+        title={topic.name}
+        subtitle="Topic"
+      >
+        <div className="mb-6 flex items-center justify-end gap-2">
           <button
             onClick={removeTopic}
             title="Delete topic"
@@ -67,9 +67,7 @@ export function TopicDetailPage() {
             New note
           </button>
         </div>
-      </div>
 
-      <div className="px-10 pb-12">
         {subtopics.length > 0 && (
           <div className="mb-5">
             <p className="eyebrow mb-2">Subtopics</p>
@@ -125,7 +123,7 @@ export function TopicDetailPage() {
             </p>
           </div>
         )}
-      </div>
+      </PageShell>
     </div>
   );
 }

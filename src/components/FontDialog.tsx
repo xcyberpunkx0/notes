@@ -17,11 +17,11 @@ export function FontDialog() {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-[2px]" />
         <Dialog.Content
-          className="fixed left-1/2 top-[10%] z-50 max-h-[75vh] w-[480px] -translate-x-1/2 overflow-y-auto rounded-3xl border border-line-strong bg-surface p-6 shadow-2xl shadow-black/40"
+          className="fixed left-1/2 top-[10%] z-50 max-h-[75vh] w-[480px] -translate-x-1/2 overflow-y-auto rounded-lg border border-line bg-surface p-6 shadow-xl shadow-black/20"
           aria-describedby={undefined}
         >
           <div className="flex items-center justify-between">
-            <Dialog.Title className="text-sm font-semibold">
+            <Dialog.Title className="text-[13.5px] font-semibold">
               Choose your font
             </Dialog.Title>
             <Dialog.Close className="flex size-7 items-center justify-center rounded-md text-text-faint hover:bg-surface-2 hover:text-text">
