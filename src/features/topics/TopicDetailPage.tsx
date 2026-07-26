@@ -4,6 +4,7 @@ import { useNotesByTopic, useCreateNote } from "@/db/notes";
 import { useDeleteTopic, useTopic, useTopics } from "@/db/topics";
 import { formatRelative } from "@/lib/time";
 import { PageShell } from "@/components/page/PageShell";
+import { TopicIcon } from "@/lib/topic-icons";
 
 export function TopicDetailPage() {
   const params = useParams();
@@ -41,10 +42,13 @@ export function TopicDetailPage() {
       <PageShell
         icon={
           <span
-            className="flex size-full items-center justify-center rounded-2xl text-[26px]"
-            style={{ backgroundColor: `${topic.color ?? "#8e6bf5"}24` }}
+            className="flex size-full items-center justify-center rounded-2xl"
+            style={{
+              backgroundColor: `${topic.color ?? "#8e6bf5"}24`,
+              color: topic.color ?? "#8e6bf5",
+            }}
           >
-            {topic.icon || "📚"}
+            <TopicIcon icon={topic.icon} size={26} />
           </span>
         }
         title={topic.name}
@@ -78,7 +82,12 @@ export function TopicDetailPage() {
                   onClick={() => navigate(`/topics/${s.id}`)}
                   className="flex h-9 items-center gap-1.5 rounded-full border border-line px-3.5 text-[13px] text-text-dim transition-colors duration-150 hover:bg-surface-2 hover:text-text"
                 >
-                  <span className="text-sm">{s.icon}</span>
+                  <span
+                    className="flex items-center"
+                    style={{ color: s.color ?? undefined }}
+                  >
+                    <TopicIcon icon={s.icon} size={14} />
+                  </span>
                   {s.name}
                   <span className="font-mono text-[10px] text-text-faint">
                     {s.note_count}

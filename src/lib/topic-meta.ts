@@ -9,29 +9,14 @@ export const TOPIC_COLORS = [
   { name: "Lime", value: "#a3e635" },
 ];
 
-export const TOPIC_EMOJI = [
-  "🧮",
-  "🌲",
-  "🕸️",
-  "🧵",
-  "📚",
-  "🎯",
-  "⚡",
-  "🧩",
-  "♻️",
-  "🔍",
-  "📐",
-  "🥞",
-];
-
-/** Starter set offered on the empty Topics screen. */
+/** Starter set offered on the empty Topics screen. Icons are TOPIC_ICONS keys. */
 export const STARTER_TOPICS = [
-  { name: "Arrays", icon: "🧮", color: "#7c8cf8" },
-  { name: "Strings", icon: "🧵", color: "#22d3ee" },
-  { name: "Linked Lists", icon: "🔗", color: "#38bdf8" },
-  { name: "Stacks & Queues", icon: "🥞", color: "#a3e635" },
-  { name: "Trees", icon: "🌲", color: "#34d399" },
-  { name: "Graphs", icon: "🕸️", color: "#a78bfa" },
-  { name: "Dynamic Programming", icon: "🧩", color: "#fb7185" },
-  { name: "Binary Search", icon: "🔍", color: "#fbbf24" },
+  { name: "Arrays", icon: "grid", color: "#7c8cf8" },
+  { name: "Strings", icon: "text", color: "#22d3ee" },
+  { name: "Linked Lists", icon: "chain", color: "#38bdf8" },
+  { name: "Stacks & Queues", icon: "stack", color: "#a3e635" },
+  { name: "Trees", icon: "tree", color: "#34d399" },
+  { name: "Graphs", icon: "graph", color: "#a78bfa" },
+  { name: "Dynamic Programming", icon: "puzzle", color: "#fb7185" },
+  { name: "Binary Search", icon: "search", color: "#fbbf24" },
 ];
