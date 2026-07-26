@@ -44,7 +44,7 @@ export async function searchLinkTargets(query: string): Promise<LinkTarget[]> {
     ...topics.map((t) => ({
       type: "topic" as const,
       id: t.id,
-      title: `${t.icon ?? ""} ${t.name}`.trim(),
+      title: t.name,
       subtitle: "Topic",
     })),
   ];
@@ -123,7 +123,7 @@ export function useGraphData() {
           key: `topic-${t.id}`,
           type: "topic" as const,
           id: t.id,
-          label: `${t.icon ?? ""} ${t.name}`.trim(),
+          label: t.name,
           color: t.color,
         })),
         ...notes.map((n) => ({

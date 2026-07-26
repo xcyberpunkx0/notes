@@ -5,6 +5,7 @@ import { X, Lightning } from "@phosphor-icons/react";
 import { useQuickLogProblem } from "@/db/problems";
 import { useTopics } from "@/db/topics";
 import { detectPlatform, titleFromUrl } from "@/lib/platform-detect";
+import { TopicIcon } from "@/lib/topic-icons";
 import { cn } from "@/lib/utils";
 import { ConfidenceDots, DIFFICULTIES } from "./bits";
 
@@ -151,7 +152,7 @@ export function QuickLogDialog({
                           : "border border-line text-text-dim hover:bg-surface-2",
                       )}
                     >
-                      <span>{t.icon}</span>
+                      <TopicIcon icon={t.icon} size={13} />
                       {t.name}
                     </button>
                   ))}
