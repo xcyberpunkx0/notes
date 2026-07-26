@@ -3,6 +3,13 @@
 Release notes are written per version below. The release workflow extracts the
 section matching the pushed tag and uses it as the GitHub release description.
 
+## v0.4.3
+
+### 🔧 Fixes
+- **Sidebar topics show their real icons now** — each topic's line glyph,
+  drawn in its own color, instead of the identical gray diamonds. With the
+  sidebar collapsed you can finally tell Arrays from Trees at a glance
+
 ## v0.4.2
 
 ### 🃏 A better review session

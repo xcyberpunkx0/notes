@@ -1,6 +1,6 @@
 [package]
 name = "trove"
-version = "0.4.2"
+version = "0.4.3"
 description = "A personal knowledge vault for Data Structures & Algorithms"
 authors = ["Aditya"]
 edition = "2021"
