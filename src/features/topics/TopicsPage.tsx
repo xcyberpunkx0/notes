@@ -6,11 +6,8 @@ import { PageShell } from "@/components/page/PageShell";
 import { FacetMotif } from "@/assets/brand/FacetMotif";
 import { useCreateTopic, useTopics, type Topic } from "@/db/topics";
 import { useTopicStats, type TopicStats } from "@/db/reviews";
-import {
-  STARTER_TOPICS,
-  TOPIC_COLORS,
-  TOPIC_EMOJI,
-} from "@/lib/topic-meta";
+import { STARTER_TOPICS, TOPIC_COLORS } from "@/lib/topic-meta";
+import { TOPIC_ICONS, TopicIcon } from "@/lib/topic-icons";
 import { cn } from "@/lib/utils";
 
 export function TopicsPage() {
@@ -136,10 +133,13 @@ function TopicGrid({ topics }: { topics: Topic[] }) {
           >
             <span className="flex w-full items-start justify-between">
               <span
-                className="flex size-12 items-center justify-center rounded-2xl text-xl"
-                style={{ backgroundColor: `${topic.color ?? "#8e6bf5"}24` }}
+                className="flex size-12 items-center justify-center rounded-2xl"
+                style={{
+                  backgroundColor: `${topic.color ?? "#8e6bf5"}24`,
+                  color: topic.color ?? "#8e6bf5",
+                }}
               >
-                {topic.icon || "📚"}
+                <TopicIcon icon={topic.icon} size={22} />
               </span>
               {statsFor(topic.id) && (
                 <MasteryRing
@@ -176,7 +176,7 @@ function NewTopicDialog({
   const navigate = useNavigate();
   const createTopic = useCreateTopic();
   const [name, setName] = useState("");
-  const [icon, setIcon] = useState("🧮");
+  const [icon, setIcon] = useState(TOPIC_ICONS[0].key);
   const [color, setColor] = useState(TOPIC_COLORS[0].value);
   const [parentId, setParentId] = useState<number | null>(null);
 
@@ -227,18 +227,19 @@ function NewTopicDialog({
             <div>
               <label className="eyebrow mb-1.5 block">Icon</label>
               <div className="flex flex-wrap gap-1">
-                {TOPIC_EMOJI.map((e) => (
+                {TOPIC_ICONS.map((t) => (
                   <button
-                    key={e}
-                    onClick={() => setIcon(e)}
+                    key={t.key}
+                    title={t.label}
+                    onClick={() => setIcon(t.key)}
                     className={cn(
-                      "flex size-8 items-center justify-center rounded-lg text-base transition-colors",
-                      icon === e
-                        ? "bg-accent-soft ring-1 ring-accent"
-                        : "hover:bg-surface-2",
+                      "flex size-8 items-center justify-center rounded-lg transition-colors",
+                      icon === t.key
+                        ? "bg-accent-soft text-accent ring-1 ring-accent"
+                        : "text-text-dim hover:bg-surface-2 hover:text-text",
                     )}
                   >
-                    {e}
+                    <t.Icon size={17} />
                   </button>
                 ))}
               </div>
@@ -281,7 +282,7 @@ function NewTopicDialog({
                     .filter((t) => !t.parent_id)
                     .map((t) => (
                       <option key={t.id} value={t.id}>
-                        {t.icon} {t.name}
+                        {t.name}
                       </option>
                     ))}
                 </select>

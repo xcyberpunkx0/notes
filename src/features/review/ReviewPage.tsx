@@ -31,6 +31,7 @@ import {
 } from "@/db/achievements";
 import { Markdown } from "@/components/Markdown";
 import type { Rating } from "@/lib/scheduler";
+import { TopicIcon } from "@/lib/topic-icons";
 import { cn } from "@/lib/utils";
 
 const RATINGS: { key: Rating; label: string; kbd: string; style: string }[] = [
@@ -313,7 +314,14 @@ export function ReviewPage() {
               {weakTopics.map((s) => (
                 <ListRow
                   key={s.topic_id}
-                  glyph={s.topic.icon || "◆"}
+                  icon={
+                    <span
+                      className="flex items-center"
+                      style={{ color: s.topic.color ?? undefined }}
+                    >
+                      <TopicIcon icon={s.topic.icon} size={15} />
+                    </span>
+                  }
                   tag={`${Math.round(s.mastery * 100)}% retained · ${s.lapses} lapses`}
                   onClick={() => navigate(`/review?topic=${s.topic_id}`)}
                 >
