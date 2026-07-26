@@ -8,7 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import { BacklinksPanel } from "@/components/BacklinksPanel";
 import { PageShell } from "@/components/page/PageShell";
-import { ConfidenceDots, DifficultyChip } from "./bits";
+import { ConfidenceDots, DifficultyChip, TopicChips } from "./bits";
 import { DebriefFlow } from "./DebriefFlow";
 import { CodePanel } from "./CodePanel";
 
@@ -44,11 +44,7 @@ export function ProblemDetailPage() {
                 updateField.mutate({ id: problemId, field: "confidence", value: v })
               }
             />
-            {problem.topic_names && (
-              <span className="font-mono text-[11px] text-text-faint">
-                {problem.topic_names.split(",").join(" · ")}
-              </span>
-            )}
+            <TopicChips ids={problem.topic_ids} />
             {!problem.solved_myself && (
               <span className="rounded-md bg-surface-3 px-1.5 py-0.5 font-mono text-[10px] text-text-dim">
                 needed help
