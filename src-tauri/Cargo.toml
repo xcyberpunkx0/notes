@@ -1,5 +1,5 @@
 [package]
-name = "dsa-vault"
+name = "trove"
 version = "0.4.1"
 description = "A personal knowledge vault for Data Structures & Algorithms"
 authors = ["Aditya"]
