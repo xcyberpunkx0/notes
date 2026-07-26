@@ -4,11 +4,16 @@ import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight,
   Brain,
-  Eye,
   Note,
   Fire,
+  Smiley,
+  SmileyMeh,
+  SmileySad,
+  SmileyWink,
   Target,
   Confetti,
+  X,
+  type Icon,
 } from "@phosphor-icons/react";
 import { PageShell } from "@/components/page/PageShell";
 import { ListRow } from "@/components/page/ListRow";
@@ -30,16 +35,35 @@ import {
   type AchievementDef,
 } from "@/db/achievements";
 import { Markdown } from "@/components/Markdown";
-import type { Rating } from "@/lib/scheduler";
+import { schedule, type Rating } from "@/lib/scheduler";
 import { TopicIcon } from "@/lib/topic-icons";
 import { cn } from "@/lib/utils";
 
-const RATINGS: { key: Rating; label: string; kbd: string; style: string }[] = [
-  { key: "forgot", label: "Forgot", kbd: "1", style: "hover:border-danger/50 hover:text-danger" },
-  { key: "hard", label: "Hard", kbd: "2", style: "hover:border-warning/50 hover:text-warning" },
-  { key: "good", label: "Good", kbd: "3", style: "hover:border-accent/60 hover:text-accent" },
-  { key: "easy", label: "Easy", kbd: "4", style: "hover:border-success/50 hover:text-success" },
+const RATINGS: {
+  key: Rating;
+  label: string;
+  kbd: string;
+  Face: Icon;
+  tone: string;
+}[] = [
+  { key: "forgot", label: "Forgot", kbd: "1", Face: SmileySad, tone: "text-danger" },
+  { key: "hard", label: "Partially recalled", kbd: "2", Face: SmileyMeh, tone: "text-warning" },
+  { key: "good", label: "Recalled with effort", kbd: "3", Face: Smiley, tone: "text-accent" },
+  { key: "easy", label: "Easily recalled", kbd: "4", Face: SmileyWink, tone: "text-success" },
 ];
+
+/** What each rating buys: run the pure scheduler against the item's real state. */
+function previewInterval(r: DueReview, rating: Rating): string {
+  const { next } = schedule(
+    { interval_days: r.interval_days, ease: r.ease, reps: r.reps, lapses: r.lapses },
+    rating,
+    new Date(),
+  );
+  const d = next.interval_days;
+  if (d >= 30) return `${Math.round(d / 30)} mo`;
+  if (d >= 1) return `${Math.round(d)} d`;
+  return "<1 d";
+}
 
 export function ReviewPage() {
   const [searchParams] = useSearchParams();
@@ -107,28 +131,70 @@ export function ReviewPage() {
 
   const sessionDone = sessionTotal !== null && due !== undefined && due.length === 0;
 
+  // RemNote-style keys: Space reveals, 1–4 rate. Inert while typing elsewhere.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (!current || sessionDone || e.repeat) return;
+      const t = e.target as HTMLElement | null;
+      if (
+        t &&
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.tagName === "SELECT" ||
+          t.isContentEditable)
+      )
+        return;
+      if (e.key === " " && !revealed) {
+        e.preventDefault();
+        setRevealed(true);
+        return;
+      }
+      if (revealed && !rate.isPending) {
+        const idx = ["1", "2", "3", "4"].indexOf(e.key);
+        if (idx >= 0) {
+          e.preventDefault();
+          void onRate(RATINGS[idx].key);
+        }
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
   return (
     <div className="h-full overflow-y-auto">
       <PageShell
         title="Review"
         subtitle={focusTopicId ? "Focused practice" : "Retention loop"}
       >
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            {focusTopicId && focusTopic && (
-              <button
-                onClick={() => navigate("/review")}
-                title="Back to everything due"
-                className="flex h-8 items-center gap-1.5 rounded-full bg-accent-soft px-3 text-[12px] font-medium text-accent transition-colors hover:brightness-110"
-              >
-                {focusTopic.icon} {focusTopic.name} ✕
-              </button>
+        <div className="mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              {focusTopicId && focusTopic && (
+                <button
+                  onClick={() => navigate("/review")}
+                  title="Back to everything due"
+                  className="flex h-8 items-center gap-1.5 rounded-full bg-accent-soft px-3 text-[12px] font-medium text-accent transition-colors hover:brightness-110"
+                >
+                  <TopicIcon icon={focusTopic.icon} size={13} />
+                  {focusTopic.name}
+                  <X size={11} />
+                </button>
+              )}
+            </div>
+            {total > 0 && !sessionDone && (
+              <span className="font-mono text-[11px] tabular-nums text-text-faint">
+                {doneCount} / {total}
+              </span>
             )}
           </div>
           {total > 0 && !sessionDone && (
-            <span className="font-mono text-[11px] text-text-faint">
-              {doneCount} / {total}
-            </span>
+            <div className="mt-3 h-1 overflow-hidden rounded-full bg-surface-2">
+              <div
+                className="h-full rounded-full bg-accent transition-[width] duration-300 ease-out"
+                style={{ width: `${(doneCount / Math.max(total, 1)) * 100}%` }}
+              />
+            </div>
           )}
         </div>
 
@@ -177,41 +243,44 @@ export function ReviewPage() {
                 transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
                 className="card"
               >
-                <div className="flex items-center justify-between border-b border-line px-5 py-3">
-                  <span className="eyebrow flex items-center gap-1.5">
+                <div className="flex items-center justify-between gap-3 border-b border-line px-6 py-3">
+                  <span className="flex min-w-0 items-center gap-1.5 text-[12px] text-text-dim">
                     {current.item_type === "note" ? (
-                      <Note size={11} />
+                      <Note size={12} className="flex-none" />
                     ) : (
-                      <Target size={11} />
+                      <Target size={12} className="flex-none" />
                     )}
-                    {current.item_type}
-                    {current.item_type === "note" && current.hint
-                      ? ` · ${current.hint}`
-                      : ""}
+                    {current.item_type === "note" && current.hint ? (
+                      <>
+                        <span className="flex-none">{current.hint}</span>
+                        <span className="flex-none text-text-faint">›</span>
+                      </>
+                    ) : null}
+                    <span className="truncate font-medium text-text">
+                      {current.title}
+                    </span>
                   </span>
-                  <span className="font-mono text-[10px] text-text-faint">
+                  <span className="flex-none font-mono text-[10px] tabular-nums text-text-faint">
                     seen {current.reps}× · lapsed {current.lapses}×
                   </span>
                 </div>
   
-                <div className="px-8 py-10 text-center">
+                <div className="px-6 py-7 text-left">
                   {flashcard ? (
                     <>
-                      <p className="text-[13.5px] text-text-dim">
-                        From <span className="font-medium text-text">{current.title}</span>:
-                      </p>
-                      <p className="mt-2 font-(family-name:--font-display) text-[20px] font-bold tracking-tight">
+                      <p className="text-[13px] text-text-dim">Flashcard</p>
+                      <p className="mt-1.5 font-(family-name:--font-display) text-[20px] font-bold leading-snug tracking-tight">
                         {flashcard.question}
                       </p>
                     </>
                   ) : (
                     <>
-                      <p className="text-[13.5px] text-text-dim">
+                      <p className="text-[13px] text-text-dim">
                         {current.item_type === "problem"
                           ? "Can you recall the approach to…"
                           : "Can you recall the key ideas of…"}
                       </p>
-                      <p className="mt-2 font-(family-name:--font-display) text-[22px] font-bold tracking-tight">
+                      <p className="mt-1.5 font-(family-name:--font-display) text-[21px] font-bold leading-snug tracking-tight">
                         {current.title}
                       </p>
                     </>
@@ -226,15 +295,13 @@ export function ReviewPage() {
                         className="overflow-hidden"
                       >
                         {flashcard ? (
-                          <div className="mx-auto mt-4 max-h-72 max-w-md overflow-y-auto rounded-xl bg-surface-2 p-3.5 text-left">
-                            <span className="eyebrow mb-1.5 block">
-                              your answer
-                            </span>
+                          <div className="mt-6 max-h-72 overflow-y-auto border-t border-line pt-5 text-left">
+                            <span className="eyebrow mb-2 block">answer</span>
                             <Markdown>{flashcard.answer}</Markdown>
                           </div>
                         ) : current.item_type === "problem" && current.hint ? (
-                          <div className="mx-auto mt-4 max-h-72 max-w-md overflow-y-auto rounded-xl bg-surface-2 p-3.5 text-left">
-                            <span className="eyebrow mb-1.5 block">
+                          <div className="mt-6 max-h-72 overflow-y-auto border-t border-line pt-5 text-left">
+                            <span className="eyebrow mb-2 block">
                               your six-month note
                             </span>
                             <Markdown>{current.hint}</Markdown>
@@ -248,7 +315,7 @@ export function ReviewPage() {
                                 : `/problems/${current.item_id}`,
                             )
                           }
-                          className="mt-3 inline-flex items-center gap-1 text-[13px] text-accent hover:underline"
+                          className="mt-4 inline-flex items-center gap-1 text-[13px] text-accent hover:underline"
                         >
                           Open and check yourself
                           <ArrowUpRight size={13} />
@@ -258,33 +325,39 @@ export function ReviewPage() {
                   </AnimatePresence>
                 </div>
   
-                <div className="border-t border-line p-4">
-                  {!revealed ? (
+                {!revealed ? (
+                  <div className="flex justify-center border-t border-line p-4">
                     <button
                       onClick={() => setRevealed(true)}
-                      className="btn-primary w-full"
+                      className="btn-primary px-7"
                     >
-                      <Eye size={15} />
-                      Reveal
+                      Show answer
+                      <kbd className="rounded-md border border-white/30 px-1.5 font-mono text-[10px] font-normal">
+                        Space
+                      </kbd>
                     </button>
-                  ) : (
-                    <div className="grid grid-cols-4 gap-2.5">
-                      {RATINGS.map((r) => (
-                        <button
-                          key={r.key}
-                          onClick={() => onRate(r.key)}
-                          disabled={rate.isPending}
-                          className={cn(
-                            "flex h-11 flex-col items-center justify-center rounded-xl border border-line text-[12.5px] font-semibold text-text-dim transition-all duration-100 active:scale-[0.97]",
-                            r.style,
-                          )}
-                        >
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-4 divide-x divide-line border-t border-line">
+                    {RATINGS.map((r) => (
+                      <button
+                        key={r.key}
+                        onClick={() => onRate(r.key)}
+                        disabled={rate.isPending}
+                        className="flex flex-col items-center gap-1 px-2 py-3.5 transition-colors duration-100 hover:bg-surface-2 active:bg-surface-3"
+                      >
+                        <r.Face size={22} className={r.tone} />
+                        <span className={cn("text-[11.5px] font-semibold leading-tight", r.tone)}>
                           {r.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                        </span>
+                        <span className="font-mono text-[10px] tabular-nums text-text-faint">
+                          {previewInterval(current, r.key)}
+                          <span className="ml-1.5 opacity-60">{r.kbd}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </motion.div>
             ) : due !== undefined ? (
               <motion.div
