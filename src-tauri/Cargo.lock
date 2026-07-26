@@ -5164,7 +5164,7 @@ dependencies = [
 
 [[package]]
 name = "trove"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "serde",
  "serde_json",
