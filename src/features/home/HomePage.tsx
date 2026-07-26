@@ -9,6 +9,7 @@ import { PageShell } from "@/components/page/PageShell";
 import { Callout } from "@/components/page/Callout";
 import { PropertyChips } from "@/components/page/PropertyChips";
 import { ListRow } from "@/components/page/ListRow";
+import { TopicIcon } from "@/lib/topic-icons";
 
 interface RecentNote {
   id: number;
@@ -17,6 +18,7 @@ interface RecentNote {
   topic_id: number | null;
   topic_name: string | null;
   topic_icon: string | null;
+  topic_color: string | null;
 }
 
 function useHomeData() {
@@ -26,7 +28,7 @@ function useHomeData() {
       const db = await getDb();
       const [recentNotes, counts] = await Promise.all([
         db.select<RecentNote[]>(
-          `SELECT n.id, n.title, n.updated_at, t.id AS topic_id, t.name AS topic_name, t.icon AS topic_icon
+          `SELECT n.id, n.title, n.updated_at, t.id AS topic_id, t.name AS topic_name, t.icon AS topic_icon, t.color AS topic_color
            FROM notes n LEFT JOIN topics t ON t.id = n.topic_id
            ORDER BY n.updated_at DESC LIMIT 5`,
         ),
@@ -184,7 +186,14 @@ export function HomePage() {
               {recentTopics.map((n) => (
                 <ListRow
                   key={n.topic_id}
-                  glyph="◆"
+                  icon={
+                    <span
+                      className="flex items-center"
+                      style={{ color: n.topic_color ?? undefined }}
+                    >
+                      <TopicIcon icon={n.topic_icon} size={15} />
+                    </span>
+                  }
                   tag="topic"
                   onClick={() => navigate(`/topics/${n.topic_id}`)}
                 >

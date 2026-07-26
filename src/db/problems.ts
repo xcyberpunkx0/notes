@@ -99,7 +99,7 @@ export function useProblems(filters: ProblemFilters) {
       }
       const sql = `
         SELECT p.*,
-          (SELECT GROUP_CONCAT(t.icon || ' ' || t.name)
+          (SELECT GROUP_CONCAT(t.name, ', ')
              FROM problem_topics pt JOIN topics t ON t.id = pt.topic_id
             WHERE pt.problem_id = p.id) AS topic_names,
           (SELECT GROUP_CONCAT(pt.topic_id)
@@ -141,7 +141,7 @@ export function useProblem(id: number) {
       const db = await getDb();
       const rows = await db.select<ProblemRow[]>(
         `SELECT p.*,
-          (SELECT GROUP_CONCAT(t.icon || ' ' || t.name)
+          (SELECT GROUP_CONCAT(t.name, ', ')
              FROM problem_topics pt JOIN topics t ON t.id = pt.topic_id
             WHERE pt.problem_id = p.id) AS topic_names,
           (SELECT GROUP_CONCAT(pt.topic_id)
@@ -300,7 +300,7 @@ export function useRandomProblem(seed: number) {
       const db = await getDb();
       const rows = await db.select<ProblemRow[]>(
         `SELECT p.*,
-          (SELECT GROUP_CONCAT(t.icon || ' ' || t.name)
+          (SELECT GROUP_CONCAT(t.name, ', ')
              FROM problem_topics pt JOIN topics t ON t.id = pt.topic_id
             WHERE pt.problem_id = p.id) AS topic_names,
           (SELECT GROUP_CONCAT(pt.topic_id)

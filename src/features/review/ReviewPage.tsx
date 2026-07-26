@@ -79,6 +79,12 @@ export function ReviewPage() {
   const [doneCount, setDoneCount] = useState(0);
   const [sessionTotal, setSessionTotal] = useState<number | null>(null);
   const [newBadges, setNewBadges] = useState<AchievementDef[]>([]);
+  const [tally, setTally] = useState<Record<Rating, number>>({
+    forgot: 0,
+    hard: 0,
+    good: 0,
+    easy: 0,
+  });
 
   // Re-homed motivation panels (moved off Home): weak spots, activity, milestones
   const { data: allTopics } = useTopics();
@@ -100,6 +106,7 @@ export function ReviewPage() {
     setSessionTotal(null);
     setDoneCount(0);
     setRevealed(false);
+    setTally({ forgot: 0, hard: 0, good: 0, easy: 0 });
   }, [focusTopicId]);
 
   const current: DueReview | undefined = due?.[0];
@@ -125,6 +132,7 @@ export function ReviewPage() {
     await rate.mutateAsync({ review: current, rating });
     setRevealed(false);
     setDoneCount((c) => c + 1);
+    setTally((t) => ({ ...t, [rating]: t[rating] + 1 }));
     const fresh = await checkAchievements(streak);
     if (fresh.length) setNewBadges((b) => [...b, ...fresh]);
   }
@@ -220,6 +228,22 @@ export function ReviewPage() {
                     {streak} day streak. Tomorrow keeps it alive.
                   </p>
                 </div>
+                {doneCount > 0 && (
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {RATINGS.filter((r) => tally[r.key] > 0).map((r) => (
+                      <span
+                        key={r.key}
+                        title={r.label}
+                        className="flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5"
+                      >
+                        <r.Face size={15} className={r.tone} />
+                        <span className="font-mono text-[12px] tabular-nums text-text-dim">
+                          {tally[r.key]}
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                )}
                 {newBadges.length > 0 && (
                   <div className="flex flex-col gap-1.5">
                     {newBadges.map((b) => (

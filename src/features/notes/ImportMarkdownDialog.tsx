@@ -84,7 +84,7 @@ export function ImportMarkdownDialog() {
               <option value="">Choose a topic…</option>
               {topics?.map((t) => (
                 <option key={t.id} value={t.id}>
-                  {t.icon} {t.name}
+                  {t.name}
                 </option>
               ))}
             </select>
