@@ -3,6 +3,29 @@
 Release notes are written per version below. The release workflow extracts the
 section matching the pushed tag and uses it as the GitHub release description.
 
+## v0.4.2
+
+### 🃏 A better review session
+- **The review screen is a real practice space now** — a session progress
+  bar that fills as you go, each card showing where it lives in your
+  vault, and answers revealed beneath the question instead of in a box
+- **Rating buttons tell you what each answer buys** — "Easily recalled ·
+  6 d" — computed from that card's actual schedule, not a guess
+- Full keyboard flow: **Space** reveals, **1–4** rate
+- Finish a session and see how it went — a recall breakdown sits next to
+  your streak
+
+### 🎨 Topics with an identity
+- **Topic icons are now crisp line glyphs, drawn in your topic's color** —
+  pick from 16 DSA-flavored icons in the new picker. Topics you already
+  made with emoji keep working untouched
+- Topics appear as colored, clickable chips on problems, re-solve, and
+  Home — one look tells you where a thing belongs
+
+### 🔧 Also
+- Debrief gets a progress bar and clearer prompts
+- The dev binary is now `trove.exe`, matching the installed app
+
 ## v0.4.1
 
 ### 🔧 Fixes
