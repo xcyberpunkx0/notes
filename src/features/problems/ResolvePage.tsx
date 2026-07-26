@@ -10,7 +10,7 @@ import { PageShell } from "@/components/page/PageShell";
 import { useRandomProblem, useUpdateProblemField } from "@/db/problems";
 import { formatRelative } from "@/lib/time";
 import { CodePanel } from "./CodePanel";
-import { ConfidenceDots, DifficultyChip } from "./bits";
+import { ConfidenceDots, DifficultyChip, TopicChips } from "./bits";
 
 export function ResolvePage() {
   const [seed, setSeed] = useState(1);
@@ -68,11 +68,7 @@ export function ResolvePage() {
               </h2>
               <div className="mt-2 flex items-center gap-3">
                 <DifficultyChip value={problem.difficulty} />
-                {problem.topic_names && (
-                  <span className="font-mono text-[11px] text-text-faint">
-                    {problem.topic_names.split(",").join(" · ")}
-                  </span>
-                )}
+                <TopicChips ids={problem.topic_ids} />
               </div>
             </div>
 

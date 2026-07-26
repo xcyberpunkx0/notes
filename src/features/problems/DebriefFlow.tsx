@@ -88,17 +88,26 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
           {DEBRIEF_FIELDS.map((f) => (
             <span
               key={f}
+              title={PROMPTS[f].question}
               className={cn(
                 "size-1.5 rounded-full transition-colors",
                 problem[f] ? "bg-accent" : "bg-line-strong",
               )}
             />
           ))}
-          <span className="ml-1 font-mono text-[10px] text-text-faint">
+          <span className="ml-1 font-mono text-[10px] tabular-nums text-text-faint">
             {done}/{total}
           </span>
         </span>
       </header>
+      {done < total && (
+        <div className="h-0.75 bg-surface-2">
+          <div
+            className="h-full bg-accent transition-[width] duration-300 ease-out"
+            style={{ width: `${(done / total) * 100}%` }}
+          />
+        </div>
+      )}
 
       <div className="p-5">
         {/* Answered nuggets */}
@@ -156,8 +165,10 @@ export function DebriefFlow({ problem }: { problem: ProblemRow }) {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.16 }}
             >
-              <p className="text-sm font-medium">{PROMPTS[active].question}</p>
-              <p className="mt-0.5 text-[12px] text-text-faint">
+              <p className="font-(family-name:--font-display) text-[17px] font-bold leading-snug tracking-tight">
+                {PROMPTS[active].question}
+              </p>
+              <p className="mt-1 text-[12.5px] text-text-dim">
                 {PROMPTS[active].hint}
               </p>
               <textarea

@@ -1,6 +1,47 @@
+import { useNavigate } from "react-router";
+import { useTopics } from "@/db/topics";
+import { TopicIcon } from "@/lib/topic-icons";
 import { cn } from "@/lib/utils";
 
 export const DIFFICULTIES = ["Easy", "Medium", "Hard"] as const;
+
+/**
+ * Chips for a problem's topics from its GROUP_CONCAT'd topic_ids string —
+ * glyph tinted in the topic color, navigates to the topic on click.
+ */
+export function TopicChips({ ids }: { ids: string | null }) {
+  const { data: topics } = useTopics();
+  const navigate = useNavigate();
+  if (!ids || !topics) return null;
+  const linked = ids
+    .split(",")
+    .map((id) => topics.find((t) => t.id === Number(id)))
+    .filter((t): t is NonNullable<typeof t> => !!t);
+  if (linked.length === 0) return null;
+  return (
+    <span className="inline-flex flex-wrap items-center gap-1.5">
+      {linked.map((t) => (
+        <button
+          key={t.id}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/topics/${t.id}`);
+          }}
+          className="flex h-6 items-center gap-1.5 rounded-full border border-line px-2.5 text-[11px] text-text-dim transition-colors duration-100 hover:bg-surface-2 hover:text-text"
+        >
+          <span
+            className="flex items-center"
+            style={{ color: t.color ?? undefined }}
+          >
+            <TopicIcon icon={t.icon} size={12} />
+          </span>
+          {t.name}
+        </button>
+      ))}
+    </span>
+  );
+}
 
 const DIFF_STYLES: Record<string, string> = {
   Easy: "text-success bg-success/10",
