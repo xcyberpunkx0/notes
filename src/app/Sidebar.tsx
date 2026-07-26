@@ -20,6 +20,7 @@ import { useUiStore } from "./store";
 import { useDueCount, useStreak } from "@/db/reviews";
 import { useTopics } from "@/db/topics";
 import { installPendingUpdate } from "@/lib/updater";
+import { TopicIcon } from "@/lib/topic-icons";
 import { cn } from "@/lib/utils";
 import { GemMark } from "@/assets/brand/GemMark";
 
@@ -141,7 +142,12 @@ export function Sidebar() {
             title={collapsed ? topic.name : undefined}
             className={navRowClass}
           >
-            <span className="w-4 shrink-0 text-center text-[13px]">◆</span>
+            <span
+            className="flex w-4 shrink-0 items-center justify-center"
+            style={{ color: topic.color ?? undefined }}
+          >
+            <TopicIcon icon={topic.icon} size={15} />
+          </span>
             {!collapsed && <span className="truncate">{topic.name}</span>}
           </NavLink>
         ))}
